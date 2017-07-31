@@ -10,7 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"gopkg.in/redis.v3"
 
-	"github.com/feeleep75/open-ethereum-pool/util"
+	"github.com/techievee/open-ethereum-pool/util"
 )
 
 type Config struct {
@@ -23,7 +23,7 @@ type Config struct {
 type RedisClient struct {
 	client *redis.Client
 	prefix string
-    pplns int64
+        pplns int64
 }
 type SumRewardData struct {
 	Interval       int64    `json:"inverval"`
@@ -61,7 +61,7 @@ type BlockData struct {
 }
 
 func (b *BlockData) RewardInShannon() int64 {
-	reward := new(big.Int).Div(b.Reward, common.Shannon)
+	reward := new(big.Int).Div(b.Reward, util.Shannon)
 	return reward.Int64()
 }
 
@@ -255,11 +255,11 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
                 }
 		
 		sharesMap, _ := cmds[len(cmds) - 3].(*redis.StringStringMapCmd).Result()
-                totalShares := int64(0)
-                for _, v := range sharesMap {
-                        n, _ := strconv.ParseInt(v, 10, 64)
-                        totalShares += n
-                }
+		totalShares := int64(0)
+		for _, v := range sharesMap {
+			n, _ := strconv.ParseInt(v, 10, 64)
+			totalShares += n
+		}
 		hashHex := strings.Join(params, ":")
 		s := join(hashHex, ts, roundDiff, totalShares)
 		cmd := r.client.ZAdd(r.formatKey("blocks", "candidates"), redis.Z{Score: float64(height), Member: s})
@@ -867,7 +867,7 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 	for _, val := range shares {
 		text := "█"
 		if val != login {
-			text = "▁"
+			text = "�?"
 		} else {
 			csh++
 		}

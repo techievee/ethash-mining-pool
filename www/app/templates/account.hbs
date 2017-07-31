@@ -5,6 +5,7 @@
       <div class="col-md-4 stats">
         <div style="display: block;">
           <i class="fa fa-cloud"></i> Immature Balance: <span>{{format-balance model.stats.immature}}</span><br>
+          <small>Preliminary balance awaiting blocks to mature.</small>
         </div>
         <div style="display: block;">
           <i class="fa fa-bank"></i> Pending Balance: <span>{{format-balance model.stats.balance}}</span><br>
@@ -46,8 +47,8 @@
          <div style="display: block;">
 		<div style="font-size:100%;"><i class="fa fa-gears"></i> Your Round Shares:</div>
 		  <p style="font-size:60%;letter-spacing:-0.3em;"> {{#each model.shares as |share|}} {{share}} {{/each}}</p>
-                </div>
-         </div>
+  </div>
+</div>
 </div>
 
 <div class="container">

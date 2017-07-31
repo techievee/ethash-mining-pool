@@ -1,10 +1,10 @@
 package proxy
 
 import (
-	"github.com/feeleep75/open-ethereum-pool/api"
-	"github.com/feeleep75/open-ethereum-pool/payouts"
-	"github.com/feeleep75/open-ethereum-pool/policy"
-	"github.com/feeleep75/open-ethereum-pool/storage"
+	"github.com/techievee/open-ethereum-pool/api"
+	"github.com/techievee/open-ethereum-pool/payouts"
+	"github.com/techievee/open-ethereum-pool/policy"
+	"github.com/techievee/open-ethereum-pool/storage"
 )
 
 type Config struct {
@@ -17,7 +17,7 @@ type Config struct {
 	Threads int `json:"threads"`
 
 	Coin  string         `json:"coin"`
-    Pplns int64          `json:"pplns"`
+        Pplns int64          `json:"pplns"`
 	Redis storage.Config `json:"redis"`
 
 	BlockUnlocker payouts.UnlockerConfig `json:"unlocker"`

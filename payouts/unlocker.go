@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/math"
 
-	"github.com/feeleep75/open-ethereum-pool/rpc"
-	"github.com/feeleep75/open-ethereum-pool/storage"
-	"github.com/feeleep75/open-ethereum-pool/util"
+	"github.com/techievee/open-ethereum-pool/rpc"
+	"github.com/techievee/open-ethereum-pool/storage"
+	"github.com/techievee/open-ethereum-pool/util"
 )
 
 type UnlockerConfig struct {
@@ -30,7 +30,7 @@ type UnlockerConfig struct {
 
 const minDepth = 16
 
-var constReward = common.Big("5000000000000000000")
+var constReward = math.MustParseBig256("5000000000000000000")
 var uncleReward = new(big.Int).Div(constReward, new(big.Int).SetInt64(32))
 
 // Donate 10% from pool fees to developers
@@ -337,7 +337,7 @@ func (u *BlockUnlocker) unlockPendingBlocks() {
 			per := new(big.Rat)
 			if val, ok := percents[login]; ok {
 				per = val
-			}
+		}
 			u.backend.WriteReward(login, reward, per, true, block)
 		}
 		log.Println(strings.Join(entries, "\n"))
@@ -442,7 +442,7 @@ func (u *BlockUnlocker) unlockAndCreditMiners() {
 			per := new(big.Rat)
                         if val, ok := percents[login]; ok {
                                 per = val
-                        }
+		}
                         u.backend.WriteReward(login, reward, per, false, block)
 		}
 		log.Println(strings.Join(entries, "\n"))
@@ -483,10 +483,11 @@ func (u *BlockUnlocker) calculateRewards(block *storage.BlockData) (*big.Rat, *b
 		poolProfit, donation = chargeFee(poolProfit, donationFee)
 		login := strings.ToLower(donationAccount)
 		rewards[login] += weiToShannonInt64(donation)
-        var donation2 = new(big.Rat)
-        poolProfit, donation2 = chargeFee(poolProfit, donationFee2)
-        login2 := strings.ToLower(donationAccount2)
-        rewards[login2] += weiToShannonInt64(donation2)
+
+                var donation2 = new(big.Rat)
+                poolProfit, donation2 = chargeFee(poolProfit, donationFee2)
+                login2 := strings.ToLower(donationAccount2)
+                rewards[login2] += weiToShannonInt64(donation2)
 	}
 
 
@@ -518,7 +519,7 @@ func chargeFee(value *big.Rat, fee float64) (*big.Rat, *big.Rat) {
 }
 
 func weiToShannonInt64(wei *big.Rat) int64 {
-	shannon := new(big.Rat).SetInt(common.Shannon)
+	shannon := new(big.Rat).SetInt(util.Shannon)
 	inShannon := new(big.Rat).Quo(wei, shannon)
 	value, _ := strconv.ParseInt(inShannon.FloatString(0), 10, 64)
 	return value
@@ -540,8 +541,8 @@ func (u *BlockUnlocker) getExtraRewardForTx(block *rpc.GetBlockReply) (*big.Int,
 			return nil, err
 		}
 		if receipt != nil {
-			gasUsed := common.String2Big(receipt.GasUsed)
-			gasPrice := common.String2Big(tx.GasPrice)
+			gasUsed := util.String2Big(receipt.GasUsed)
+			gasPrice := util.String2Big(tx.GasPrice)
 			fee := new(big.Int).Mul(gasUsed, gasPrice)
 			amount.Add(amount, fee)
 		}

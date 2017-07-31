@@ -1,11 +1,10 @@
 <div class="container">
   <div class="page-header">
-    <h1>Features</h1>
+    <h1>How To Mine</h1>
   </div>
-
-  <h3>Start Bundle</h3>
-  <p>
-   All you need to start mining:  <a href="http://ethteam.com/download/EtcStartBundle.zip"  target="_blank">EtcStartBundle.zip</a> 
+  <p class="lead">In order to mine on this pool you need to have an
+    <a href="https://github.com/ethereum/webthree-umbrella/releases" rel="nofollow" target="_blank">ethminer</a> installation
+    pointed to<br/><code>{{config.HttpHost}}:{{config.HttpPort}}/YOUR_ETH_ADDRESS/RIG_ID</code>
   </p>
 
   <h3>Personal payout threshold</h3>
@@ -13,10 +12,9 @@
    To set the payout threshold level you have to <a href="/#/about">contact</a> me with our desire amount, account id and miner ip address.
   </p>
 
-  <h3>Notification</h3>
-  <p>
-   For offline miner and payout notification you can use the Telegram bot:  <a href="https://web.telegram.org/#/im?p=@EtcTeam_bot"  target="_blank">@EtcTeam</a>
-  </p>
+  <h4>Stratum Mining with Stratum Proxy for Ethereum</h4>
+  <p class="lead">Grab proxy from <a href="https://github.com/Atrides/eth-proxy" re="nofollow" target="_blank">eth-proxy GitHub repo</a>.</p>
+  <p class="lead">Edit <code>eth-proxy.conf</code> and specify our pool's <code>HOST: {{config.StratumHost}}</code>, <code>PORT: {{config.StratumPort}}</code> and your <code>WALLET</code>.</p>
 
   <h3>PPLNS block reward</h3>
   <p>

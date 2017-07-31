@@ -4,29 +4,32 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Etc Mining Pool</title>
-    <meta name="theme-color" content="#1994b8">
-    <meta name="description" content="High profitability Ethereum Classic mining pool"/>
+    <title>Ethereum Mining Pool</title>
+    <meta name="description" content="High profitability Ethereum mining pool"/>
     <meta name="keywords" content="ethereum, pool, mining, cryptocurrency"/>
     <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en"></script>
-    <link rel="icon" href="http://ethteam.com/download/ethteam.ico">
     {{content-for "head"}}
-    <link rel="stylesheet" href="assets/vendor.css">
-    <link rel="stylesheet" href="assets/pool.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+    <link rel="stylesheet" href="{{rootURL}}assets/open-ethereum-pool.css">
     {{content-for "head-footer"}}
   </head>
   <body>
     {{content-for "body"}}
 
-    <script src="assets/vendor.js"></script>
-    <script src="assets/pool.js"></script>
+    <script src="{{rootURL}}assets/vendor.js"></script>
+    <script src="{{rootURL}}assets/open-ethereum-pool.js"></script>
 
     {{content-for "body-footer"}}
 
     <footer class="footer">
       <div class="container">
+          <h1> POOL IS CURRENTLY UNDER TESTING, POOL WILL BE FULLY FUNCTIONAL AFTER 03rd AUGUST 2017 </h1>
         <p class="text-muted">
-          Powered by <a href="https://github.com/feeleep75/open-ethereum-pool" target="_blank">open-ethereum-pool</a>
+          Powered by <a href="https://github.com/techievee/open-ethereum-pool" target="_blank">open-ethereum-pool</a> |
+          <strong>Dev ETH/ETC:</strong>
+          <a href="https://etherscan.io/address/0xb85150eb365e7df0941f0cf08235f987ba91506a" rel="nofollow" target="_blank">
+            0xb85150eb365e7df0941f0cf08235f987ba91506a
+          </a>
         </p>
       </div>
     </footer>

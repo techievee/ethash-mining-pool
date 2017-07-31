@@ -11,10 +11,10 @@ import (
 
 	"github.com/yvasiyarov/gorelic"
 
-	"github.com/feeleep75/open-ethereum-pool/api"
-	"github.com/feeleep75/open-ethereum-pool/payouts"
-	"github.com/feeleep75/open-ethereum-pool/proxy"
-	"github.com/feeleep75/open-ethereum-pool/storage"
+	"github.com/techievee/open-ethereum-pool/api"
+	"github.com/techievee/open-ethereum-pool/payouts"
+	"github.com/techievee/open-ethereum-pool/proxy"
+	"github.com/techievee/open-ethereum-pool/storage"
 )
 
 var cfg proxy.Config
@@ -84,7 +84,7 @@ func main() {
 	pong, err := backend.Check()
 	if err != nil {
 		log.Printf("Can't establish connection to backend: %v", err)
-        os.Exit(0)
+                //os.Exit(0)
 	} else {
 		log.Printf("Backend check reply: %v", pong)
 	}

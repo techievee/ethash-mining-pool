@@ -12,8 +12,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/feeleep75/open-ethereum-pool/storage"
-	"github.com/feeleep75/open-ethereum-pool/util"
+	"github.com/techievee/open-ethereum-pool/storage"
+	"github.com/techievee/open-ethereum-pool/util"
 )
 
 type ApiConfig struct {

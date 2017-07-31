@@ -2,9 +2,9 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'pool',
+    modulePrefix: 'open-ethereum-pool',
     environment: environment,
-    baseURL: '/',
+    rootURL: '/',
     locationType: 'hash',
     EmberENV: {
       FEATURES: {
@@ -15,14 +15,14 @@ module.exports = function(environment) {
 
     APP: {
       // API host and port
-      ApiUrl: '//ethteam.com/',
+      ApiUrl: '//example.net/',
 
       // HTTP mining endpoint
-      HttpHost: 'http://etc.ethteam.com',
+      HttpHost: 'http://example.net',
       HttpPort: 8888,
 
       // Stratum mining endpoint
-      StratumHost: 'etc.ethteam.com',
+      StratumHost: 'example.net',
       StratumPort: 8008,
 
       // Fee and payout details
@@ -38,7 +38,7 @@ module.exports = function(environment) {
     /* Override ApiUrl just for development, while you are customizing
       frontend markup and css theme on your workstation.
     */
-    ENV.APP.ApiUrl = 'http://ethteam.com:8080/'
+    ENV.APP.ApiUrl = 'http://localhost:8080/'
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
@@ -48,7 +48,6 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter

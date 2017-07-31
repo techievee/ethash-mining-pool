@@ -14,7 +14,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/feeleep75/open-ethereum-pool/util"
+	"github.com/techievee/open-ethereum-pool/util"
 )
 
 type RPCClient struct {
@@ -161,7 +161,7 @@ func (r *RPCClient) GetBalance(address string) (*big.Int, error) {
 	if err != nil {
 		return nil, err
 	}
-	return common.String2Big(reply), err
+	return util.String2Big(reply), err
 }
 
 func (r *RPCClient) Sign(from string, s string) (string, error) {
