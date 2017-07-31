@@ -11,10 +11,10 @@ fi
 workspace="$PWD/build/_workspace"
 root="$PWD"
 ethdir="$workspace/src/github.com/techievee"
-if [ ! -L "$ethdir/mining-pool" ]; then
+if [ ! -L "$ethdir/open-ethereum-pool" ]; then
     mkdir -p "$ethdir"
     cd "$ethdir"
-    ln -s ../../../../../. mining-pool
+    ln -s ../../../../../. open-ethereum-pool
     cd "$root"
 fi
 
@@ -25,8 +25,8 @@ GOBIN="$PWD/build/bin"
 export GOPATH GOBIN
 
 # Run the command inside the workspace.
-cd "$ethdir/mining-pool"
-PWD="$ethdir/mining-pool"
+cd "$ethdir/open-ethereum-pool"
+PWD="$ethdir/open-ethereum-pool"
 
 # Launch the arguments with the configured environment.
 exec "$@"
