@@ -7,9 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethereum/go-ethereum/common"
 	"gopkg.in/redis.v3"
-
 	"github.com/techievee/open-ethereum-pool/util"
 )
 
@@ -865,9 +863,9 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 	csh := 0
 	var myshares []string
 	for _, val := range shares {
-		text := "â–ˆ"
+		text := "|"
 		if val != login {
-			text = "â–?"
+			text = "_"
 		} else {
 			csh++
 		}
