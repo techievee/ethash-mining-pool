@@ -1,8 +1,8 @@
 {
 	"threads": 2,
-	"coin": "eth",
+	"coin": "eth-pplns",
 	"name": "main",
-        "pplns": 10000,
+        "pplns": 1000,
 
 	"proxy": {
 		"enabled": true,
