@@ -337,8 +337,17 @@ func (u *BlockUnlocker) unlockPendingBlocks() {
 			per := new(big.Rat)
 			if val, ok := percents[login]; ok {
 				per = val
+			}
+			
+			err = u.backend.WriteReward(login, reward, per, true, block)
+			if err != nil {
+			u.halt = true
+			u.lastFail = err
+			log.Printf("Failed to Write rewards for Mature Block of round %v: %v", block.RoundKey(), err)
+			return
 		}
-			u.backend.WriteReward(login, reward, per, true, block)
+			
+			
 		}
 		log.Println(strings.Join(entries, "\n"))
 	}
@@ -440,10 +449,15 @@ func (u *BlockUnlocker) unlockAndCreditMiners() {
 			entries = append(entries, fmt.Sprintf("\tREWARD %v: %v: %v Shannon", block.RoundKey(), login, reward))
 
 			per := new(big.Rat)
-                        if val, ok := percents[login]; ok {
-                                per = val
-		}
-                        u.backend.WriteReward(login, reward, per, false, block)
+			if val, ok := percents[login]; ok {
+				per = val
+			}
+			err = u.backend.WriteReward(login, reward, per, false, block)
+			if err != nil {
+			u.halt = true
+			u.lastFail = err
+			log.Printf("Failed to Write rewards for Immature Block of round %v: %v", block.RoundKey(), err)
+			return
 		}
 		log.Println(strings.Join(entries, "\n"))
 	}
@@ -484,10 +498,10 @@ func (u *BlockUnlocker) calculateRewards(block *storage.BlockData) (*big.Rat, *b
 		login := strings.ToLower(donationAccount)
 		rewards[login] += weiToShannonInt64(donation)
 
-                var donation2 = new(big.Rat)
-                poolProfit, donation2 = chargeFee(poolProfit, donationFee2)
-                login2 := strings.ToLower(donationAccount2)
-                rewards[login2] += weiToShannonInt64(donation2)
+		var donation2 = new(big.Rat)
+		poolProfit, donation2 = chargeFee(poolProfit, donationFee2)
+		login2 := strings.ToLower(donationAccount2)
+		rewards[login2] += weiToShannonInt64(donation2)
 	}
 
 
