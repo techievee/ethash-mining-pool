@@ -268,7 +268,6 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 func (r *RedisClient) writeShare(tx *redis.Multi, ms, ts int64, login, id string, diff int64, expire time.Duration) {
 	tx.LPush(r.formatKey("lastshares"), login)
 	tx.LTrim(r.formatKey("lastshares"), 0, r.pplns)
-
 	tx.HIncrBy(r.formatKey("shares", "roundCurrent"), login, diff)
 	tx.ZAdd(r.formatKey("hashrate"), redis.Z{Score: float64(ts), Member: join(diff, login, id, ms)})
 	tx.ZAdd(r.formatKey("hashrate", login), redis.Z{Score: float64(ts), Member: join(diff, id, ms)})
@@ -407,14 +406,69 @@ func (r *RedisClient) GetBalance(login string) (int64, error) {
 	}
 	return cmd.Int64()
 }
-func (r *RedisClient) GetTreshold(login string) (int64, error) {
-	cmd := r.client.HGet(r.formatKey("miners", login), "payouttreshold")
+
+func (r *RedisClient) GetThreshold(login string) (int64, error) {
+	cmd := r.client.HGet(r.formatKey("settings", login), "payoutthreshold")
 	if cmd.Err() == redis.Nil {
 		return 0, nil
 	} else if cmd.Err() != nil {
 		return 0, cmd.Err()
 	}
 	return cmd.Int64()
+}
+
+
+func (r *RedisClient) SetThreshold(login string,payoutvalue string) (bool, error) {
+	cmd := r.client.HSet(r.formatKey("settings", login), "payoutthreshold",strconv.FormatInt(payoutvalue, 10))
+	if cmd.Err() == redis.Nil {
+		return 0, nil
+	} else if cmd.Err() != nil {
+		return 0, cmd.Err()
+	}
+	return cmd
+}
+
+func (r *RedisClient) GetEmail(login string) (string, error) {
+	cmd := r.client.HGet(r.formatKey("settings", login), "email")
+	if cmd.Err() == redis.Nil {
+		return '', nil
+	} else if cmd.Err() != nil {
+		return '', cmd.Err()
+	}
+	return cmd
+}
+
+
+func (r *RedisClient) SetEmail(login string,email string) (bool, error) {
+	cmd := r.client.HSet(r.formatKey("settings", login), "email",email)
+	if cmd.Err() == redis.Nil {
+		return 0, nil
+	} else if cmd.Err() != nil {
+		return 0, cmd.Err()
+	}
+	return cmd
+}
+
+
+func (r *RedisClient) GetIP(login string) (string, error) {
+	cmd := r.client.HGet(r.formatKey("settings", login), "ip")
+	if cmd.Err() == redis.Nil {
+		return '', nil
+	} else if cmd.Err() != nil {
+		return '', cmd.Err()
+	}
+	return cmd
+}
+
+
+func (r *RedisClient) SetIP(login string,ip string) (bool, error) {
+	cmd := r.client.HSet(r.formatKey("miners", login), "ip",ip)
+	if cmd.Err() == redis.Nil {
+		return 0, nil
+	} else if cmd.Err() != nil {
+		return 0, cmd.Err()
+	}
+	return cmd
 }
 
 func (r *RedisClient) LockPayouts(login string, amount int64) error {
@@ -697,7 +751,8 @@ func convertStringMap(m map[string]string) map[string]interface{} {
 	for k, v := range m {
 		result[k], err = strconv.ParseInt(v, 10, 64)
 		if err != nil {
-			result[k] = v
+			//If its IP Address, Dont Add those value to the Map for Security                      
+                        result[k] = v
 		}
 	}
 	return result
@@ -996,8 +1051,6 @@ func convertRewardResults(rows ...*redis.ZSliceCmd) []*RewardData {
 	}
 	return result
 }
-
-
 
 
 func convertBlockResults(rows ...*redis.ZSliceCmd) []*BlockData {

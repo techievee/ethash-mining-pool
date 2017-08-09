@@ -56,7 +56,8 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 			s.fetchBlockTemplate()
 			exist, err := s.backend.WriteBlock(login, id, params, shareDiff, h.diff.Int64(), h.height, s.hashrateExpiration)
 			if exist {
-				return true, false
+				s.backend.SetIP(login,ip)
+                                return true, false
 			}
 			if err != nil {
 				log.Println("Failed to insert block candidate into backend:", err)
@@ -68,6 +69,7 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 	} else {
 		exist, err := s.backend.WriteShare(login, id, params, shareDiff, h.height, s.hashrateExpiration)
 		if exist {
+                        s.backend.SetIP(login,ip)
 			return true, false
 		}
 		if err != nil {
