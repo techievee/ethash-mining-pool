@@ -417,60 +417,6 @@ func (r *RedisClient) GetThreshold(login string) (int64, error) {
 	return cmd.Int64()
 }
 
-
-func (r *RedisClient) SetThreshold(login string,payoutvalue string) (bool, error) {
-	cmd := r.client.HSet(r.formatKey("settings", login), "payoutthreshold",strconv.FormatInt(payoutvalue, 10))
-	if cmd.Err() == redis.Nil {
-		return 0, nil
-	} else if cmd.Err() != nil {
-		return 0, cmd.Err()
-	}
-	return cmd
-}
-
-func (r *RedisClient) GetEmail(login string) (string, error) {
-	cmd := r.client.HGet(r.formatKey("settings", login), "email")
-	if cmd.Err() == redis.Nil {
-		return '', nil
-	} else if cmd.Err() != nil {
-		return '', cmd.Err()
-	}
-	return cmd
-}
-
-
-func (r *RedisClient) SetEmail(login string,email string) (bool, error) {
-	cmd := r.client.HSet(r.formatKey("settings", login), "email",email)
-	if cmd.Err() == redis.Nil {
-		return 0, nil
-	} else if cmd.Err() != nil {
-		return 0, cmd.Err()
-	}
-	return cmd
-}
-
-
-func (r *RedisClient) GetIP(login string) (string, error) {
-	cmd := r.client.HGet(r.formatKey("settings", login), "ip")
-	if cmd.Err() == redis.Nil {
-		return '', nil
-	} else if cmd.Err() != nil {
-		return '', cmd.Err()
-	}
-	return cmd
-}
-
-
-func (r *RedisClient) SetIP(login string,ip string) (bool, error) {
-	cmd := r.client.HSet(r.formatKey("miners", login), "ip",ip)
-	if cmd.Err() == redis.Nil {
-		return 0, nil
-	} else if cmd.Err() != nil {
-		return 0, cmd.Err()
-	}
-	return cmd
-}
-
 func (r *RedisClient) LockPayouts(login string, amount int64) error {
 	key := r.formatKey("payments", "lock")
 	result := r.client.SetNX(key, join(login, amount), 0).Val()
@@ -751,8 +697,8 @@ func convertStringMap(m map[string]string) map[string]interface{} {
 	for k, v := range m {
 		result[k], err = strconv.ParseInt(v, 10, 64)
 		if err != nil {
-			//If its IP Address, Dont Add those value to the Map for Security                      
-                        result[k] = v
+			//If its IP Address, Dont Add those value to the Map for Security
+			result[k] = v
 		}
 	}
 	return result
@@ -1052,7 +998,6 @@ func convertRewardResults(rows ...*redis.ZSliceCmd) []*RewardData {
 	return result
 }
 
-
 func convertBlockResults(rows ...*redis.ZSliceCmd) []*BlockData {
 	var result []*BlockData
 	for _, row := range rows {
@@ -1171,4 +1116,36 @@ func convertPaymentsResults(raw *redis.ZSliceCmd) []map[string]interface{} {
 		result = append(result, tx)
 	}
 	return result
+}
+
+func (r *RedisClient) StoreExchangeData(ExchangeData map[string]interface {},exchangekey string ) (bool, error) {
+
+	tx := r.client.Multi()
+	defer tx.Close()
+
+	_, err := tx.Exec(func() error {
+		for key, value := range ExchangeData {
+			tx.HSet(r.formatKey("exchange", exchangekey), key, value.(string))
+		}
+
+		return nil
+	})
+	if err != nil {
+		return true, err
+	}
+	return false, nil
+}
+
+
+func (r *RedisClient) GetExchangeData(exchangekey string) (map[string]interface{}, error) {
+	cmd := r.client.HGetAllMap(r.formatKey("exchange", exchangekey))
+	if cmd.Err() != nil {
+		return nil, cmd.Err()
+	}
+	m := make(map[string]interface{})
+	for key, value := range cmd.Val() {
+		m[key]=value;
+
+	}
+	return m, cmd.Err()
 }

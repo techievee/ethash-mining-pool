@@ -19,7 +19,7 @@ func TestCalculateRewards(t *testing.T) {
 	expectedRewards := map[string]int64{"0x0": 4877996431, "0x1": 97559929, "0x2": 24389982, "0x3": 48780, "0x4": 4878}
 	totalShares := int64(1025011)
 
-	rewards := calculateRewardsForShares(shares, totalShares, blockReward)
+	rewards , percent := calculateRewardsForShares(shares, totalShares, blockReward)
 	expectedTotalAmount := int64(5000000000)
 
 	totalAmount := int64(0)
@@ -27,7 +27,7 @@ func TestCalculateRewards(t *testing.T) {
 		totalAmount += amount
 
 		if expectedRewards[login] != amount {
-			t.Errorf("Amount for %v must be equal to %v vs %v", login, expectedRewards[login], amount)
+			t.Errorf("Amount for %v must be equal to %v vs %v , %v", login, expectedRewards[login], amount, percent)
 		}
 	}
 	if totalAmount != expectedTotalAmount {

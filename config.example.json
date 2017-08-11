@@ -108,6 +108,14 @@
 		"bgsave": false
 	},
 
+	"exchange": {
+		"enabled": true,
+		"name": "ETH_INR",
+		"url": "https://ethexindia.com/api/",
+		"timeout": "10s",
+		"refreshInterval": "120s"
+		},
+
 	"newrelicEnabled": false,
 	"newrelicName": "MyEtherProxy",
 	"newrelicKey": "SECRET_KEY",

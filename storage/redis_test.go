@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"gopkg.in/redis.v3"
+	"encoding/json"
 )
 
 var r *RedisClient
@@ -14,7 +15,7 @@ var r *RedisClient
 const prefix = "test"
 
 func TestMain(m *testing.M) {
-	r = NewRedisClient(&Config{Endpoint: "127.0.0.1:6379"}, prefix)
+	r = NewRedisClient(&Config{Endpoint: "35.198.231.241:6379",Database: 1}, prefix,1000)
 	reset()
 	c := m.Run()
 	reset()
@@ -321,9 +322,47 @@ func TestCollectLuckStats(t *testing.T) {
 	}
 }
 
+func TestStoreExchangeData(t *testing.T) {
+
+
+	type Reply struct {
+		ticker string `json:ticker`
+
+	}
+	ExchangeDataString:=[]byte("{\"ticker\":\"ETH_INR\",\"high\":\"19895\",\"low\":\"19000\",\"avg\":19447.5,\"total_volume_24h\":688,\"current_volume\":2,\"last_traded_price\":19710,\"bid\":19750,\"ask\":19800,\"last_traded_time\":1502431573,\"last_traded_time_IST\":1502431573}")
+	//exchangekey := "ETH_INR"
+	//var reply map[string]interface{}
+	reply :=Reply{}
+	err := json.Unmarshal(ExchangeDataString, &reply)
+	if(err != nil){
+		t.Errorf("Error in StoreExchangeData during unmarshal %v", err)
+	}
+
+	tx := r.client.Multi()
+	defer tx.Close()
+
+	_, err = tx.Exec(func() error {
+
+
+		//tx.HSet(r.formatKey("exchange", exchangekey),"last_traded_price",strconv.FormatInt(reply.last_traded_price,10))
+		//t.Logf("LTP: %s", strconv.FormatInt(reply.last_traded_price,10))
+		t.Logf("REPLY: %v", reply.ticker)
+
+
+		return nil
+	})
+
+	if err!= nil{
+		t.Errorf("Error in StoreExchangeData during HSET %v", err)
+	}
+
+}
+
 func reset() {
 	keys := r.client.Keys(r.prefix + ":*").Val()
 	for _, k := range keys {
 		r.client.Del(k)
 	}
 }
+
+

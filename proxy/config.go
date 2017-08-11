@@ -5,6 +5,8 @@ import (
 	"github.com/techievee/open-ethereum-pool/payouts"
 	"github.com/techievee/open-ethereum-pool/policy"
 	"github.com/techievee/open-ethereum-pool/storage"
+	"github.com/techievee/open-ethereum-pool/exchange"
+
 )
 
 type Config struct {
@@ -17,11 +19,13 @@ type Config struct {
 	Threads int `json:"threads"`
 
 	Coin  string         `json:"coin"`
-        Pplns int64          `json:"pplns"`
+    Pplns int64          `json:"pplns"`
 	Redis storage.Config `json:"redis"`
 
 	BlockUnlocker payouts.UnlockerConfig `json:"unlocker"`
 	Payouts       payouts.PayoutsConfig  `json:"payouts"`
+
+	Exchange  exchange.ExchangeConfig `json:"exchange"`
 
 	NewrelicName    string `json:"newrelicName"`
 	NewrelicKey     string `json:"newrelicKey"`
@@ -60,3 +64,4 @@ type Upstream struct {
 	Url     string `json:"url"`
 	Timeout string `json:"timeout"`
 }
+

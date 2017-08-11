@@ -15,6 +15,7 @@ import (
 	"github.com/techievee/open-ethereum-pool/payouts"
 	"github.com/techievee/open-ethereum-pool/proxy"
 	"github.com/techievee/open-ethereum-pool/storage"
+	"github.com/techievee/open-ethereum-pool/exchange"
 )
 
 var cfg proxy.Config
@@ -39,6 +40,14 @@ func startPayoutsProcessor() {
 	u := payouts.NewPayoutsProcessor(&cfg.Payouts, backend)
 	u.Start()
 }
+
+
+func startExchangeProcessor() {
+	u := exchange.StartExchangeProcessor(&cfg.Exchange, backend)
+	u.Start()
+}
+
+
 
 func startNewrelic() {
 	if cfg.NewrelicEnabled {
@@ -101,6 +110,11 @@ func main() {
 	if cfg.Payouts.Enabled {
 		go startPayoutsProcessor()
 	}
+
+	if cfg.Exchange.Enabled {
+		go startExchangeProcessor()
+	}
+
 	quit := make(chan bool)
 	<-quit
 }
