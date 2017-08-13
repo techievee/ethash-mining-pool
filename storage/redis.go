@@ -9,6 +9,7 @@ import (
 
 	"github.com/techievee/open-ethereum-pool/util"
 	"gopkg.in/redis.v3"
+	"log"
 )
 
 type Config struct {
@@ -1118,34 +1119,35 @@ func convertPaymentsResults(raw *redis.ZSliceCmd) []map[string]interface{} {
 	return result
 }
 
-func (r *RedisClient) StoreExchangeData(ExchangeData map[string]interface {},exchangekey string ) (bool, error) {
+func (r *RedisClient) StoreExchangeData(ExchangeData []map[string]string) {
 
 	tx := r.client.Multi()
 	defer tx.Close()
 
-	_, err := tx.Exec(func() error {
-		for key, value := range ExchangeData {
-			tx.HSet(r.formatKey("exchange", exchangekey), key, value.(string))
-		}
+	for _,coindata := range ExchangeData  {
+		for key,value := range coindata{
+				ret,err := tx.HSet(r.formatKey("exchange", coindata["symbol"]),key,value)
 
-		return nil
-	})
-	if err != nil {
-		return true, err
+			if err!=nil{
+				log.Printf("Error while Storing %s : Key-%s , value-%s , Error : %v",coindata["symbol"],key,value,err)
+			}
+
+		}
 	}
-	return false, nil
+	log.Printf("Writing Exchange Data : %v",ExchangeData)
+	return
 }
 
 
-func (r *RedisClient) GetExchangeData(exchangekey string) (map[string]interface{}, error) {
-	cmd := r.client.HGetAllMap(r.formatKey("exchange", exchangekey))
-	if cmd.Err() != nil {
-		return nil, cmd.Err()
-	}
-	m := make(map[string]interface{})
-	for key, value := range cmd.Val() {
-		m[key]=value;
+func (r *RedisClient) GetExchangeData(coinsymbol string) (map[string]string, error) {
 
+	cmd := r.client.HGetAllMap(r.formatKey("exchange", coinsymbol ))
+
+	result,err := cmd.Result()
+
+	if err != nil {
+		return nil, err
 	}
-	return m, cmd.Err()
+
+	return result, err
 }

@@ -7,7 +7,8 @@ import (
 	"testing"
 
 	"gopkg.in/redis.v3"
-	"encoding/json"
+
+	"log"
 )
 
 var r *RedisClient
@@ -325,36 +326,77 @@ func TestCollectLuckStats(t *testing.T) {
 func TestStoreExchangeData(t *testing.T) {
 
 
-	type Reply struct {
-		ticker string `json:ticker`
+	m :=map[string]string{
+		"id": "ethereum",
+		"name": "Ethereum",
+		"symbol": "ETH",
+		"rank": "2",
+		"price_usd": "311.984",
+		"price_btc": "0.0823755",
+		"24h_volume_usd": "1161280000.0",
+		"market_cap_usd": "29309660622.0",
+		"available_supply": "93946038.0",
+		"total_supply": "93946038.0",
+		"percent_change_1h": "0.47",
+		"percent_change_24h": "4.12",
+		"percent_change_7d": "30.36",
+		"last_updated": "1502540048",
+		"price_inr": "19995.366544",
+		"24h_volume_inr": "74427596480.0",
+		"market_cap_inr": "1878485458898",
+	}
+	m1 :=map[string]string{
+		"id": "bitcoin",
+		"name": "Bitcoin",
+		"symbol": "BTC",
+		"rank": "1",
+		"price_usd": "3836.67",
+		"price_btc": "1.0",
+		"24h_volume_usd": "2080280000.0",
+		"market_cap_usd": "63315651883.0",
+		"available_supply": "16502762.0",
+		"total_supply": "16502762.0",
+		"percent_change_1h": "1.26",
+		"percent_change_24h": "8.93",
+		"percent_change_7d": "19.58",
+		"last_updated": "1502551754",
+		"price_inr": "245896.01697",
+		"24h_volume_inr": "133327225479.9999847412",
+		"market_cap_inr": "4057963444804",
+	}
 
+
+
+	data :=[]map[string]string{
+		m1,
+		m,
 	}
-	ExchangeDataString:=[]byte("{\"ticker\":\"ETH_INR\",\"high\":\"19895\",\"low\":\"19000\",\"avg\":19447.5,\"total_volume_24h\":688,\"current_volume\":2,\"last_traded_price\":19710,\"bid\":19750,\"ask\":19800,\"last_traded_time\":1502431573,\"last_traded_time_IST\":1502431573}")
-	//exchangekey := "ETH_INR"
-	//var reply map[string]interface{}
-	reply :=Reply{}
-	err := json.Unmarshal(ExchangeDataString, &reply)
-	if(err != nil){
-		t.Errorf("Error in StoreExchangeData during unmarshal %v", err)
-	}
+
+
 
 	tx := r.client.Multi()
 	defer tx.Close()
 
-	_, err = tx.Exec(func() error {
+	for _,v := range data  {
 
-
-		//tx.HSet(r.formatKey("exchange", exchangekey),"last_traded_price",strconv.FormatInt(reply.last_traded_price,10))
-		//t.Logf("LTP: %s", strconv.FormatInt(reply.last_traded_price,10))
-		t.Logf("REPLY: %v", reply.ticker)
-
-
-		return nil
-	})
-
-	if err!= nil{
-		t.Errorf("Error in StoreExchangeData during HSET %v", err)
+		for k1,v1 := range v{
+				tx.HSet(r.formatKey("exchange", v["symbol"]),k1,v1)
+		}
 	}
+	log.Print("Writing Exchange Data : %v",data)
+}
+
+func TestGetExchangeData(t *testing.T) {
+
+	cmd := r.client.HGetAllMap(r.formatKey("exchange", "ETH" ))
+	result,err := cmd.Result()
+
+	log.Printf("Writing Exchange Data : %v ",result)
+
+	if err!=nil{
+		t.Errorf("Error at GetExchangeData:",err)
+	}
+
 
 }
 

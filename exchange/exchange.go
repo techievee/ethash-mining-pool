@@ -12,6 +12,7 @@ import (
 	"github.com/techievee/open-ethereum-pool/util"
 	"github.com/techievee/open-ethereum-pool/storage"
 	"io/ioutil"
+
 )
 
 
@@ -20,6 +21,7 @@ type ExchangeProcessor struct {
 	backend  *storage.RedisClient
 	rpc      *RestClient
 	halt     bool
+
 }
 
 type ExchangeConfig struct {
@@ -40,6 +42,8 @@ type RestClient struct {
 	client      *http.Client
 }
 
+type ExchangeReply []map[string]string
+
 func NewRestClient(name, url, timeout string) *RestClient {
 	restClient := &RestClient{Name: name, Url: url}
 	timeoutIntv := util.MustParseDuration(timeout)
@@ -49,14 +53,16 @@ func NewRestClient(name, url, timeout string) *RestClient {
 	return restClient
 }
 
-func (r *RestClient) GetData() (map[string]interface{}, error) {
+func (r *RestClient) GetData() (ExchangeReply, error) {
 	Resp, err := r.doPost(r.Url, "ticker")
 	if err != nil {
 		return nil, err
 	}
-	var reply map[string]interface{}
-	err = json.Unmarshal(Resp, &reply)
-	return reply, err
+
+	//var reply map[string][]interface{}
+	var data ExchangeReply
+	err = json.Unmarshal(Resp, &data)
+	return data, err
 }
 
 func StartExchangeProcessor(cfg *ExchangeConfig, backend *storage.RedisClient)*ExchangeProcessor{
@@ -65,7 +71,7 @@ func StartExchangeProcessor(cfg *ExchangeConfig, backend *storage.RedisClient)*E
 	return u
 }
 
-func Start(u *ExchangeProcessor)  {
+func (u *ExchangeProcessor) Start(){
 	if len(u.ExchangeConfig.Name) == 0 {
 		log.Fatal("You must set Exchange Processor name")
 	}
@@ -92,23 +98,25 @@ func Start(u *ExchangeProcessor)  {
 }
 
 func (u *ExchangeProcessor) fetchData() {
+
 	reply, err := u.rpc.GetData()
 
-
 	if err != nil {
-		log.Printf("Failed to fetch data from echange %v", err)
+		log.Printf("Failed to fetch data from exchange %v", err)
 		return
 	}
 
+	log.Printf("Reply %v", reply)
+
 	//Store the data into the Redis Store
-	_, err = u.backend.StoreExchangeData(reply,"ETH_INR")
+	u.backend.StoreExchangeData(reply)
 
 	if err != nil {
 		log.Printf("Failed to Store the data to echange %v", err)
 		return
 	}
 
-	return;
+	return
 }
 
 func (r *RestClient) doPost(url string, method string) ([]byte, error) {
