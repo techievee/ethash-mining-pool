@@ -72,10 +72,6 @@ func StartExchangeProcessor(cfg *ExchangeConfig, backend *storage.RedisClient)*E
 }
 
 func (u *ExchangeProcessor) Start(){
-	if len(u.ExchangeConfig.Name) == 0 {
-		log.Fatal("You must set Exchange Processor name")
-	}
-
 
 	refreshIntv := util.MustParseDuration(u.ExchangeConfig.RefreshInterval)
 	refreshTimer := time.NewTimer(refreshIntv)
