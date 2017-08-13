@@ -1126,8 +1126,9 @@ func (r *RedisClient) StoreExchangeData(ExchangeData []map[string]string) {
 
 	for _,coindata := range ExchangeData  {
 		for key,value := range coindata{
-				ret,err := tx.HSet(r.formatKey("exchange", coindata["symbol"]),key,value)
 
+			cmd := tx.HSet(r.formatKey("exchange", coindata["symbol"]),key,value)
+			err:=cmd.Err()
 			if err!=nil{
 				log.Printf("Error while Storing %s : Key-%s , value-%s , Error : %v",coindata["symbol"],key,value,err)
 			}
