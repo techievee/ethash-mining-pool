@@ -765,6 +765,7 @@ func (r *RedisClient) CollectStats(smallWindow time.Duration, maxBlocks, maxPaym
 		tx.ZCard(r.formatKey("payments", "all"))
 		tx.ZRevRangeWithScores(r.formatKey("payments", "all"), 0, maxPayments-1)
 		tx.LLen(r.formatKey("lastshares"))
+		tx.HGetAllMap(r.formatKey("exchange", "ETH" ))
 		return nil
 	})
 
@@ -795,6 +796,9 @@ func (r *RedisClient) CollectStats(smallWindow time.Duration, maxBlocks, maxPaym
 	stats["miners"] = miners
 	stats["minersTotal"] = len(miners)
 	stats["hashrate"] = totalHashrate
+
+	exchangedata, _ := cmds[12].(*redis.StringStringMapCmd).Result()
+	stats["exchangedata"] = exchangedata
 
 	return stats, nil
 }
