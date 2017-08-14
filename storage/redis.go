@@ -765,7 +765,7 @@ func (r *RedisClient) CollectStats(smallWindow time.Duration, maxBlocks, maxPaym
 		tx.ZCard(r.formatKey("payments", "all"))
 		tx.ZRevRangeWithScores(r.formatKey("payments", "all"), 0, maxPayments-1)
 		tx.LLen(r.formatKey("lastshares"))
-		tx.HGetAllMap(r.formatKey("exchange", "ETH" ))
+		tx.HGetAllMap(r.formatKey("exchange", "ETH"))
 		return nil
 	})
 
@@ -865,19 +865,19 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 	shares := cmds[2].(*redis.StringSliceCmd).Val()
 
 	csh := 0
-	var myshares []string
+	//	var myshares []string
 	for _, val := range shares {
-		text := "|"
+		//		text := "|"
 		if val != login {
-			text = "_"
+			//			text = "_"
 		} else {
 			csh++
 		}
 		//myshares = append(myshares,  strconv.FormatInt(int64(ind) 10))
-		myshares = append(myshares, text)
+		//		myshares = append(myshares, text)
 	}
 	stats["roundShares"] = csh
-	stats["shares"] = myshares
+	//stats["shares"] = myshares
 	stats["workers"] = workers
 	stats["workersTotal"] = len(workers)
 	stats["workersOnline"] = online
@@ -1128,27 +1128,26 @@ func (r *RedisClient) StoreExchangeData(ExchangeData []map[string]string) {
 	tx := r.client.Multi()
 	defer tx.Close()
 
-	for _,coindata := range ExchangeData  {
-		for key,value := range coindata{
+	for _, coindata := range ExchangeData {
+		for key, value := range coindata {
 
-			cmd := tx.HSet(r.formatKey("exchange", coindata["symbol"]),key,value)
-			err:=cmd.Err()
-			if err!=nil{
-				log.Printf("Error while Storing %s : Key-%s , value-%s , Error : %v",coindata["symbol"],key,value,err)
+			cmd := tx.HSet(r.formatKey("exchange", coindata["symbol"]), key, value)
+			err := cmd.Err()
+			if err != nil {
+				log.Printf("Error while Storing %s : Key-%s , value-%s , Error : %v", coindata["symbol"], key, value, err)
 			}
 
 		}
 	}
-	log.Printf("Writing Exchange Data : %v",ExchangeData)
+	log.Printf("Writing Exchange Data : %v", ExchangeData)
 	return
 }
 
-
 func (r *RedisClient) GetExchangeData(coinsymbol string) (map[string]string, error) {
 
-	cmd := r.client.HGetAllMap(r.formatKey("exchange", coinsymbol ))
+	cmd := r.client.HGetAllMap(r.formatKey("exchange", coinsymbol))
 
-	result,err := cmd.Result()
+	result, err := cmd.Result()
 
 	if err != nil {
 		return nil, err

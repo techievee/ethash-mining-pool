@@ -17,9 +17,9 @@ const prefix = "test"
 
 func TestMain(m *testing.M) {
 	r = NewRedisClient(&Config{Endpoint: "35.198.231.241:6379",Database: 1}, prefix,1000)
-	//reset()
+	reset()
 	c := m.Run()
-	//reset()
+	reset()
 	os.Exit(c)
 }
 
