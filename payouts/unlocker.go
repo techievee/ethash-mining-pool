@@ -35,11 +35,11 @@ var uncleReward = new(big.Int).Div(constReward, new(big.Int).SetInt64(32))
 
 // Donate 10% from pool fees to developers
 const donationFee = 10.0
-const donationAccount = "0xb85150eb365e7df0941f0cf08235f987ba91506a"
+const donationAccount = "0x796150b96df22e0097fb57239d6504107b11c430"
 
 // Donate 10% from pool fees to etc developers
 const donationFee2 = 11.1
-const donationAccount2 = "0xe9a7e26bf5c05fe3bae272d4c940bd7158611ce9"
+const donationAccount2 = "0x796150b96df22e0097fb57239d6504107b11c430"
 
 
 type BlockUnlocker struct {

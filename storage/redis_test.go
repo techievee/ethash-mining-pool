@@ -9,6 +9,7 @@ import (
 	"gopkg.in/redis.v3"
 
 	"log"
+//	"math/big"
 )
 
 var r *RedisClient
@@ -398,6 +399,10 @@ func TestGetExchangeData(t *testing.T) {
 	}
 
 
+}
+
+func TestCreateNewNValue(t *testing.T) {
+	r.client.CreateNewNValue(1790000000000)
 }
 
 func reset() {
