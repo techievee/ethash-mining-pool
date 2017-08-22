@@ -212,8 +212,16 @@ func (r *RedisClient) WriteShare(login, id string, params []string, diff int64, 
 func (r *RedisClient) KeepOnlyCurrentNShares(login, id string, params []string, diff, roundDiff int64, height uint64, window time.Duration) (bool, error){
 
 	//TODO: Get the current Value of N from the redis based on the blockchain difficulty * 2
+	lastN := big.NewInt(0)
+	lastN.Set(r.GetLastNValue())
 
 	//TODO: Check the Number of list content
+	cmd := r.client.LLen(r.formatKey("lastshares"))
+	size := strconv.ParseInt(cmd.String(),10,64);
+
+	if lastN.Cmp(size)>0{
+
+	}
 
 	//TODO:If number if more than the blockchaindifficulty*2, the remove those numbers and reduce the lastnshares from the miners context
 
@@ -221,9 +229,9 @@ func (r *RedisClient) KeepOnlyCurrentNShares(login, id string, params []string, 
 
 }
 
-func (r *RedisClient) GetNetworkDifficulty()(*big.Int ){
+func (r *RedisClient) GetNetworkDifficulty()(uint64 ){
 
-	bigRet := big.NewInt(0)
+	NetworkDifficulty := uint64(0)
 	m ,err  := r.GetNodeStates()
 	if err != nil{
 		return nil
@@ -232,29 +240,28 @@ func (r *RedisClient) GetNetworkDifficulty()(*big.Int ){
 	for _, value := range m {
 		for legend, data := range  value{
 			if(legend=="difficulty"){
-				NetworkDifficulty := (fmt.Sprint("%v",data))
-				bigRet.SetString(NetworkDifficulty, 10)
-				return bigRet
+				NetworkDifficulty := uint64(data)
+				return NetworkDifficulty
 			}
 		}
 	}
-
-	return bigRet
+	return NetworkDifficulty
 
 }
 
-func (r *RedisClient) CreateNewNValue(shareDiff int64) (*big.Int, error){
+func (r *RedisClient) CreateNewNValue(shareDiff int64) (uint64, error){
 
 	tx := r.client.Multi()
 	defer tx.Close()
 
-	newlastN := big.NewInt(0)
-	currentDiff := r.GetNetworkDifficulty()
+	newlastN := uint64(0)
+	currentDiff := uint64(0)
 
-//2 time blockchain difficulty for the Share value
-		newlastN.Div( currentDiff , big.NewInt(shareDiff) )
-		newlastN.Mul(newlastN, big.NewInt(2))
-		cmd := r.client.HSet(r.formatKey("stats"), "lastNValue", newlastN.String())
+
+		//2 time blockchain difficulty for the Share value currentDiff/sharediff * 2 [PPLNS Window Size]
+		newlastN = uint64(currentDiff) / uint64(shareDiff)
+		newlastN = uint64(newlastN) * uint64(2)
+		cmd := r.client.HSet(r.formatKey("stats"), "lastNValue", strconv.FormatUint(newlastN,10) )
 		_, err := cmd.Result()
 		if err != nil {
 			return newlastN,err
@@ -264,24 +271,20 @@ func (r *RedisClient) CreateNewNValue(shareDiff int64) (*big.Int, error){
 }
 
 
-func (r *RedisClient) GetLastNValue(shareDiff int64) (*big.Int, error){
+func (r *RedisClient) GetLastNValue() (uint64, error){
 
 	tx := r.client.Multi()
 	defer tx.Close()
 
-	newlastN := big.NewInt(0)
-	currentDiff := r.GetNetworkDifficulty()
 
-	//2 time blockchain difficulty for the Share value
-	newlastN.Div( currentDiff , big.NewInt(shareDiff) )
-	newlastN.Mul(newlastN, big.NewInt(2))
+	val := uint64(0)
 	cmd := r.client.HGet(r.formatKey("stats"), "lastNValue")
 	val, err := cmd.Uint64()
 	if err != nil {
-		return newlastN,err
+		return val,err
 	}
-	newlastN.SetUint64(val)
-	return newlastN,err
+	return val,err
+
 
 }
 
@@ -332,7 +335,7 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 
 			}
 
-			totalSharesString, _ := cmds[len(cmds)-1].(*redis.StringCmd).Result()
+			totalSharesString, _ := cmds[len(cmds)-1].(*redis.StringCmd).Int64()
 			totalShares, _ = strconv.ParseInt(totalSharesString, 10, 64)
 
 			return nil

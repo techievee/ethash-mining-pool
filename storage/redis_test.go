@@ -405,6 +405,11 @@ func TestCreateNewNValue(t *testing.T) {
 	r.client.CreateNewNValue(1790000000000)
 }
 
+
+func TestGetNetworkDifficulty(t *testing.T) {
+	log.Print("ND:%v",r.client.GetNetworkDifficulty())
+}
+
 func reset() {
 	keys := r.client.Keys(r.prefix + ":*").Val()
 	for _, k := range keys {
