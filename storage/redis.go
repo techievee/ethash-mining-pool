@@ -193,39 +193,78 @@ func (r *RedisClient) WriteShare(login, id string, params []string, diff int64, 
 	tx := r.client.Multi()
 	defer tx.Close()
 
-	//TODO: Clear the transaction which is more than the last N, and RPOP the list and decrement the share count
-
-
 
 	ms := util.MakeTimestamp()
 	ts := ms / 1000
 
 	_, err = tx.Exec(func() error {
 		r.writeShare(tx, ms, ts, login, id, diff, window)
-		//Contains the total shares that had been contributed for the round, and it is used while calculating the percentage, based on the current share value
-		tx.HIncrBy(r.formatKey("stats"), "roundShares", diff)
 		return nil
 	})
+	//If share write is successfull, adjust the window size as per last n share
+	if err!=nil{
+		return false, err
+	}	else {
+		adjust, err := r.AdjustCurrentNShares(diff)
+		if(adjust==false){
+			log.Print("Error while adjusting the Shares , %v", err)
+		}
+	}
 	return false, err
 }
 
-func (r *RedisClient) KeepOnlyCurrentNShares(login, id string, params []string, diff, roundDiff int64, height uint64, window time.Duration) (bool, error){
+func (r *RedisClient) AdjustCurrentNShares(diff int64) (bool, error){
 
-	//TODO: Get the current Value of N from the redis based on the blockchain difficulty * 2
-	lastN := big.NewInt(0)
-	lastN.Set(r.GetLastNValue())
-
-	//TODO: Check the Number of list content
-	cmd := r.client.LLen(r.formatKey("lastshares"))
-	size := strconv.ParseInt(cmd.String(),10,64);
-
-	if lastN.Cmp(size)>0{
-
+	//Get the current Value of N from the redis, which was pre calulculatee based on the blockchain difficulty * 2
+	lastN, err :=r.GetLastNValue()
+	if(err!=nil || lastN==0) {
+		lastN, err = r.CreateNewNValue(diff)
+		if (err!=nil || lastN==0){
+			lastN =r.pplns
+			log.Print("Error while generating new lastN value., %v", err)
+		}
 	}
 
-	//TODO:If number if more than the blockchaindifficulty*2, the remove those numbers and reduce the lastnshares from the miners context
+
+		//Check the Number of list content of lastShares to find, current number of list present
+	    currentNShare := r.client.LLen(r.formatKey("lastshares")).Val()
+
+		tx := r.client.Multi()
+		defer tx.Close()
+
+		//CurrentNumber of Shares in the list is more thatn the actual N value for this round
+		//ie, If number is more than the blockchaindifficulty*2, the remove those numbers and reduce the lastnshares from the miners context
+		if currentNShare > lastN{
+
+			_, err := tx.Exec(func() error {
+
+				//Keep removing the shares from the List by RPOP and while removing adjust the correcponding miner share value and the stat:roundCurrent Share value
+				for loopIndex := currentNShare ; loopIndex > lastN; loopIndex-- {
+
+					shareHash, err := tx.RPop(r.formatKey("lastshares")).Result()
+					if err != nil {
+						tx.HIncrBy(r.formatKey("shares", "roundCurrent"), shareHash, -1)
+						tx.HIncrBy(r.formatKey("stats"), "roundShares", -1)
+					}
+				}
+				return nil
+			})
+			if err != nil {
+				log.Print("Error while adjusting the last share window , %v", err)
+				return false, err
+			}else {
+				return true, nil
+			}
+
+
+		} else {
+			//No adjustment is required for the Window
+			return true, nil
+		}
+
 
 	return false, err
+
 
 }
 
@@ -249,21 +288,39 @@ func (r *RedisClient) GetNetworkDifficulty()(uint64 ){
 
 }
 
-func (r *RedisClient) CreateNewNValue(shareDiff int64) (uint64, error){
+func (r *RedisClient) GetNetworkDifficultyForCurrentShareDifficulty(sharediff int64)(int64 ){
 
-	tx := r.client.Multi()
-	defer tx.Close()
+	NetworkDifficultyDivShareDiff := big.NewInt(0)
+	m ,err  := r.GetNodeStates()
+	if err != nil{
+		return nil
 
-	newlastN := uint64(0)
-	currentDiff := uint64(0)
+	}
+	for _, value := range m {
+		for legend, data := range  value{
+			if(legend=="difficulty"){
+				NetworkDifficultyDivShareDiff.SetString(join(data),10)
+				NetworkDifficultyDivShareDiff.Div(NetworkDifficultyDivShareDiff, big.NewInt(sharediff))
+				return NetworkDifficultyDivShareDiff.Int64()
+			}
+		}
+	}
+	return NetworkDifficultyDivShareDiff.Int64()
 
+}
+
+
+func (r *RedisClient) CreateNewNValue(shareDiff int64) (int64, error){
+
+
+		newlastN := r.GetNetworkDifficultyForCurrentShareDifficulty(shareDiff)
 
 		//2 time blockchain difficulty for the Share value currentDiff/sharediff * 2 [PPLNS Window Size]
-		newlastN = uint64(currentDiff) / uint64(shareDiff)
-		newlastN = uint64(newlastN) * uint64(2)
-		cmd := r.client.HSet(r.formatKey("stats"), "lastNValue", strconv.FormatUint(newlastN,10) )
+		newlastN = newlastN * 2
+		cmd := r.client.HSet(r.formatKey("stats"), "lastNValue", strconv.FormatInt(newlastN,10) )
 		_, err := cmd.Result()
 		if err != nil {
+			log.Print("Error while sotring the newly generated last N Value, %v", err)
 			return newlastN,err
 		}
 		return newlastN,err
@@ -271,18 +328,15 @@ func (r *RedisClient) CreateNewNValue(shareDiff int64) (uint64, error){
 }
 
 
-func (r *RedisClient) GetLastNValue() (uint64, error){
+func (r *RedisClient) GetLastNValue() (int64, error){
 
-	tx := r.client.Multi()
-	defer tx.Close()
-
-
-	val := uint64(0)
+	val := int64(0)
 	cmd := r.client.HGet(r.formatKey("stats"), "lastNValue")
-	val, err := cmd.Uint64()
+	val, err := cmd.Int64()
 	if err != nil {
 		return val,err
 	}
+
 	return val,err
 
 
@@ -303,6 +357,8 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 	ms := util.MakeTimestamp()
 	ts := ms / 1000
 
+	totalShares :=  int64(0)
+
 	cmds, err := tx.Exec(func() error {
 		r.writeShare(tx, ms, ts, login, id, diff, window)
 		tx.HSet(r.formatKey("stats"), "lastBlockFound", strconv.FormatInt(ts, 10))
@@ -317,27 +373,24 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 	} else {
 
 		//We are not going to calculate the shares from the list calculation,we already have the values of totalShare in the stat:roundShares and the miners share in the shares:roundCurrent:login - Value
-
-
 		tx2 := r.client.Multi()
 		defer tx2.Close()
 
-		totalShares :=  int64(0)
 
 		//Iterate on the roundCurrent Values shares:roundCurrent:login and store the Share values for the block which was found
 		_, err := tx2.Exec(func() error {
+			//we use negative indexing since we have writeshare fn with variable number of commands
 			sharesMap, _ := cmds[len(cmds)-1].(*redis.StringStringMapCmd).Result()
 
 			for k, v := range sharesMap {
 				n, _ := strconv.ParseInt(v, 10, 64)
-				//Now we will store the Share values instead of Share Count
+				//Now we will store the Share Count
 				tx2.HIncrBy(r.formatRound(int64(height), params[0]), k, n)
 
 			}
 
-			totalSharesString, _ := cmds[len(cmds)-1].(*redis.StringCmd).Int64()
-			totalShares, _ = strconv.ParseInt(totalSharesString, 10, 64)
-
+			//when the round is over we can get the current diffuclty using these values
+			totalShares, _ = cmds[len(cmds)-4].(*redis.StringCmd).Int64()
 			return nil
 		})
 		if err != nil {
@@ -349,13 +402,13 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 		cmd := r.client.ZAdd(r.formatKey("blocks", "candidates"), redis.Z{Score: float64(height), Member: s})
 
 		//Calulcate the New 'N' Value  from the current network diffuclty and Store the N the stat table for the Next Round
-		lastN := big.NewInt(0)
+		lastN := int64(0)
 		lastN, err = r.CreateNewNValue(diff)
 		if(err!=nil){
-			log.Printf("Error while Creating a new N Value , Error : %v",err)
+			log.Printf("Error while Creating a new N Value after block generation, Error : %v",err)
 		}
 
-		log.Printf("New N Value has been set as : %s ",lastN.String())
+		log.Printf("New N Value has been set as : %s ",strconv.FormatInt(lastN,10))
 
 		//TODO: Call the Function to adjust the List window according to the current value of N, Remove the RPOP and Adjust reduce the round and total share accourdingly
 		return false, cmd.Err()
@@ -364,12 +417,13 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 
 func (r *RedisClient) writeShare(tx *redis.Multi, ms, ts int64, login, id string, diff int64, expire time.Duration) {
 	tx.LPush(r.formatKey("lastshares"), login)
-	//TODO: Need to be removed, Not required as we RPOP or LPUSH
-	tx.LTrim(r.formatKey("lastshares"), 0, r.pplns)
+	//Not required as we RPOP later to adjust the window
+	//tx.LTrim(r.formatKey("lastshares"), 0, r.pplns)
 
-	//TODO: Change the diff as No of shares, as share count, Diff can be calulated by sharediff * no of shares
 	//Used in calculating the roundPercent, shares:roundCurrent:login / stats:roundShares, Shares is always maintained in hashes to cope with future change in share difficulty
-	tx.HIncrBy(r.formatKey("shares", "roundCurrent"), login, diff)
+	tx.HIncrBy(r.formatKey("shares", "roundCurrent"), login, 1)
+	//Contains the total shares that had been contributed for the round, and it is used while calculating the percentage, based on the current share value
+	tx.HIncrBy(r.formatKey("stats"), "roundShares", 1)
 	tx.ZAdd(r.formatKey("hashrate"), redis.Z{Score: float64(ts), Member: join(diff, login, id, ms)})
 	tx.ZAdd(r.formatKey("hashrate", login), redis.Z{Score: float64(ts), Member: join(diff, id, ms)})
 	tx.Expire(r.formatKey("hashrate", login), expire) // Will delete hashrates for miners that gone

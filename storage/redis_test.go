@@ -402,12 +402,35 @@ func TestGetExchangeData(t *testing.T) {
 }
 
 func TestCreateNewNValue(t *testing.T) {
-	r.client.CreateNewNValue(1790000000000)
+
+	result, err := r.CreateNewNValue(100000)
+	log.Print("Result : %v, Error: %v", result, err)
+}
+
+func TesGetNetworkDifficultyForCurrentShareDifficulty(t *testing.T) {
+
+
+
 }
 
 
 func TestGetNetworkDifficulty(t *testing.T) {
-	log.Print("ND:%v",r.client.GetNetworkDifficulty())
+
+}
+
+
+func TestAdjustCurrentNShares(t *testing.T) {
+
+}
+
+
+func TestWriteBlock(t *testing.T) {
+
+}
+
+
+func TestWriteShare(t *testing.T) {
+
 }
 
 func reset() {

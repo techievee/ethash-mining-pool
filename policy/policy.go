@@ -201,8 +201,8 @@ func (s *PolicyServer) ApplyLimitPolicy(ip string) bool {
 	return true
 }
 
-func (s *PolicyServer) ApplyLoginPolicy(addy, ip string) bool {
-	if s.InBlackList(addy) {
+func (s *PolicyServer) ApplyLoginPolicy(login, ip string) bool {
+	if s.InBlackList(login) {
 		x := s.Get(ip)
 		s.forceBan(x, ip)
 		return false
@@ -284,10 +284,10 @@ func (x *Stats) decrLimit() int32 {
 	return atomic.AddInt32(&x.ConnLimit, -1)
 }
 
-func (s *PolicyServer) InBlackList(addy string) bool {
+func (s *PolicyServer) InBlackList(login string) bool {
 	s.RLock()
 	defer s.RUnlock()
-	return util.StringInSlice(addy, s.blacklist)
+	return util.StringInSlice(login, s.blacklist)
 }
 
 func (s *PolicyServer) InWhiteList(ip string) bool {
