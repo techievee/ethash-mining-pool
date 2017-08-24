@@ -46,7 +46,7 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 	}
 
 	//Write the Ip address into the settings:login:ipaddr and timeit added to settings:login:iptime hash
-	s.backend.LogIP(log,ip)
+	s.backend.LogIP(login,ip)
 
 	if hasher.Verify(block) {
 		ok, err := s.rpc().SubmitBlock(params)
