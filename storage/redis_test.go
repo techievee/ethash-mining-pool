@@ -9,7 +9,7 @@ import (
 	"gopkg.in/redis.v3"
 
 	"log"
-//	"math/big"
+
 )
 
 var r *RedisClient
@@ -17,7 +17,7 @@ var r *RedisClient
 const prefix = "test"
 
 func TestMain(m *testing.M) {
-	r = NewRedisClient(&Config{Endpoint: "35.198.231.241:6379",Database: 1}, prefix,1000)
+	r = NewRedisClient(&Config{Endpoint: "35.187.240.179:6379",Database: 10}, prefix,1000000)
 	reset()
 	c := m.Run()
 	reset()
@@ -403,23 +403,136 @@ func TestGetExchangeData(t *testing.T) {
 
 func TestCreateNewNValue(t *testing.T) {
 
-	result, err := r.CreateNewNValue(100000)
-	log.Print("Result : %v, Error: %v", result, err)
+	result, err := r.CreateNewNValue(4000000000)
+	if err!=nil{
+		t.Errorf("Result : %v, Err : %v", result,err)
+	}
+	t.Logf("Result : %v", result)
 }
 
-func TesGetNetworkDifficultyForCurrentShareDifficulty(t *testing.T) {
+func TestGetNetworkDifficultyForCurrentShareDifficulty(t *testing.T) {
 
-
+	//m ,err  := r.GetNodeStates()
+	result, err := r.GetNetworkDifficultyForCurrentShareDifficulty(4000000000)
+	if err!=nil{
+		t.Errorf("Result : %v, Err : %v", result, err)
+	}
+	t.Logf("Result : %v", result)
 
 }
 
 
 func TestGetNetworkDifficulty(t *testing.T) {
+	result,err := r.GetNetworkDifficulty()
+	if err!=nil{
+		t.Errorf("Result : %v, Err :%v", result, err)
+	}
+	t.Logf("Result : %v", result)
 
 }
 
 
+func TestGetThreshold(t *testing.T){
+	result, err := r.SetThreshold("0xfacb288273969c68e9ad1eeeb81f08ab92cf57ad",5000000)
+	t.Logf("Result : %v",result)
+	if err!=nil{
+		t.Errorf("Error , %v",err)
+	}
+}
+
+func TestSetThreshold(t *testing.T){
+	r.SetThreshold("0xfacb288273969c68e9ad1eeeb81f08ab92cf57ad",5000000)
+	result, err := r.GetThreshold("0xfacb288273969c68e9ad1eeeb81f08ab92cf57ad")
+	t.Logf("Result : %v",result)
+	if err!=nil{
+		t.Errorf("Error , %v",err)
+	}
+
+}
+
+
+func TestLogIP(t *testing.T){
+
+	r.LogIP("0xb9cf2da90bdff1bc014720cc84f5ab99d7974eba","192.168.00.100")
+
+}
+
 func TestAdjustCurrentNShares(t *testing.T) {
+
+	result,err := r.AdjustCurrentNShares(4000000000)
+	t.Logf("Result : %v",result)
+	if err!=nil{
+		t.Errorf("Error , %v",err)
+	}
+
+
+	/*currentNShare := 1010
+	lastN := 1000
+
+
+	tx := r.client.Multi()
+	defer tx.Close()
+
+
+	if currentNShare > lastN{
+
+
+		shareHash := make([]string, currentNShare-lastN)
+
+		cmd, err := tx.Exec(func() error {
+
+			//Keep removing the shares from the List by RPOP and while removing adjust the correcponding miner share value and the stat:roundCurrent Share value
+			//count :=0
+
+			for loopIndex := currentNShare; loopIndex > lastN; loopIndex--{
+
+				//Generate all the poped value of the ShareHash on the Array
+				//tx.LIndex(r.formatKey("lastshares"),-1)
+				tx.RPop(r.formatKey("lastshares"))
+
+				//tx.HIncrBy(r.formatKey("shares", "roundCurrent"), str, -1)
+
+				//t.Logf("List index value : %v", str)
+				//count++
+
+			}
+			return nil
+		})
+		if err != nil {
+			t.Logf("Error while Reducing the share count , %v", err)
+		} else {
+
+			tx2 := r.client.Multi()
+			defer tx2.Close()
+
+			//Decrement the corresponding share value
+			_, err := tx2.Exec(func() error {
+				for key , _ := range shareHash {
+					poppedValue, err := cmd[key].(*redis.StringCmd).Result()
+					//poppedValue1, err := cmd[1].(*redis.StringCmd).Result()
+					if err==nil{
+						tx2.HIncrBy(r.formatKey("stats"), "roundShares", -1)
+						tx2.HIncrBy(r.formatKey("shares", "roundCurrent"),poppedValue, -1)
+						return errors.New("TEST RETURN")
+					}
+					log.Print(poppedValue)
+					log.Print(key)
+					//log.Print(poppedValue1)
+				}
+				return nil
+			})
+			if err!=nil{
+				t.Errorf("Error while adjusting the last share window count , %v", err)
+
+			}
+		}
+
+	} else {
+		//No adjustment is required for the Window
+		t.Logf("No formatting required")
+	}
+*/
+
 
 }
 
