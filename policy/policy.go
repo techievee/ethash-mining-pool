@@ -11,6 +11,8 @@ import (
 
 	"github.com/techievee/open-ethereum-pool/storage"
 	"github.com/techievee/open-ethereum-pool/util"
+	"strconv"
+	"bytes"
 )
 
 type Config struct {
@@ -299,16 +301,31 @@ func (s *PolicyServer) InWhiteList(ip string) bool {
 func (s *PolicyServer) doBan(ip string) {
 	set, timeout := s.config.Banning.IPSet, s.config.Banning.Timeout
 	cmd := fmt.Sprintf("sudo ipset add %s %s timeout %v -!", set, ip, timeout)
+	/*out, err := exec.Command(ipsetPath, "add", s.Name, entry, "timeout", strconv.Itoa(timeout), "-exist").CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("error adding entry %s: %v (%s)", entry, err, out)
+	}
+*/
+
 	args := strings.Fields(cmd)
 	head := args[0]
 	args = args[1:]
 
 	log.Printf("Banned %v with timeout %v on ipset %s", ip, timeout, set)
 
-	_, err := exec.Command(head, args...).Output()
+
+	cmdo := exec.Command(head, args...)
+	output, err := cmdo.CombinedOutput()
 	if err != nil {
-		log.Printf("CMD Error: %s", err)
+		log.Println("COMMAND OUTPUT :" + fmt.Sprint(err) + ": " + string(output))
+	} else {
+		log.Println("COMMAND OUTPUT :" + string(output))
 	}
+
+	/*if err != nil {
+		log.Printf("CMD Error: %s", err)
+		fmt.Println(fmt.Sprint(err) + ": " + err.String())
+	}*/
 }
 
 func (x *Stats) heartbeat() {
