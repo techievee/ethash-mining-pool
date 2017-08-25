@@ -421,6 +421,8 @@ func (r *RedisClient) WriteBlock(login, id string, params []string, diff, roundD
 
 			//when the round is over we can get the current diffuclty using these values
 			totalShares, _ = cmds[len(cmds)-5].(*redis.StringCmd).Int64()
+			//Just store the difficulty of the block by X by diff
+			totalShares = totalShares * diff
 			return nil
 		})
 		if err != nil {
