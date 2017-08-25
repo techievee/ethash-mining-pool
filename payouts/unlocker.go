@@ -113,7 +113,15 @@ func (u *BlockUnlocker) unlockCandidates(candidates []*storage.BlockData) (*Unlo
         /* Search for a normal block with wrong height here by traversing 16 blocks back and forward.
 		 * Also we are searching for a block that can include this one as uncle.
 		 */
-        for i := int64(minDepth * -1); i < minDepth; i++ {
+
+        //If the depth goes in negeative it throws error, need to be lesser
+        BackNodes :=(minDepth * -1)
+        if BackNodes<0{
+            BackNodes = 0
+        }
+
+
+        for i := int64(BackNodes); i < minDepth; i++ {
             height := candidate.Height + i
             block, err := u.rpc.GetBlockByHeight(height)
             if err != nil {
