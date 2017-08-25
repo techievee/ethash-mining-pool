@@ -222,7 +222,8 @@ func (r *RedisClient) AdjustCurrentNShares(diff int64) (bool, error){
 		lastN, err = r.CreateNewNValue(diff) //o(c)
 		if (err!=nil || lastN==0){
 			lastN =r.pplns
-			log.Print("Error while generating new lastN value., %v", err)
+			_, err := r.client.HSet(r.formatKey("stats"), "lastNValue", strconv.FormatInt(r.pplns,10) ).Result()
+			log.Print("Error while generating new lastN value.Fixing N value as pplns value %v, Error: %v", r.pplns, err)
 		}
 	}
 
@@ -1345,7 +1346,7 @@ func (r *RedisClient) StoreExchangeData(ExchangeData []map[string]string) {
 
 		}
 	}
-	log.Printf("Writing Exchange Data : %v", ExchangeData)
+	log.Printf("Writing Exchange Data ")
 	return
 }
 
