@@ -11,8 +11,7 @@ import (
 
 	"github.com/techievee/open-ethereum-pool/storage"
 	"github.com/techievee/open-ethereum-pool/util"
-	"strconv"
-	"bytes"
+
 )
 
 type Config struct {
