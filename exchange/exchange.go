@@ -102,7 +102,6 @@ func (u *ExchangeProcessor) fetchData() {
 		return
 	}
 
-	//log.Printf("Reply %v", reply)
 
 	//Store the data into the Redis Store
 	u.backend.StoreExchangeData(reply)
