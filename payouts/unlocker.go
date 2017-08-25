@@ -268,7 +268,13 @@ func (u *BlockUnlocker) unlockPendingBlocks() {
         return
     }
 
-    candidates, err := u.backend.GetCandidates(currentHeight - u.config.ImmatureDepth)
+    //If working for new coin, the value shouldnt be in negative, the block cecking should start from 0,
+    //eg: if the currentheight is 10 and immature depth =20, it will lead to 10-20=-10 and the unlokcer gets halted because of this error
+    matureddepth := currentHeight - u.config.ImmatureDepth
+    if matureddepth<0 {
+        matureddepth = 0
+    }
+    candidates, err := u.backend.GetCandidates(matureddepth)
     if err != nil {
         u.halt = true
         u.lastFail = err
