@@ -30,6 +30,7 @@ type UnlockerConfig struct {
 
 const minDepth = 16
 
+//TODO: Make the reward to be loaded from the Config file
 var constReward = math.MustParseBig256("5000000000000000000")
 var uncleReward = new(big.Int).Div(constReward, new(big.Int).SetInt64(32))
 
@@ -113,16 +114,12 @@ func (u *BlockUnlocker) unlockCandidates(candidates []*storage.BlockData) (*Unlo
         /* Search for a normal block with wrong height here by traversing 16 blocks back and forward.
 		 * Also we are searching for a block that can include this one as uncle.
 		 */
-
-        //If the depth goes in negeative it throws error, need to be lesser
-        BackNodes :=(minDepth * -1)
-        if BackNodes<0{
-            BackNodes = 0
-        }
-
-
-        for i := int64(BackNodes); i < minDepth; i++ {
+        for i := int64(minDepth * -1); i < minDepth; i++ {
             height := candidate.Height + i
+
+            if height<0{
+                continue
+            }
             block, err := u.rpc.GetBlockByHeight(height)
             if err != nil {
                 log.Printf("Error while retrieving block %v from node: %v", height, err)
