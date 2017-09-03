@@ -44,6 +44,8 @@ type Session struct {
 	sync.Mutex
 	conn  *net.TCPConn
 	login string
+	subscriptionID string
+	JobDeatils jobDetails
 }
 
 func NewProxy(cfg *Config, backend *storage.RedisClient) *ProxyServer {
@@ -65,6 +67,10 @@ func NewProxy(cfg *Config, backend *storage.RedisClient) *ProxyServer {
 	if cfg.Proxy.Stratum.Enabled {
 		proxy.sessions = make(map[*Session]struct{})
 		go proxy.ListenTCP()
+	}
+
+	if cfg.Proxy.StratumNiceHash.Enabled {
+		go proxy.ListenNiceHashTCP()
 	}
 
 	proxy.fetchBlockTemplate()

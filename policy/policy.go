@@ -225,6 +225,7 @@ func (s *PolicyServer) ApplySharePolicy(ip string, validShare bool) bool {
 	x := s.Get(ip)
 	x.Lock()
 
+	//TODO: Remove banning for invalid shares(Apply limit)
 	if validShare {
 		x.ValidShares++
 		if s.config.Limits.Enabled {
@@ -247,6 +248,7 @@ func (s *PolicyServer) ApplySharePolicy(ip string, validShare bool) bool {
 	ratio := invalidShares / validShares
 
 	if ratio >= s.config.Banning.InvalidPercent/100.0 {
+		//TODO: Remove IP Banning
 		s.forceBan(x, ip)
 		return false
 	}

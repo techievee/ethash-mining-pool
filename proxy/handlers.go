@@ -20,6 +20,8 @@ func (s *ProxyServer) handleLoginRPC(cs *Session, params []string, id string) (b
 		return false, &ErrorReply{Code: -1, Message: "Invalid params"}
 	}
 
+	//Parse email Id here
+	//TODO: LOGIN CHECK OF VALID ID
 	login := strings.ToLower(params[0])
 	if !util.IsValidHexAddress(login) {
 		return false, &ErrorReply{Code: -1, Message: "Invalid login"}

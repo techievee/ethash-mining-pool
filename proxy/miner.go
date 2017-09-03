@@ -21,6 +21,7 @@ func (s *ProxyServer) processShare(login, id, ip string, t *BlockTemplate, param
 
 	h, ok := t.headers[hashNoNonce]
 	if !ok {
+		//TODO:Store stale share in Redis
 		log.Printf("Stale share from %v@%v", login, ip)
 		return false, false
 	}
