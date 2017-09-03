@@ -31,9 +31,16 @@ type ProxyServer struct {
 	failsCount         int64
 
 	// Stratum
-	sessionsMu sync.RWMutex
-	sessions   map[*Session]struct{}
-	timeout    time.Duration
+	sessionsMu         sync.RWMutex
+	sessions           map[*Session]struct{}
+	timeout            time.Duration
+	Extranonce         string
+}
+
+type jobDetails struct {
+	JobID string
+	SeedHash string
+	HeaderHash string
 }
 
 type Session struct {
