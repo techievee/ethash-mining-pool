@@ -972,7 +972,7 @@ func (r *RedisClient) CollectStats(smallWindow time.Duration, maxBlocks, maxPaym
 		tx.ZCard(r.formatKey("payments", "all"))
 		tx.ZRevRangeWithScores(r.formatKey("payments", "all"), 0, maxPayments-1)
 		tx.LLen(r.formatKey("lastshares"))
-		tx.HGetAllMap(r.formatKey("exchange", "ETH"))
+		tx.HGetAllMap(r.formatKey("exchange", "UBIQ"))
 		return nil
 	})
 

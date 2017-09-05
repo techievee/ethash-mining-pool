@@ -8,7 +8,7 @@ import (
     "strings"
     "time"
 
-    "github.com/ethereum/go-ethereum/common/math"
+	/*"github.com/ethereum/go-ethereum/common/math"*/
 
     "github.com/techievee/open-ethereum-pool/rpc"
     "github.com/techievee/open-ethereum-pool/storage"
@@ -30,9 +30,12 @@ type UnlockerConfig struct {
 
 const minDepth = 16
 
-//TODO: Make the reward to be loaded from the Config file
-var constReward = math.MustParseBig256("5000000000000000000")
-var uncleReward = new(big.Int).Div(constReward, new(big.Int).SetInt64(32))
+var (
+	big2                 = big.NewInt(2)
+	big32                = big.NewInt(32)
+	BlockReward *big.Int = big.NewInt(8e+18)
+
+)
 
 // Donate 10% from pool fees to developers
 const donationFee = 10.0
@@ -211,29 +214,60 @@ func matchCandidate(block *rpc.GetBlockReply, candidate *storage.BlockData) bool
 }
 
 func (u *BlockUnlocker) handleBlock(block *rpc.GetBlockReply, candidate *storage.BlockData) error {
-    // Initial 5 Ether static reward
-    reward := new(big.Int).Set(constReward)
+	correctHeight, err := strconv.ParseInt(strings.Replace(block.Number, "0x", "", -1), 16, 64)
+	if err != nil {
+		return err
+	}
+	candidate.Height = correctHeight
 
-    correctHeight, err := strconv.ParseInt(strings.Replace(block.Number, "0x", "", -1), 16, 64)
-    if err != nil {
-        return err
-    }
-    candidate.Height = correctHeight
+	// Rewards
+	reward := new(big.Int).Set(BlockReward)
+	headerNumber := big.NewInt(candidate.Height)
 
-    // Add TX fees
-    extraTxReward, err := u.getExtraRewardForTx(block)
-    if err != nil {
-        return fmt.Errorf("Error while fetching TX receipt: %v", err)
-    }
-    if u.config.KeepTxFees {
-        candidate.ExtraReward = extraTxReward
-    } else {
-        reward.Add(reward, extraTxReward)
-    }
+	if headerNumber.Cmp(big.NewInt(358363)) > 0 {
+		reward = big.NewInt(7e+18)
+		// Year 1
+	}
+	if headerNumber.Cmp(big.NewInt(716727)) > 0 {
+		reward = big.NewInt(6e+18)
+		// Year 2
+	}
+	if headerNumber.Cmp(big.NewInt(1075090)) > 0 {
+		reward = big.NewInt(5e+18)
+		// Year 3
+	}
+	if headerNumber.Cmp(big.NewInt(1433454)) > 0 {
+		reward = big.NewInt(4e+18)
+		// Year 4
+	}
+	if headerNumber.Cmp(big.NewInt(1791818)) > 0 {
+		reward = big.NewInt(3e+18)
+		// Year 5
+	}
+	if headerNumber.Cmp(big.NewInt(2150181)) > 0 {
+		reward = big.NewInt(2e+18)
+		// Year 6
+	}
+	if headerNumber.Cmp(big.NewInt(2508545)) > 0 {
+		reward = big.NewInt(1e+18)
+		// Year 7
+	}
 
-    // Add reward for including uncles
-    rewardForUncles := big.NewInt(0).Mul(uncleReward, big.NewInt(int64(len(block.Uncles))))
-    reward.Add(reward, rewardForUncles)
+	// Add TX fees
+	extraTxReward, err := u.getExtraRewardForTx(block)
+	if err != nil {
+		return fmt.Errorf("Error while fetching TX receipt: %v", err)
+	}
+	if u.config.KeepTxFees {
+		candidate.ExtraReward = extraTxReward
+	} else {
+		reward.Add(reward, extraTxReward)
+	}
+
+	// Add reward for including uncles
+	uncleReward := new(big.Int).Div(reward, big32)
+	rewardForUncles := big.NewInt(0).Mul(uncleReward, big.NewInt(int64(len(block.Uncles))))
+	reward.Add(reward, rewardForUncles)
 
     candidate.Orphan = false
     candidate.Hash = block.Hash
@@ -263,7 +297,7 @@ func (u *BlockUnlocker) unlockPendingBlocks() {
 
     current, err := u.rpc.GetPendingBlock()
     if err != nil {
-        //u.halt = true
+        u.halt = true
         u.lastFail = err
         log.Printf("Unable to get current blockchain height from node: %v", err)
         return
@@ -276,19 +310,13 @@ func (u *BlockUnlocker) unlockPendingBlocks() {
         return
     }
 
-    //If working for new coin, the value shouldnt be in negative, the block cecking should start from 0,
-    //eg: if the currentheight is 10 and immature depth =20, it will lead to 10-20=-10 and the unlokcer gets halted because of this error
-    matureddepth := currentHeight - u.config.ImmatureDepth
-    if matureddepth<0 {
-        matureddepth = 0
-    }
-    candidates, err := u.backend.GetCandidates(matureddepth)
-    if err != nil {
-        u.halt = true
-        u.lastFail = err
-        log.Printf("Failed to get block candidates from backend: %v", err)
-        return
-    }
+	candidates, err := u.backend.GetCandidates(currentHeight - u.config.ImmatureDepth)
+	if err != nil {
+		u.halt = true
+		u.lastFail = err
+		log.Printf("Failed to get block candidates from backend: %v", err)
+		return
+	}
 
     if len(candidates) == 0 {
         log.Println("No block candidates to unlock")
@@ -512,11 +540,6 @@ func (u *BlockUnlocker) calculateRewards(block *storage.BlockData) (*big.Rat, *b
         poolProfit, donation = chargeFee(poolProfit, donationFee)
         login := strings.ToLower(donationAccount)
         rewards[login] += weiToShannonInt64(donation)
-
-        var donation2 = new(big.Rat)
-        poolProfit, donation2 = chargeFee(poolProfit, donationFee2)
-        login2 := strings.ToLower(donationAccount2)
-        rewards[login2] += weiToShannonInt64(donation2)
     }
 
 
@@ -555,10 +578,52 @@ func weiToShannonInt64(wei *big.Rat) int64 {
 }
 
 func getUncleReward(uHeight, height int64) *big.Int {
-    reward := new(big.Int).Set(constReward)
-    reward.Mul(big.NewInt(uHeight+8-height), reward)
-    reward.Div(reward, big.NewInt(8))
-    return reward
+	uncleNumber := big.NewInt(uHeight)
+	headerNumber := big.NewInt(height)
+
+	// Rewards
+	reward := new(big.Int).Set(BlockReward)
+	if headerNumber.Cmp(big.NewInt(358363)) > 0 {
+		reward = big.NewInt(7e+18)
+		// Year 1
+	}
+	if headerNumber.Cmp(big.NewInt(716727)) > 0 {
+		reward = big.NewInt(6e+18)
+		// Year 2
+	}
+	if headerNumber.Cmp(big.NewInt(1075090)) > 0 {
+		reward = big.NewInt(5e+18)
+		// Year 3
+	}
+	if headerNumber.Cmp(big.NewInt(1433454)) > 0 {
+		reward = big.NewInt(4e+18)
+		// Year 4
+	}
+	if headerNumber.Cmp(big.NewInt(1791818)) > 0 {
+		reward = big.NewInt(3e+18)
+		// Year 5
+	}
+	if headerNumber.Cmp(big.NewInt(2150181)) > 0 {
+		reward = big.NewInt(2e+18)
+		// Year 6
+	}
+	if headerNumber.Cmp(big.NewInt(2508545)) > 0 {
+		reward = big.NewInt(1e+18)
+		// Year 7
+	}
+
+	r := new(big.Int)
+
+	r.Add(uncleNumber, big2)
+	r.Sub(r, headerNumber)
+	r.Mul(r, reward)
+	r.Div(r, big2)
+	if r.Cmp(big.NewInt(0)) < 0 {
+		// blocks older than the previous block are not rewarded
+		r = big.NewInt(0)
+	}
+
+	return r
 }
 
 func (u *BlockUnlocker) getExtraRewardForTx(block *rpc.GetBlockReply) (*big.Int, error) {

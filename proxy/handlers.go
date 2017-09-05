@@ -27,7 +27,7 @@ func (s *ProxyServer) handleLoginRPC(cs *Session, params []string, id string) (b
 		return false, &ErrorReply{Code: -1, Message: "Invalid login"}
 	}
 	if !s.policy.ApplyLoginPolicy(login, cs.ip) {
-		return false, &ErrorReply{Code: -1, Message: "You are blacklisted, please contact helpdesk@miningpoolindia.com with your details"}
+		return false, &ErrorReply{Code: -1, Message: "You are blacklisted, please contact helpdesk with your details"}
 	}
 	cs.login = login
 	s.registerSession(cs)

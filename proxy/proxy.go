@@ -237,7 +237,7 @@ func (cs *Session) handleMessage(s *ProxyServer, r *http.Request, req *JSONRpcRe
 		return
 	}
 	if !s.policy.ApplyLoginPolicy(login, cs.ip) {
-		errReply := &ErrorReply{Code: -1, Message: "You are blacklisted, please contact helpdesk@miningpoolindia.com with your details"}
+		errReply := &ErrorReply{Code: -1, Message: "You are blacklisted, please contact helpdesk with your details"}
 		cs.sendError(req.Id, errReply)
 		return
 	}
