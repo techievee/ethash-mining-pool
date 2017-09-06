@@ -3,6 +3,7 @@
 	"coin": "eth-pplns",
 	"name": "main",
     "pplns": 1000,
+	"coin-name":"ETH",
 
 	"proxy": {
 		"enabled": false,

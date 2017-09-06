@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 func TestGetData(t *testing.T){
 
 
-	r := NewRestClient("Test", "https://api.coinmarketcap.com/v1/ticker/?convert=INR&limit=10","15s")
+	r := NewRestClient("Test", "https://api.coinmarketcap.com/v1/ticker/?convert=INR","15s")
 	Result, err := r.GetData()
 
 	if err != nil {
