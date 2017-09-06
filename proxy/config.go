@@ -20,6 +20,7 @@ type Config struct {
 
 	Coin  string         `json:"coin"`
     Pplns int64          `json:"pplns"`
+	CoinName  string         `json:"coin-name"`
 	Redis storage.Config `json:"redis"`
 
 	BlockUnlocker payouts.UnlockerConfig `json:"unlocker"`
