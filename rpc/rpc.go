@@ -194,6 +194,19 @@ func (r *RPCClient) GetPeerCount() (int64, error) {
 	return strconv.ParseInt(strings.Replace(reply, "0x", "", -1), 16, 64)
 }
 
+func (r *RPCClient) GetGasPrice() (int64, error) {
+	rpcResp, err := r.doPost(r.Url, "eth_gasPrice", nil)
+	if err != nil {
+		return 0, err
+	}
+	var reply string
+	err = json.Unmarshal(*rpcResp.Result, &reply)
+	if err != nil {
+		return 0, err
+	}
+	return strconv.ParseInt(strings.Replace(reply, "0x", "", -1), 16, 64)
+}
+
 func (r *RPCClient) SendTransaction(from, to, gas, gasPrice, value string, autoGas bool) (string, error) {
 	params := map[string]string{
 		"from":  from,
@@ -202,8 +215,10 @@ func (r *RPCClient) SendTransaction(from, to, gas, gasPrice, value string, autoG
 	}
 	if !autoGas {
 		params["gas"] = gas
-		params["gasPrice"] = gasPrice
 	}
+
+	params["gasPrice"] = gasPrice
+
 	rpcResp, err := r.doPost(r.Url, "eth_sendTransaction", []interface{}{params})
 	var reply string
 	if err != nil {
