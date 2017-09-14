@@ -1029,7 +1029,7 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 	cmds, err := tx.Exec(func() error {
 		tx.ZRemRangeByScore(r.formatKey("hashrate", login), "-inf", fmt.Sprint("(", now-largeWindow))
 		tx.ZRangeWithScores(r.formatKey("hashrate", login), 0, -1)
-		tx.HGet(r.formatKey("shares:roundCurrent"), "login")
+		tx.HGet(r.formatKey("shares", "roundCurrent"), login)
 		tx.ZRevRangeWithScores(r.formatKey("rewards", login), 0, 39)
 		tx.ZRevRangeWithScores(r.formatKey("rewards", login), 0, -1)
 		return nil
@@ -1087,7 +1087,7 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 	stats["hashrate"] = totalHashrate
 	stats["currentHashrate"] = currentHashrate
 
-	stats["rewards"] = convertRewardResults(cmds[3].(*redis.ZSliceCmd)) // last 40
+	stats["rewards"] = convertRewardResults(cmds[3].(*redis.ZSliceCmd)) // last 90
 	rewards := convertRewardResults(cmds[4].(*redis.ZSliceCmd))         // all
 
 	var dorew []*SumRewardData
