@@ -1075,7 +1075,7 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 		workers[id] = worker
 	}
 
-	shares := cmds[2].(*redis.StringSliceCmd).Val()
+	shares := cmds[2].(*redis.StringCmd).Val()
 
 
 	stats["roundShares"] = shares
