@@ -270,20 +270,20 @@ func (s *ApiServer) AccountIndex(w http.ResponseWriter, r *http.Request) {
 		}
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			log.Printf("Failed to fetch stats from backend: %v", err)
+			log.Printf("Failed to fetch stats from backend -While checking whether miner exist: %v", err)
 			return
 		}
 
 		stats, err := s.backend.GetMinerStats(login, s.config.Payments)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			log.Printf("Failed to fetch stats from backend: %v", err)
+			log.Printf("Failed to fetch stats from backend  -While getting miner status: %v", err)
 			return
 		}
 		workers, err := s.backend.CollectWorkersStats(s.hashrateWindow, s.hashrateLargeWindow, login)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
-			log.Printf("Failed to fetch stats from backend: %v", err)
+			log.Printf("Failed to fetch stats from backend -While collecting worker status: %v", err)
 			return
 		}
 		for key, value := range workers {
