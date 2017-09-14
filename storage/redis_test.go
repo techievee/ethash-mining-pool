@@ -10,17 +10,19 @@ import (
 
 	"log"
 
+	"time"
+	"fmt"
 )
 
 var r *RedisClient
 
-const prefix = "test"
+const prefix = "ubiq-pplns"
 
 func TestMain(m *testing.M) {
-	r = NewRedisClient(&Config{Endpoint: "35.187.240.179:6379",Database: 10}, prefix,1000000, "UBIQ")
-	reset()
+	r = NewRedisClient(&Config{Endpoint: "104.197.67.254:6379",Password:"796150b96df22e0097fb57239d6504107b11c430", Database: 3}, prefix,1000000, "UBQ")
+	//reset()
 	c := m.Run()
-	reset()
+	//reset()
 	os.Exit(c)
 }
 
@@ -224,7 +226,8 @@ func TestWritePayment(t *testing.T) {
 	)
 
 	amount := int64(250)
-	r.WritePayment("x", "0x0", amount)
+	tx := int64(2)
+	r.WritePayment("x", "0x0", amount, tx)
 	result := r.client.HGetAllMap(r.formatKey("miners:x")).Val()
 	if result["pending"] != "0" {
 		t.Error("Must unset pending amount")
@@ -324,6 +327,64 @@ func TestCollectLuckStats(t *testing.T) {
 	}
 }
 
+
+func TestCollectStats(t *testing.T) {
+	stat, err := r.CollectStats(500000, 100, 100)
+
+
+	if err!=nil{
+		t.Errorf("Result : %v, Err : %v", stat,err)
+	}
+	t.Logf("Result : %v", stat)
+}
+
+func TestGetMinerStats(t *testing.T){
+
+
+	stats := make(map[string]interface{})
+
+	login := "0x5ca87a9e8e132be404a1efb6516665252a74a4e2"
+
+
+	tx := r.client.Multi()
+	defer tx.Close()
+
+	cmds, err := tx.Exec(func() error {
+		tx.HGetAllMap(r.formatKey("miners", login))
+		tx.ZRevRangeWithScores(r.formatKey("payments", login), 0, 100)
+		tx.ZCard(r.formatKey("payments", login))
+		tx.HGet(r.formatKey("shares", "roundCurrent"), login)
+		return nil
+	})
+
+	if err != nil && err != redis.Nil {
+		t.Errorf("Error :",err)
+	} else {
+		result, _ := cmds[0].(*redis.StringStringMapCmd).Result()
+		stats["stats"] = convertStringMap(result)
+		payments := convertPaymentsResults(cmds[1].(*redis.ZSliceCmd))
+		stats["payments"] = payments
+		stats["paymentsTotal"] = cmds[2].(*redis.IntCmd).Val()
+		roundShares, _ := cmds[3].(*redis.StringCmd).Int64()
+		if roundShares < 0 {
+			roundShares = 0
+		}
+		stats["roundShares"] = roundShares
+		log.Printf("Inner Result : %v ",result)
+	}
+
+
+	log.Printf("Result : %v ",stats)
+
+	if err!=nil{
+		t.Errorf("Error :",err)
+	}
+
+}
+
+
+
+
 func TestStoreExchangeData(t *testing.T) {
 
 
@@ -400,6 +461,7 @@ func TestGetExchangeData(t *testing.T) {
 
 
 }
+
 
 func TestCreateNewNValue(t *testing.T) {
 

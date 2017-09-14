@@ -1030,7 +1030,6 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 		tx.ZRemRangeByScore(r.formatKey("hashrate", login), "-inf", fmt.Sprint("(", now-largeWindow))
 		tx.ZRangeWithScores(r.formatKey("hashrate", login), 0, -1)
 		tx.HGet(r.formatKey("shares:roundCurrent"), "login")
-		//tx.LRange(r.formatKey("shares:roundCurrent"), 0, r.pplns)
 		tx.ZRevRangeWithScores(r.formatKey("rewards", login), 0, 39)
 		tx.ZRevRangeWithScores(r.formatKey("rewards", login), 0, -1)
 		return nil
