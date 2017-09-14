@@ -16,13 +16,13 @@ import (
 
 var r *RedisClient
 
-const prefix = "ubiq-pplns"
+const prefix = "test"
 
 func TestMain(m *testing.M) {
 	r = NewRedisClient(&Config{Endpoint: "104.197.67.254:6379",Password:"796150b96df22e0097fb57239d6504107b11c430", Database: 3}, prefix,1000000, "UBQ")
-	//reset()
+	reset()
 	c := m.Run()
-	//reset()
+	reset()
 	os.Exit(c)
 }
 
