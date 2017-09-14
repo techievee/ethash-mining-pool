@@ -8,7 +8,6 @@
       <root url="file://$PROJECT_DIR$/../../../go.uber.org" />
       <root url="file://$PROJECT_DIR$/../../../collectd.org" />
     </CLASSES>
-    <JAVADOC />
     <SOURCES>
       <root url="file://$PROJECT_DIR$/../../../gopkg.in" />
       <root url="file://$PROJECT_DIR$/../../../golang.org" />

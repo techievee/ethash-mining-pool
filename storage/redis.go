@@ -797,7 +797,10 @@ func (r *RedisClient) WriteMaturedBlock(block *BlockData, roundRewards map[strin
 			total += amount
 			// NOTICE: Maybe expire round reward entry in 604800 (a week)?
 			tx.HIncrBy(r.formatKey("miners", login), "balance", amount)
-			tx.HSetNX(r.formatKey("credits", block.Height, block.Hash), login, strconv.FormatInt(amount, 10))
+			if amount>0{
+				tx.HSetNX(r.formatKey("credits", block.Height, block.Hash), login, strconv.FormatInt(amount, 10))
+			}
+
 		}
 		tx.Del(creditKey)
 		tx.HIncrBy(r.formatKey("finances"), "balance", total)
