@@ -706,7 +706,7 @@ func (r *RedisClient) RollbackBalance(login string, amount int64) error {
 	return err
 }
 
-func (r *RedisClient) WritePayment(login, txHash string, amount int64) error {
+func (r *RedisClient) WritePayment(login, txHash string, amount int64, txCharges int64) error {
 	tx := r.client.Multi()
 	defer tx.Close()
 
@@ -717,8 +717,10 @@ func (r *RedisClient) WritePayment(login, txHash string, amount int64) error {
 		tx.HIncrBy(r.formatKey("miners", login), "paid", amount)
 		tx.HIncrBy(r.formatKey("finances"), "pending", (amount * -1))
 		tx.HIncrBy(r.formatKey("finances"), "paid", amount)
-		tx.ZAdd(r.formatKey("payments", "all"), redis.Z{Score: float64(ts), Member: join(txHash, login, amount)})
-		tx.ZAdd(r.formatKey("payments", login), redis.Z{Score: float64(ts), Member: join(txHash, amount)})
+		tx.HIncrBy(r.formatKey("finances"), "txcharges", txCharges)
+
+		tx.ZAdd(r.formatKey("payments", "all"), redis.Z{Score: float64(ts), Member: join(txHash, login, amount,txCharges)})
+		tx.ZAdd(r.formatKey("payments", login), redis.Z{Score: float64(ts), Member: join(txHash, amount, txCharges)})
 		tx.ZRem(r.formatKey("payments", "pending"), join(login, amount))
 		tx.Del(r.formatKey("payments", "lock"))
 		return nil
@@ -735,7 +737,7 @@ func (r *RedisClient)  WriteReward(login string, amount int64, percent *big.Rat,
 	addStr := join(amount, percent, immature, block.Hash, block.Height, block.Timestamp)
 	remStr := join(amount, percent, !immature, block.Hash, block.Height, block.Timestamp)
 
-	remscore := block.Timestamp - 3600*24*40 // Store the last 40 Days
+	remscore := block.Timestamp - 3600*24*90 // Store the last 90 Days
 
 	_, err := tx.Exec(func() error {
 		tx.ZAdd(r.formatKey("rewards", login), redis.Z{Score: float64(block.Timestamp), Member: addStr})
@@ -1024,7 +1026,8 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 	cmds, err := tx.Exec(func() error {
 		tx.ZRemRangeByScore(r.formatKey("hashrate", login), "-inf", fmt.Sprint("(", now-largeWindow))
 		tx.ZRangeWithScores(r.formatKey("hashrate", login), 0, -1)
-		tx.LRange(r.formatKey("lastshares"), 0, r.pplns)
+		tx.HGet(r.formatKey("shares:roundCurrent"), "login")
+		//tx.LRange(r.formatKey("shares:roundCurrent"), 0, r.pplns)
 		tx.ZRevRangeWithScores(r.formatKey("rewards", login), 0, 39)
 		tx.ZRevRangeWithScores(r.formatKey("rewards", login), 0, -1)
 		return nil
@@ -1072,19 +1075,8 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 
 	shares := cmds[2].(*redis.StringSliceCmd).Val()
 
-	csh := 0
-	//	var myshares []string
-	for _, val := range shares {
-		//		text := "|"
-		if val != login {
-			//			text = "_"
-		} else {
-			csh++
-		}
-		//myshares = append(myshares,  strconv.FormatInt(int64(ind) 10))
-		//		myshares = append(myshares, text)
-	}
-	stats["roundShares"] = csh
+
+	stats["roundShares"] = shares
 	//stats["shares"] = myshares
 	stats["workers"] = workers
 	stats["workersTotal"] = len(workers)
@@ -1320,11 +1312,13 @@ func convertPaymentsResults(raw *redis.ZSliceCmd) []map[string]interface{} {
 		fields := strings.Split(v.Member.(string), ":")
 		tx["tx"] = fields[0]
 		// Individual or whole payments row
-		if len(fields) < 3 {
+		if len(fields) < 4 {
 			tx["amount"], _ = strconv.ParseInt(fields[1], 10, 64)
+			tx["txcost"], _ = strconv.ParseInt(fields[2], 10, 64)
 		} else {
 			tx["address"] = fields[1]
 			tx["amount"], _ = strconv.ParseInt(fields[2], 10, 64)
+			tx["txcost"], _ = strconv.ParseInt(fields[3], 10, 64)
 		}
 		result = append(result, tx)
 	}
