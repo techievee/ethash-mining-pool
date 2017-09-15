@@ -199,6 +199,7 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 
 		resp := cs.getNotificationResponse(s, req.Id)
 		return cs.sendTCPNHResult(resp)
+		return cs.sendTCPNHResult(resp)
 
 	case "mining.authorize":
 		var params []string
@@ -222,7 +223,7 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 		}
 
 		paramsDiff := []int64{
-			s.config.Proxy.Difficulty,
+			4,
 		}
 		respReq := JSONRpcReqNH{Method:"mining.set_difficulty", Params:paramsDiff}
 		if err := cs.sendTCPNHReq(respReq); err != nil {
