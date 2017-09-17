@@ -179,8 +179,7 @@ func (u *PayoutsProcessor) process() {
 		//Calculate the Gas Price in Wei and Computer the Transaction Charges
 		//Since pool honour only mining to wallet and not to contract, Deduct value equal to gas*21000 - Standard cost price
 		TxCharges := big.NewInt(0)
-
-		gasPrice := util.String2Big(u.config.Gas)
+		gasPrice := util.String2Big(u.config.GasPrice)
 
 		if u.config.AutoGas{
 			autogas,err := u.rpc.GetGasPrice()
@@ -194,13 +193,12 @@ func (u *PayoutsProcessor) process() {
 			TxCharges.Mul(gasPrice, util.String2Big(u.config.Gas))
 
 		}else{
-			TxCharges.Mul(util.String2Big(u.config.GasPrice), gasPrice)
+			TxCharges.Mul(gasPrice, util.String2Big(u.config.Gas))
 		}
 
 
 		//Deduct the Calulated Transaction Charges
 		amountInWei.Sub(amountInWei,TxCharges)
-
 		gasPriceHex :=  hexutil.EncodeBig(gasPrice)
 
 
@@ -225,7 +223,7 @@ func (u *PayoutsProcessor) process() {
 
 		minersPaid++
 		totalAmount.Add(totalAmount, big.NewInt(amount))
-		log.Printf("Paid %v Shannon to %v, TxHash: %v", amount, login, txHash)
+		log.Printf("Paid %v Shannon to %v, TxHash: %v, Transaction Charges : %v", amountInWei, login, txHash, TxCharges.Int64())
 
 		// Wait for TX confirmation before further payouts
 		for {

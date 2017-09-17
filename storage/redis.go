@@ -797,7 +797,10 @@ func (r *RedisClient) WriteMaturedBlock(block *BlockData, roundRewards map[strin
 			total += amount
 			// NOTICE: Maybe expire round reward entry in 604800 (a week)?
 			tx.HIncrBy(r.formatKey("miners", login), "balance", amount)
-			tx.HSetNX(r.formatKey("credits", block.Height, block.Hash), login, strconv.FormatInt(amount, 10))
+			if amount>0{
+				tx.HSetNX(r.formatKey("credits", block.Height, block.Hash), login, strconv.FormatInt(amount, 10))
+			}
+
 		}
 		tx.Del(creditKey)
 		tx.HIncrBy(r.formatKey("finances"), "balance", total)
@@ -1026,7 +1029,7 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 	cmds, err := tx.Exec(func() error {
 		tx.ZRemRangeByScore(r.formatKey("hashrate", login), "-inf", fmt.Sprint("(", now-largeWindow))
 		tx.ZRangeWithScores(r.formatKey("hashrate", login), 0, -1)
-		tx.LRange(r.formatKey("lastshares"), 0, r.pplns)
+		tx.HGet(r.formatKey("shares", "roundCurrent"), login)
 		tx.ZRevRangeWithScores(r.formatKey("rewards", login), 0, 39)
 		tx.ZRevRangeWithScores(r.formatKey("rewards", login), 0, -1)
 		return nil
@@ -1072,21 +1075,10 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 		workers[id] = worker
 	}
 
-	shares := cmds[2].(*redis.StringSliceCmd).Val()
+	shares := cmds[2].(*redis.StringCmd).Val()
 
-	csh := 0
-	//	var myshares []string
-	for _, val := range shares {
-		//		text := "|"
-		if val != login {
-			//			text = "_"
-		} else {
-			csh++
-		}
-		//myshares = append(myshares,  strconv.FormatInt(int64(ind) 10))
-		//		myshares = append(myshares, text)
-	}
-	stats["roundShares"] = csh
+
+	stats["roundShares"] = shares
 	//stats["shares"] = myshares
 	stats["workers"] = workers
 	stats["workersTotal"] = len(workers)
@@ -1095,7 +1087,7 @@ func (r *RedisClient) CollectWorkersStats(sWindow, lWindow time.Duration, login 
 	stats["hashrate"] = totalHashrate
 	stats["currentHashrate"] = currentHashrate
 
-	stats["rewards"] = convertRewardResults(cmds[3].(*redis.ZSliceCmd)) // last 40
+	stats["rewards"] = convertRewardResults(cmds[3].(*redis.ZSliceCmd)) // last 90
 	rewards := convertRewardResults(cmds[4].(*redis.ZSliceCmd))         // all
 
 	var dorew []*SumRewardData
