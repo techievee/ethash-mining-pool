@@ -1,18 +1,19 @@
 {
 	"threads": 2,
-	"coin": "eth-pplns",
+	"coin": "dbix-pplns",
 	"name": "main",
-    "pplns": 1000,
+	"pplns": 4000,
+	"coin-name":"DBIX",
 
 	"proxy": {
 		"enabled": false,
-		"listen": "0.0.0.0:8888",
+		"listen": "0.0.0.0:7777",
 		"limitHeadersSize": 1024,
 		"limitBodySize": 256,
 		"behindReverseProxy": false,
 		"blockRefreshInterval": "120ms",
 		"stateUpdateInterval": "3s",
-		"difficulty": 2000000000,
+		"difficulty": 4000000000,
 		"hashrateExpiration": "3h",
 
 		"healthCheck": true,
@@ -20,7 +21,13 @@
 
 		"stratum": {
 			"enabled": false,
-			"listen": "0.0.0.0:8008",
+			"listen": "0.0.0.0:7007",
+			"timeout": "120s",
+			"maxConn": 8192
+		},
+		"stratum_nice_hash": {
+			"enabled": false,
+			"listen": "0.0.0.0:7079",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
@@ -31,15 +38,15 @@
 			"refreshInterval": "1m",
 
 			"banning": {
-				"enabled": false,
+				"enabled": true,
 				"ipset": "blacklist",
-				"timeout": 1800,
+				"timeout": 300,
 				"invalidPercent": 30,
 				"checkThreshold": 30,
-				"malformedLimit": 5
+				"malformedLimit": 50
 			},
 			"limits": {
-				"enabled": false,
+				"enabled": true,
 				"limit": 30,
 				"grace": "5m",
 				"limitJump": 10
@@ -51,7 +58,7 @@
 		"enabled": false,
 		"purgeOnly": false,
 		"purgeInterval": "10m",
-		"listen": "0.0.0.0:8080",
+		"listen": "0.0.0.0:7070",
 		"statsCollectInterval": "5s",
 		"hashrateWindow": "30m",
 		"hashrateLargeWindow": "3h",
@@ -63,46 +70,46 @@
 	"upstreamCheckInterval": "5s",
 	"upstream": [
 		{
-			"name": "main",
-			"url": "http://10.148.0.2:8545",
+			"name": "proxy01-uscentral",
+			"url": "http://10.128.0.2:7565",
 			"timeout": "10s"
 		},
 		{
 			"name": "backup",
-			"url": "http://10.148.0.2:8545",
+			"url": "http://10.128.0.2:7565",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
-		"endpoint": "10.148.0.3:6379",
+		"endpoint": "10.128.0.3:6379",
 		"poolSize": 10,
-		"database": 0,
-		"password": ""
+		"database": 7,
+		"password": "796150b96df22e0097fb57239d6504107b11c430"
 	},
 
 	"unlocker": {
 		"enabled": true,
 		"poolFee": 0,
-		"poolFeeAddress": "",
+		"poolFeeAddress": "0xb06f10c6f9af15b9158ea34d7dbbcf7364e4e6f5",
 		"donate": false,
 		"depth": 120,
 		"immatureDepth": 20,
 		"keepTxFees": true,
-		"interval": "10m",
-		"daemon": "http://10.148.0.2:8545",
+		"interval": "15m",
+		"daemon": "http://10.128.0.2:7565",
 		"timeout": "10s"
 	},
 
 	"payouts": {
 		"enabled": false,
-		"requirePeers": 25,
+		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://127.0.0.1:8545",
+		"daemon": "http://10.128.0.2:7565",
 		"timeout": "10s",
-		"address": "0x0",
+		"address": "0xfa7a014152bf7df660cfd423487d1ad5b14ee5d4",
 		"gas": "21000",
-		"gasPrice": "50000000000",
+		"gasPrice": "20000000000",
 		"autoGas": true,
 		"threshold": 500000000,
 		"bgsave": false
@@ -110,13 +117,13 @@
 
 	"exchange": {
 		"enabled": false,
-		"url": "https://api.coinmarketcap.com/v1/ticker/?convert=INR&limit=10",
+		"url": "https://api.coinmarketcap.com/v1/ticker/?convert=INR",
 		"timeout": "50s",
 		"refreshInterval": "1800s"
-		},
+	},
 
 	"newrelicEnabled": false,
-	"newrelicName": "UNLOCKER",
+	"newrelicName": "PROXY01_UBIQ_USCENTRAL",
 	"newrelicKey": "b30cd005408cbe2bcef6e081dc0a7ea2fe6c6a18",
-	"newrelicVerbose": true
+	"newrelicVerbose": false
 }
