@@ -28,19 +28,18 @@ type UnlockerConfig struct {
     Timeout        string  `json:"timeout"`
 }
 
-const minDepth = 16
+const minDepth = 10
 
-var constReward = math.MustParseBig256("6000000000000000000")
+var constReward = math.MustParseBig256("314000000000000000000")
 var uncleReward = new(big.Int).Div(constReward, new(big.Int).SetInt64(32))
 
 // Donate 10% from pool fees to developers
 const donationFee = 10.0
-const donationAccount = "0x796150b96df22e0097fb57239d6504107b11c430"
+const donationAccount = "0xb06f10c6f9af15b9158ea34d7dbbcf7364e4e6f5"
 
-// Donate 10% from pool fees to etc developers
-const donationFee2 = 11.1
-const donationAccount2 = "0x796150b96df22e0097fb57239d6504107b11c430"
-
+// Donate 1% from pool fees to musicoin developers
+const donationFee2 = 1.0
+const donationAccount2 = "0xf527a9a52b77f6c04471914ad57c31a8ae104d71"
 
 type BlockUnlocker struct {
     config   *UnlockerConfig
@@ -210,7 +209,7 @@ func matchCandidate(block *rpc.GetBlockReply, candidate *storage.BlockData) bool
 }
 
 func (u *BlockUnlocker) handleBlock(block *rpc.GetBlockReply, candidate *storage.BlockData) error {
-	// Initial 8 Expanse static reward
+	// Initial 314Music static reward
 	reward := new(big.Int).Set(constReward)
 
 	correctHeight, err := strconv.ParseInt(strings.Replace(block.Number, "0x", "", -1), 16, 64)

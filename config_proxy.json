@@ -1,13 +1,13 @@
 {
 	"threads": 2,
-	"coin": "dbix-pplns",
+	"coin": "music-pplns",
 	"name": "main",
-	"pplns": 4000,
-	"coin-name":"DBIX",
+	"pplns": 15000,
+	"coin-name":"MUSIC",
 
 	"proxy": {
 		"enabled": true,
-		"listen": "0.0.0.0:7777",
+		"listen": "0.0.0.0:6666",
 		"limitHeadersSize": 1024,
 		"limitBodySize": 256,
 		"behindReverseProxy": false,
@@ -21,13 +21,13 @@
 
 		"stratum": {
 			"enabled": true,
-			"listen": "0.0.0.0:7007",
+			"listen": "0.0.0.0:6006",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
 		"stratum_nice_hash": {
 			"enabled": false,
-			"listen": "0.0.0.0:7079",
+			"listen": "0.0.0.0:6069",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
@@ -58,7 +58,7 @@
 		"enabled": false,
 		"purgeOnly": false,
 		"purgeInterval": "10m",
-		"listen": "0.0.0.0:7070",
+		"listen": "0.0.0.0:6060",
 		"statsCollectInterval": "5s",
 		"hashrateWindow": "30m",
 		"hashrateLargeWindow": "3h",
@@ -70,13 +70,13 @@
 	"upstreamCheckInterval": "5s",
 	"upstream": [
 		{
-			"name": "proxy01-uscentral",
-			"url": "http://10.128.0.2:7565",
+			"name": "node02",
+			"url": "http://10.128.0.50:8545",
 			"timeout": "10s"
 		},
 		{
 			"name": "backup",
-			"url": "http://10.128.0.2:7565",
+			"url": "http://10.128.0.50:8545",
 			"timeout": "10s"
 		}
 	],
@@ -84,34 +84,34 @@
 	"redis": {
 		"endpoint": "10.128.0.3:6379",
 		"poolSize": 10,
-		"database": 7,
+		"database": 6,
 		"password": "796150b96df22e0097fb57239d6504107b11c430"
 	},
 
 	"unlocker": {
 		"enabled": false,
 		"poolFee": 0,
-		"poolFeeAddress": "0xb06f10c6f9af15b9158ea34d7dbbcf7364e4e6f5",
+		"poolFeeAddress": "0x26be156053008ddc7d162759d9eb39147b424236",
 		"donate": false,
 		"depth": 120,
 		"immatureDepth": 20,
 		"keepTxFees": true,
 		"interval": "15m",
-		"daemon": "http://10.128.0.2:7565",
+		"daemon": "http://10.128.0.50:8545",
 		"timeout": "10s"
 	},
 
 	"payouts": {
 		"enabled": false,
-		"requirePeers": 25,
+		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://10.128.0.2:7565",
+		"daemon": "http://10.128.0.50:8545",
 		"timeout": "10s",
-		"address": "0xfa7a014152bf7df660cfd423487d1ad5b14ee5d4",
+		"address": "0xfd104c175b5af7929b494d5ad8bcf02ac3d81bb5",
 		"gas": "21000",
 		"gasPrice": "20000000000",
 		"autoGas": true,
-		"threshold": 500000000,
+		"threshold": 10000000000,
 		"bgsave": false
 	},
 
