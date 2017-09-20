@@ -1,13 +1,13 @@
 {
 	"threads": 2,
-	"coin": "music-pplns",
+	"coin": "nuko-pplns",
 	"name": "main",
 	"pplns": 15000,
-	"coin-name":"MUSIC",
+	"coin-name":"NUKO",
 
 	"proxy": {
 		"enabled": false,
-		"listen": "0.0.0.0:6666",
+		"listen": "0.0.0.0:4444",
 		"limitHeadersSize": 1024,
 		"limitBodySize": 256,
 		"behindReverseProxy": false,
@@ -21,13 +21,13 @@
 
 		"stratum": {
 			"enabled": false,
-			"listen": "0.0.0.0:6006",
+			"listen": "0.0.0.0:4004",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
 		"stratum_nice_hash": {
 			"enabled": false,
-			"listen": "0.0.0.0:6069",
+			"listen": "0.0.0.0:4049",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
@@ -58,7 +58,7 @@
 		"enabled": false,
 		"purgeOnly": false,
 		"purgeInterval": "10m",
-		"listen": "0.0.0.0:6060",
+		"listen": "0.0.0.0:4040",
 		"statsCollectInterval": "5s",
 		"hashrateWindow": "30m",
 		"hashrateLargeWindow": "3h",
@@ -71,12 +71,12 @@
 	"upstream": [
 		{
 			"name": "node02",
-			"url": "http://10.128.0.50:8545",
+			"url": "http://10.128.0.50:8293",
 			"timeout": "10s"
 		},
 		{
 			"name": "backup",
-			"url": "http://10.128.0.50:8545",
+			"url": "http://10.128.0.50:8293",
 			"timeout": "10s"
 		}
 	],
@@ -84,20 +84,20 @@
 	"redis": {
 		"endpoint": "10.128.0.3:6379",
 		"poolSize": 10,
-		"database": 6,
+		"database": 4,
 		"password": "796150b96df22e0097fb57239d6504107b11c430"
 	},
 
 	"unlocker": {
 		"enabled": false,
 		"poolFee": 0,
-		"poolFeeAddress": "0x6aca7efaf669751604484be193200f26d6d2330b",
+		"poolFeeAddress": "0x98d545c61b315926391bdcc25f62790e6582a2e6",
 		"donate": false,
 		"depth": 120,
 		"immatureDepth": 20,
 		"keepTxFees": true,
 		"interval": "15m",
-		"daemon": "http://10.128.0.50:8545",
+		"daemon": "http://10.128.0.50:8293",
 		"timeout": "10s"
 	},
 
@@ -105,13 +105,13 @@
 		"enabled": true,
 		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://10.128.0.50:8545",
+		"daemon": "http://10.128.0.50:8293",
 		"timeout": "10s",
-		"address": "0x8001ef52303219ddd966af8e9fa0819e2b3b508e",
+		"address": "0xf6ee60d7cfc90b41ba79738bf73af9819a88fdd7",
 		"gas": "21000",
 		"gasPrice": "20000000000",
 		"autoGas": true,
-		"threshold": 10000000000,
+		"threshold": 1000000000,
 		"bgsave": false
 	},
 
