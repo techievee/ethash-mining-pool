@@ -1,8 +1,8 @@
 {
 	"threads": 2,
-	"coin": "eth-pplns",
+	"coin": "ethereum-pplns",
 	"name": "main",
-    "pplns": 1000,
+	"pplns": 1000000,
 	"coin-name":"ETH",
 
 	"proxy": {
@@ -13,7 +13,7 @@
 		"behindReverseProxy": false,
 		"blockRefreshInterval": "120ms",
 		"stateUpdateInterval": "3s",
-		"difficulty": 2000000000,
+		"difficulty": 4000000000,
 		"hashrateExpiration": "3h",
 
 		"healthCheck": true,
@@ -25,6 +25,12 @@
 			"timeout": "120s",
 			"maxConn": 8192
 		},
+		"stratum_nice_hash": {
+			"enabled": false,
+			"listen": "0.0.0.0:8089",
+			"timeout": "120s",
+			"maxConn": 8192
+		},
 
 		"policy": {
 			"workers": 8,
@@ -32,15 +38,15 @@
 			"refreshInterval": "1m",
 
 			"banning": {
-				"enabled": false,
+				"enabled": true,
 				"ipset": "blacklist",
-				"timeout": 1800,
+				"timeout": 300,
 				"invalidPercent": 30,
 				"checkThreshold": 30,
-				"malformedLimit": 5
+				"malformedLimit": 50
 			},
 			"limits": {
-				"enabled": false,
+				"enabled": true,
 				"limit": 30,
 				"grace": "5m",
 				"limitJump": 10
@@ -64,60 +70,60 @@
 	"upstreamCheckInterval": "5s",
 	"upstream": [
 		{
-			"name": "main",
-			"url": "http://10.148.0.2:8545",
+			"name": "node03",
+			"url": "http://10.128.0.7:8545",
 			"timeout": "10s"
 		},
 		{
 			"name": "backup",
-			"url": "http://10.148.0.2:8545",
+			"url": "http://10.128.0.7:8545",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
-		"endpoint": "10.148.0.3:6379",
+		"endpoint": "10.128.0.3:6379",
 		"poolSize": 10,
-		"database": 0,
-		"password": ""
+		"database": 8,
+		"password": "796150b96df22e0097fb57239d6504107b11c430"
 	},
 
 	"unlocker": {
 		"enabled": false,
-		"poolFee": 1.0,
-		"poolFeeAddress": "",
-		"donate": true,
+		"poolFee": 0,
+		"poolFeeAddress": "0x9dbe1caae874baae91022d170fba246100c73286",
+		"donate": false,
 		"depth": 120,
 		"immatureDepth": 20,
-		"keepTxFees": false,
-		"interval": "10m",
-		"daemon": "http://127.0.0.1:8545",
+		"keepTxFees": true,
+		"interval": "15m",
+		"daemon": "http://10.128.0.7:8545",
 		"timeout": "10s"
 	},
 
 	"payouts": {
 		"enabled": false,
-		"requirePeers": 25,
+		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://127.0.0.1:8545",
+		"daemon": "http://10.128.0.7:8545",
 		"timeout": "10s",
-		"address": "0x0",
+		"address": "0xff2a46e45df2b49f388f523b43153c38079237d9",
 		"gas": "21000",
-		"gasPrice": "50000000000",
+		"gasPrice": "20000000000",
 		"autoGas": true,
-		"threshold": 500000000,
+		"threshold": 100000000,
 		"bgsave": false
 	},
 
 	"exchange": {
 		"enabled": true,
-		"url": "https://api.coinmarketcap.com/v1/ticker/?convert=INR&limit=10",
+		"url": "https://api.coinmarketcap.com/v1/ticker/?convert=INR",
 		"timeout": "50s",
 		"refreshInterval": "1800s"
-		},
+	},
 
-	"newrelicEnabled": true,
-	"newrelicName": "API",
+	"newrelicEnabled": false,
+	"newrelicName": "PROXY01_UBIQ_USCENTRAL",
 	"newrelicKey": "b30cd005408cbe2bcef6e081dc0a7ea2fe6c6a18",
-	"newrelicVerbose": true
+	"newrelicVerbose": false
 }
