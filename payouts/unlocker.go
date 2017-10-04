@@ -30,12 +30,7 @@ type UnlockerConfig struct {
 
 const minDepth = 10
 
-var (
-	big2                 = big.NewInt(2)
-	big32                = big.NewInt(32)
-	BlockReward *big.Int = big.NewInt(250e+18)
-
-)
+var constReward =math.MustParseBig256("250000000000000000000")
 
 // Donate 10% from pool fees to developers
 const donationFee = 10.0
@@ -221,11 +216,11 @@ func (u *BlockUnlocker) handleBlock(block *rpc.GetBlockReply, candidate *storage
 	candidate.Height = correctHeight
 
 	// Rewards
-	reward := new(big.Int).Set(BlockReward)
-	headerNumber := big.NewInt(candidate.Height)
+	reward := new(big.Int).Set(constReward)
+    headerNumber := big.NewInt(candidate.Height)
 
     if headerNumber.Cmp(big.NewInt(1200000)) < 0 {
-        reward = big.NewInt(314e+18)
+        reward = math.MustParseBig256("314000000000000000000")
     }
 
 
@@ -558,11 +553,11 @@ func weiToShannonInt64(wei *big.Rat) int64 {
 func getUncleReward(uHeight, height int64) *big.Int {
 
 
-    reward := new(big.Int).Set(BlockReward)
+    reward := new(big.Int).Set(constReward)
     headerNumber := big.NewInt(height)
 
     if headerNumber.Cmp(big.NewInt(1200000)) < 0 {
-        reward = big.NewInt(314e+18)
+        reward = math.MustParseBig256("314000000000000000000")
     }
 
 
