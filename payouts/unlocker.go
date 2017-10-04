@@ -224,8 +224,7 @@ func (u *BlockUnlocker) handleBlock(block *rpc.GetBlockReply, candidate *storage
     }
 
 
-    var uncleReward = new(big.Int).Div(reward, big32)
-
+    var uncleReward = new(big.Int).Div(reward, new(big.Int).SetInt64(32))
 
 	// Add TX fees
 	extraTxReward, err := u.getExtraRewardForTx(block)
