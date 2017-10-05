@@ -58,7 +58,7 @@
 		"enabled": true,
 		"purgeOnly": false,
 		"purgeInterval": "10m",
-		"listen": "0.0.0.0:8080",
+		"listen": "0.0.0.0:8081",
 		"statsCollectInterval": "5s",
 		"hashrateWindow": "30m",
 		"hashrateLargeWindow": "3h",
