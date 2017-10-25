@@ -27,6 +27,9 @@ type PayoutsConfig struct {
 	Gas          string `json:"gas"`
 	GasPrice     string `json:"gasPrice"`
 	AutoGas      bool   `json:"autoGas"`
+	KeepNwFees	 bool `json:"keepNwFees"`
+	TxGas     string `json:"nwTxGas"`
+	TxGasPrice     string `json:"nwTxGasPrice"`
 	// In Shannon
 	Threshold int64 `json:"threshold"`
 	BgSave    bool  `json:"bgsave"`
@@ -178,32 +181,21 @@ func (u *PayoutsProcessor) process() {
 
 		//Calculate the Gas Price in Wei and Computer the Transaction Charges
 		//Since pool honour only mining to wallet and not to contract, Deduct value equal to gas*21000 - Standard cost price
+
 		TxCharges := big.NewInt(0)
-		gasPrice := util.String2Big(u.config.GasPrice)
 
-		if u.config.AutoGas{
-			autogas,err := u.rpc.GetGasPrice()
-			if(err!=nil){
-				log.Printf("Unable to get the gasprice from the geth, Gasprice is set as Auto")
-				u.halt = true
-				u.lastFail = err
-				break
-			}
-			gasPrice := big.NewInt(autogas)
-			TxCharges.Mul(gasPrice, util.String2Big(u.config.Gas))
+		if u.config.KeepNwFees{
 
-		}else{
-			TxCharges.Mul(gasPrice, util.String2Big(u.config.Gas))
+			TxCharges.Mul(util.String2Big(u.config.TxGasPrice), util.String2Big(u.config.TxGas))
+
+			//Deduct the Calulated Transaction Charges
+			amountInWei.Sub(amountInWei,TxCharges)
+
 		}
 
-
-		//Deduct the Calulated Transaction Charges
-		amountInWei.Sub(amountInWei,TxCharges)
-		gasPriceHex :=  hexutil.EncodeBig(gasPrice)
-
-
 		value := hexutil.EncodeBig(amountInWei)
-		txHash, err := u.rpc.SendTransaction(u.config.Address, login, u.config.GasHex(), gasPriceHex, value, u.config.AutoGas)
+		txHash, err := u.rpc.SendTransaction(u.config.Address, login, u.config.GasHex(), u.config.GasPriceHex(), value, u.config.AutoGas)
+
 		if err != nil {
 			log.Printf("Failed to send payment to %s, %v Shannon: %v. Check outgoing tx for %s in block explorer and docs/PAYOUTS.md",
 				login, amount, err, login)
@@ -232,12 +224,18 @@ func (u *PayoutsProcessor) process() {
 			receipt, err := u.rpc.GetTxReceipt(txHash)
 			if err != nil {
 				log.Printf("Failed to get tx receipt for %v: %v", txHash, err)
+				continue
 			}
+			// Tx has been mined
 			if receipt != nil && receipt.Confirmed() {
+				if receipt.Successful() {
+					log.Printf("Payout tx successful for %s: %s", login, txHash)
+				} else {
+					log.Printf("Payout tx failed for %s: %s. Address contract throws on incoming tx.", login, txHash)
+				}
 				break
 			}
 		}
-		log.Printf("Payout tx for %s confirmed: %s", login, txHash)
 	}
 
 	if mustPay > 0 {
