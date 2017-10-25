@@ -28,9 +28,11 @@ type UnlockerConfig struct {
     Timeout        string  `json:"timeout"`
 }
 
-const minDepth = 10
+const minDepth = 16
+const byzantiumHardForkHeight = 1200000
 
-var constReward =math.MustParseBig256("250000000000000000000")
+var homesteadReward = math.MustParseBig256("314000000000000000000")
+var byzantiumReward = math.MustParseBig256("250000000000000000000")
 
 // Donate 10% from pool fees to developers
 const donationFee = 10.0
@@ -111,23 +113,21 @@ func (u *BlockUnlocker) unlockCandidates(candidates []*storage.BlockData) (*Unlo
         /* Search for a normal block with wrong height here by traversing 16 blocks back and forward.
 		 * Also we are searching for a block that can include this one as uncle.
 		 */
-		if candidate.Height < minDepth {
-					 		orphan = false
-					 		// avoid scanning the first 16 blocks
-						 		continue
-					 }
+		for i := int64(minDepth * -1); i < minDepth; i++ {
+			height := candidate.Height + i
 
-        for i := int64(minDepth * -1); i < minDepth; i++ {
-            height := candidate.Height + i
+			if height < 0 {
+				continue
+			}
 
-            block, err := u.rpc.GetBlockByHeight(height)
-            if err != nil {
-                log.Printf("Error while retrieving block %v from node: %v", height, err)
-                return nil, err
-            }
-            if block == nil {
-                return nil, fmt.Errorf("Error while retrieving block %v from node, wrong node height", height)
-            }
+			block, err := u.rpc.GetBlockByHeight(height)
+			if err != nil {
+				log.Printf("Error while retrieving block %v from node: %v", height, err)
+				return nil, err
+			}
+			if block == nil {
+				return nil, fmt.Errorf("Error while retrieving block %v from node, wrong node height", height)
+			}
 
             if matchCandidate(block, candidate) {
                 orphan = false
@@ -208,23 +208,12 @@ func matchCandidate(block *rpc.GetBlockReply, candidate *storage.BlockData) bool
 }
 
 func (u *BlockUnlocker) handleBlock(block *rpc.GetBlockReply, candidate *storage.BlockData) error {
-
 	correctHeight, err := strconv.ParseInt(strings.Replace(block.Number, "0x", "", -1), 16, 64)
 	if err != nil {
 		return err
 	}
 	candidate.Height = correctHeight
-
-	// Rewards
-	reward := new(big.Int).Set(constReward)
-    headerNumber := big.NewInt(candidate.Height)
-
-    if headerNumber.Cmp(big.NewInt(1200000)) < 0 {
-        reward = math.MustParseBig256("314000000000000000000")
-    }
-
-
-    var uncleReward = new(big.Int).Div(reward, new(big.Int).SetInt64(32))
+	reward := getConstReward(candidate.Height)
 
 	// Add TX fees
 	extraTxReward, err := u.getExtraRewardForTx(block)
@@ -238,13 +227,14 @@ func (u *BlockUnlocker) handleBlock(block *rpc.GetBlockReply, candidate *storage
 	}
 
 	// Add reward for including uncles
+	uncleReward := getRewardForUncle(candidate.Height)
 	rewardForUncles := big.NewInt(0).Mul(uncleReward, big.NewInt(int64(len(block.Uncles))))
 	reward.Add(reward, rewardForUncles)
 
-    candidate.Orphan = false
-    candidate.Hash = block.Hash
-    candidate.Reward = reward
-    return nil
+	candidate.Orphan = false
+	candidate.Hash = block.Hash
+	candidate.Reward = reward
+	return nil
 }
 
 func handleUncle(height int64, uncle *rpc.GetBlockReply, candidate *storage.BlockData) error {
@@ -549,19 +539,22 @@ func weiToShannonInt64(wei *big.Rat) int64 {
     return value
 }
 
+func getConstReward(height int64) *big.Int {
+	if height >= byzantiumHardForkHeight {
+		return new(big.Int).Set(byzantiumReward)
+	}
+	return new(big.Int).Set(homesteadReward)
+}
+
+func getRewardForUncle(height int64) *big.Int {
+	reward := getConstReward(height)
+	return new(big.Int).Div(reward, new(big.Int).SetInt64(32))
+}
+
 func getUncleReward(uHeight, height int64) *big.Int {
-
-
-    reward := new(big.Int).Set(constReward)
-    headerNumber := big.NewInt(height)
-
-    if headerNumber.Cmp(big.NewInt(1200000)) < 0 {
-        reward = math.MustParseBig256("314000000000000000000")
-    }
-
-
-	//reward := new(big.Int).Set(reward)
-	reward.Mul(big.NewInt(uHeight+8-height), reward)
+	reward := getConstReward(height)
+	k := height - uHeight
+	reward.Mul(big.NewInt(8-k), reward)
 	reward.Div(reward, big.NewInt(8))
 	return reward
 }
