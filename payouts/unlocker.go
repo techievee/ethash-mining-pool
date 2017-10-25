@@ -113,23 +113,21 @@ func (u *BlockUnlocker) unlockCandidates(candidates []*storage.BlockData) (*Unlo
         /* Search for a normal block with wrong height here by traversing 16 blocks back and forward.
 		 * Also we are searching for a block that can include this one as uncle.
 		 */
-		if candidate.Height < minDepth {
-					 		orphan = false
-					 		// avoid scanning the first 16 blocks
-						 		continue
-					 }
+		for i := int64(minDepth * -1); i < minDepth; i++ {
+			height := candidate.Height + i
 
-        for i := int64(minDepth * -1); i < minDepth; i++ {
-            height := candidate.Height + i
+			if height < 0 {
+				continue
+			}
 
-            block, err := u.rpc.GetBlockByHeight(height)
-            if err != nil {
-                log.Printf("Error while retrieving block %v from node: %v", height, err)
-                return nil, err
-            }
-            if block == nil {
-                return nil, fmt.Errorf("Error while retrieving block %v from node, wrong node height", height)
-            }
+			block, err := u.rpc.GetBlockByHeight(height)
+			if err != nil {
+				log.Printf("Error while retrieving block %v from node: %v", height, err)
+				return nil, err
+			}
+			if block == nil {
+				return nil, fmt.Errorf("Error while retrieving block %v from node, wrong node height", height)
+			}
 
             if matchCandidate(block, candidate) {
                 orphan = false
