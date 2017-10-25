@@ -226,9 +226,9 @@ func (r *RPCClient) SendTransaction(from, to, gas, gasPrice, value string, autoG
 	}
 	if !autoGas {
 		params["gas"] = gas
+		params["gasPrice"] = gasPrice
 	}
 
-	params["gasPrice"] = gasPrice
 
 	rpcResp, err := r.doPost(r.Url, "eth_sendTransaction", []interface{}{params})
 	var reply string
