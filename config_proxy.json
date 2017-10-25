@@ -24,6 +24,12 @@
 			"timeout": "120s",
 			"maxConn": 8192
 		},
+		"stratum_nice_hash": {
+			"enabled": false,
+			"listen": "0.0.0.0:8089",
+			"timeout": "120s",
+			"maxConn": 8192
+		},
 
 		"policy": {
 			"workers": 8,
@@ -104,7 +110,10 @@
 		"gas": "21000",
 		"gasPrice": "50000000000",
 		"autoGas": true,
-		"threshold": 500000000,
+		"keepNwFees": true,
+		"nwTxGas": "21000",
+		"nwTxGasPrice": "20000000000",
+		"threshold": 100000000,
 		"bgsave": false
 	},
 

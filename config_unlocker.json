@@ -12,7 +12,7 @@
 		"behindReverseProxy": false,
 		"blockRefreshInterval": "120ms",
 		"stateUpdateInterval": "3s",
-		"difficulty": 2000000000,
+		"difficulty": 4000000000,
 		"hashrateExpiration": "3h",
 
 		"healthCheck": true,
@@ -21,6 +21,12 @@
 		"stratum": {
 			"enabled": false,
 			"listen": "0.0.0.0:8008",
+			"timeout": "120s",
+			"maxConn": 8192
+		},
+		"stratum_nice_hash": {
+			"enabled": false,
+			"listen": "0.0.0.0:8089",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
@@ -104,7 +110,10 @@
 		"gas": "21000",
 		"gasPrice": "50000000000",
 		"autoGas": true,
-		"threshold": 500000000,
+		"keepNwFees": true,
+		"nwTxGas": "21000",
+		"nwTxGasPrice": "20000000000",
+		"threshold": 100000000,
 		"bgsave": false
 	},
 

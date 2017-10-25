@@ -10,8 +10,6 @@ import (
 
 	"log"
 
-	"time"
-	"fmt"
 )
 
 var r *RedisClient
