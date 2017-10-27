@@ -55,7 +55,7 @@
 	},
 
 	"api": {
-		"enabled": false,
+		"enabled": true,
 		"purgeOnly": false,
 		"purgeInterval": "10m",
 		"listen": "0.0.0.0:6060",
@@ -70,34 +70,34 @@
 	"upstreamCheckInterval": "5s",
 	"upstream": [
 		{
-			"name": "node02",
-			"url": "http://10.128.0.50:8545",
+			"name": "mumbai",
+			"url": "http://10.4.1.12:8545",
 			"timeout": "10s"
 		},
 		{
-			"name": "backup",
-			"url": "http://10.128.0.50:8545",
+			"name": "lowa",
+			"url": "http://10.3.1.12:8545",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
-		"endpoint": "10.128.0.3:6379",
+		"endpoint": "10.4.10.100:6379",
 		"poolSize": 10,
 		"database": 6,
-		"password": "796150b96df22e0097fb57239d6504107b11c430"
+		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
 
 	"unlocker": {
 		"enabled": true,
-		"poolFee": 0,
+		"poolFee": 0.5,
 		"poolFeeAddress": "0x6aca7efaf669751604484be193200f26d6d2330b",
 		"donate": false,
 		"depth": 120,
 		"immatureDepth": 20,
-		"keepTxFees": true,
+		"keepTxFees": false,
 		"interval": "15m",
-		"daemon": "http://10.128.0.50:8545",
+		"daemon": "http://10.4.1.12:8545",
 		"timeout": "10s"
 	},
 
@@ -105,7 +105,7 @@
 		"enabled": false,
 		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://10.128.0.50:8545",
+		"daemon": "http://10.4.1.12:8545",
 		"timeout": "10s",
 		"address": "0x8001ef52303219ddd966af8e9fa0819e2b3b508e",
 		"gas": "21000",
@@ -126,7 +126,7 @@
 	},
 
 	"newrelicEnabled": false,
-	"newrelicName": "PROXY01_UBIQ_USCENTRAL",
+	"newrelicName": "PROXY01_MUSIC_MUMBAI",
 	"newrelicKey": "b30cd005408cbe2bcef6e081dc0a7ea2fe6c6a18",
 	"newrelicVerbose": false
 }
