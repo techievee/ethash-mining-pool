@@ -1,13 +1,13 @@
 {
 	"threads": 2,
-	"coin": "ethereum-pplns",
+	"coin": "exp-pplns",
 	"name": "main",
-	"pplns": 1000000,
-	"coin-name":"ETH",
+	"pplns": 15000,
+	"coin-name":"EXP",
 
 	"proxy": {
 		"enabled": false,
-		"listen": "0.0.0.0:8888",
+		"listen": "0.0.0.0:9999",
 		"limitHeadersSize": 1024,
 		"limitBodySize": 256,
 		"behindReverseProxy": false,
@@ -21,13 +21,13 @@
 
 		"stratum": {
 			"enabled": false,
-			"listen": "0.0.0.0:8008",
+			"listen": "0.0.0.0:9009",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
 		"stratum_nice_hash": {
 			"enabled": false,
-			"listen": "0.0.0.0:8089",
+			"listen": "0.0.0.0:9099",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
@@ -70,34 +70,34 @@
 	"upstreamCheckInterval": "5s",
 	"upstream": [
 		{
-			"name": "node03",
-			"url": "http://10.128.0.7:8545",
+			"name": "mumbai",
+			"url": "http://10.3.1.10:9656",
 			"timeout": "10s"
 		},
 		{
-			"name": "backup",
-			"url": "http://10.128.0.7:8545",
+			"name": "lowa",
+			"url": "http://10.4.1.10:9656",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
-		"endpoint": "10.128.0.3:6379",
+		"endpoint": "10.4.10.100:6379",
 		"poolSize": 10,
-		"database": 8,
-		"password": "796150b96df22e0097fb57239d6504107b11c430"
+		"database": 5,
+		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
 
 	"unlocker": {
 		"enabled": false,
-		"poolFee": 0,
-		"poolFeeAddress": "0x9dbe1caae874baae91022d170fba246100c73286",
+		"poolFee": 0.5,
+		"poolFeeAddress": "0x488beabd537eb873e07eefe02474f374f5cd7537",
 		"donate": false,
-		"depth": 120,
+		"depth": 30,
 		"immatureDepth": 20,
-		"keepTxFees": true,
-		"interval": "15m",
-		"daemon": "http://10.128.0.7:8545",
+		"keepTxFees": false,
+		"interval": "10m",
+		"daemon": "http://127.0.0.1:9656",
 		"timeout": "10s"
 	},
 
@@ -105,16 +105,16 @@
 		"enabled": true,
 		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://10.128.0.7:8545",
+		"daemon": "http://127.0.0.1:9656",
 		"timeout": "10s",
-		"address": "0xff2a46e45df2b49f388f523b43153c38079237d9",
+		"address": "0xb1d4169948f48b5c2f2228b22f840f673d787ec5",
 		"gas": "21000",
 		"gasPrice": "20000000000",
 		"autoGas": true,
-		"keepNwFees": true,
+		"keepNwFees": false,
 		"nwTxGas": "21000",
 		"nwTxGasPrice": "20000000000",
-		"threshold": 100000000,
+		"threshold": 500000000,
 		"bgsave": false
 	},
 
@@ -126,7 +126,7 @@
 	},
 
 	"newrelicEnabled": false,
-	"newrelicName": "PROXY01_UBIQ_USCENTRAL",
+	"newrelicName": "PROXY01_EXPANSE_MUMBAI",
 	"newrelicKey": "b30cd005408cbe2bcef6e081dc0a7ea2fe6c6a18",
 	"newrelicVerbose": false
 }
