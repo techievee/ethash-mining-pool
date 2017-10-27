@@ -58,7 +58,7 @@
 		"enabled": false,
 		"purgeOnly": false,
 		"purgeInterval": "10m",
-		"listen": "0.0.0.0:8080",
+		"listen": "0.0.0.0:8081",
 		"statsCollectInterval": "5s",
 		"hashrateWindow": "30m",
 		"hashrateLargeWindow": "3h",
@@ -70,34 +70,34 @@
 	"upstreamCheckInterval": "5s",
 	"upstream": [
 		{
-			"name": "node03",
-			"url": "http://10.128.0.7:8545",
+			"name": "mumbai",
+			"url": "http://10.3.1.10:8545",
 			"timeout": "10s"
 		},
 		{
-			"name": "backup",
-			"url": "http://10.128.0.7:8545",
+			"name": "lowa",
+			"url": "http://10.4.1.10:8545",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
-		"endpoint": "10.128.0.3:6379",
+		"endpoint": "10.4.10.100:6379",
 		"poolSize": 10,
 		"database": 8,
-		"password": "796150b96df22e0097fb57239d6504107b11c430"
+		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
 
 	"unlocker": {
 		"enabled": false,
-		"poolFee": 0,
+		"poolFee": 0.9,
 		"poolFeeAddress": "0x9dbe1caae874baae91022d170fba246100c73286",
 		"donate": false,
 		"depth": 120,
 		"immatureDepth": 20,
 		"keepTxFees": true,
 		"interval": "15m",
-		"daemon": "http://10.128.0.7:8545",
+		"daemon": "http://127.0.0.1:8545",
 		"timeout": "10s"
 	},
 
@@ -105,7 +105,7 @@
 		"enabled": true,
 		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://10.128.0.7:8545",
+		"daemon": "http://127.0.0.1:8545",
 		"timeout": "10s",
 		"address": "0xff2a46e45df2b49f388f523b43153c38079237d9",
 		"gas": "21000",
@@ -114,7 +114,7 @@
 		"keepNwFees": true,
 		"nwTxGas": "21000",
 		"nwTxGasPrice": "20000000000",
-		"threshold": 100000000,
+		"threshold": 10000000,
 		"bgsave": false
 	},
 
@@ -126,7 +126,7 @@
 	},
 
 	"newrelicEnabled": false,
-	"newrelicName": "PROXY01_UBIQ_USCENTRAL",
+	"newrelicName": "PROXY01_ETH_MUMBAI",
 	"newrelicKey": "b30cd005408cbe2bcef6e081dc0a7ea2fe6c6a18",
 	"newrelicVerbose": false
 }
