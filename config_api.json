@@ -1,9 +1,9 @@
 {
 	"threads": 2,
-	"coin": "eth-pplns",
+	"coin": "ubiq-pplns",
 	"name": "main",
-    "pplns": 1000,
-	"coin-name":"ETH",
+	"pplns": 15000,
+	"coin-name":"UBQ",
 
 	"proxy": {
 		"enabled": false,
@@ -34,19 +34,19 @@
 
 		"policy": {
 			"workers": 8,
-			"resetInterval": "60m",
+			"resetInterval": "30m",
 			"refreshInterval": "1m",
 
 			"banning": {
-				"enabled": false,
+				"enabled": true,
 				"ipset": "blacklist",
-				"timeout": 1800,
+				"timeout": 300,
 				"invalidPercent": 30,
 				"checkThreshold": 30,
-				"malformedLimit": 5
+				"malformedLimit": 50
 			},
 			"limits": {
-				"enabled": false,
+				"enabled": true,
 				"limit": 30,
 				"grace": "5m",
 				"limitJump": 10
@@ -70,34 +70,34 @@
 	"upstreamCheckInterval": "5s",
 	"upstream": [
 		{
-			"name": "main",
-			"url": "http://10.148.0.2:8545",
+			"name": "mumbai",
+			"url": "http://10.4.1.11:8588",
 			"timeout": "10s"
 		},
 		{
-			"name": "backup",
-			"url": "http://10.148.0.2:8545",
+			"name": "lowa",
+			"url": "http://10.3.1.11:8588",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
-		"endpoint": "10.148.0.3:6379",
+		"endpoint": "10.4.10.100:6379",
 		"poolSize": 10,
-		"database": 0,
-		"password": ""
+		"database": 3,
+		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
 
 	"unlocker": {
 		"enabled": false,
-		"poolFee": 1.0,
-		"poolFeeAddress": "",
-		"donate": true,
-		"depth": 120,
+		"poolFee": 0.5,
+		"poolFeeAddress": "0xc1e6d783cc2f000caa09e7b2eeb991fe86533f00",
+		"donate": false,
+		"depth": 60,
 		"immatureDepth": 20,
 		"keepTxFees": false,
 		"interval": "10m",
-		"daemon": "http://127.0.0.1:8545",
+		"daemon": "http://127.0.0.1:8588",
 		"timeout": "10s"
 	},
 
@@ -105,16 +105,16 @@
 		"enabled": false,
 		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://127.0.0.1:8545",
+		"daemon": "http://127.0.0.1:8588",
 		"timeout": "10s",
-		"address": "0x0",
+		"address": "0xded205c4776a285337e74d7b7cf449556c82ba3c",
 		"gas": "21000",
-		"gasPrice": "50000000000",
+		"gasPrice": "20000000000",
 		"autoGas": true,
 		"keepNwFees": true,
 		"nwTxGas": "21000",
 		"nwTxGasPrice": "20000000000",
-		"threshold": 100000000,
+		"threshold": 500000000,
 		"bgsave": false
 	},
 
@@ -123,10 +123,10 @@
 		"url": "https://api.coinmarketcap.com/v1/ticker/?convert=INR&limit=10",
 		"timeout": "50s",
 		"refreshInterval": "1800s"
-		},
+	},
 
-	"newrelicEnabled": true,
-	"newrelicName": "API",
+	"newrelicEnabled": false,
+	"newrelicName": "PROXY01_UBIQ_MUMBAI",
 	"newrelicKey": "b30cd005408cbe2bcef6e081dc0a7ea2fe6c6a18",
-	"newrelicVerbose": true
+	"newrelicVerbose": false
 }
