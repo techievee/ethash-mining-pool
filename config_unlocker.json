@@ -94,10 +94,10 @@
 		"poolFeeAddress": "0xb06f10c6f9af15b9158ea34d7dbbcf7364e4e6f5",
 		"donate": false,
 		"depth": 30,
-		"immatureDepth": 15,
+		"immatureDepth": 10,
 		"keepTxFees": false,
 		"interval": "15m",
-		"daemon": "http://10.4.1.11:7565",
+		"daemon": "http://127.0.0.1:8883",
 		"timeout": "10s"
 	},
 
@@ -105,7 +105,7 @@
 		"enabled": false,
 		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://10.4.1.11:7565",
+		"daemon": "http://127.0.0.1:8883",
 		"timeout": "10s",
 		"address": "0xfa7a014152bf7df660cfd423487d1ad5b14ee5d4",
 		"gas": "21000",
