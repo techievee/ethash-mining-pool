@@ -94,7 +94,7 @@
 		"poolFeeAddress": "0xb06f10c6f9af15b9158ea34d7dbbcf7364e4e6f5",
 		"donate": false,
 		"depth": 32,
-		"immatureDepth": 10,
+		"immatureDepth": 16,
 		"keepTxFees": false,
 		"interval": "15m",
 		"daemon": "http://127.0.0.1:8883",
