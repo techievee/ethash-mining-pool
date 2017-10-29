@@ -202,7 +202,7 @@ func (s *ProxyServer) broadcastNewJobs() {
 	bcast := make(chan int, 1024)
 	n := 0
 
-	for m := range s.sessions {
+	for m, _ := range s.sessions {
 		n++
 		bcast <- n
 
