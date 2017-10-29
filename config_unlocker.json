@@ -96,8 +96,8 @@
 		"depth": 60,
 		"immatureDepth": 20,
 		"keepTxFees": false,
-		"interval": "10m",
-		"daemon": "http://127.0.0.1:8588",
+		"interval": "15m",
+		"daemon": "http://127.0.0.1:8882",
 		"timeout": "10s"
 	},
 
@@ -105,7 +105,7 @@
 		"enabled": false,
 		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://127.0.0.1:8588",
+		"daemon": "http://127.0.0.1:8882",
 		"timeout": "10s",
 		"address": "0xded205c4776a285337e74d7b7cf449556c82ba3c",
 		"gas": "21000",
