@@ -114,7 +114,7 @@
 		"keepNwFees": true,
 		"nwTxGas": "21000",
 		"nwTxGasPrice": "20000000000",
-		"threshold": 100000000,
+		"threshold": 10000000000,
 		"bgsave": false
 	},
 
