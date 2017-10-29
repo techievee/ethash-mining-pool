@@ -46,14 +46,25 @@ type GetBlockReplyPart struct {
 	Difficulty string `json:"difficulty"`
 }
 
+const receiptStatusSuccessful = "0x1"
+
 type TxReceipt struct {
 	TxHash    string `json:"transactionHash"`
 	GasUsed   string `json:"gasUsed"`
 	BlockHash string `json:"blockHash"`
+	Status    string `json:"status"`
 }
 
 func (r *TxReceipt) Confirmed() bool {
 	return len(r.BlockHash) > 0
+}
+
+// Use with previous method
+func (r *TxReceipt) Successful() bool {
+	if len(r.Status) > 0 {
+		return r.Status == receiptStatusSuccessful
+	}
+	return true
 }
 
 type Tx struct {
@@ -215,9 +226,9 @@ func (r *RPCClient) SendTransaction(from, to, gas, gasPrice, value string, autoG
 	}
 	if !autoGas {
 		params["gas"] = gas
+		params["gasPrice"] = gasPrice
 	}
 
-	params["gasPrice"] = gasPrice
 
 	rpcResp, err := r.doPost(r.Url, "eth_sendTransaction", []interface{}{params})
 	var reply string
