@@ -1,13 +1,13 @@
 {
 	"threads": 2,
-	"coin": "music-pplns",
+	"coin": "etc-pplns",
 	"name": "main",
 	"pplns": 15000,
-	"coin-name":"MUSIC",
+	"coin-name":"ETC",
 
 	"proxy": {
 		"enabled": false,
-		"listen": "0.0.0.0:6666",
+		"listen": "0.0.0.0:9999",
 		"limitHeadersSize": 1024,
 		"limitBodySize": 256,
 		"behindReverseProxy": false,
@@ -21,13 +21,13 @@
 
 		"stratum": {
 			"enabled": false,
-			"listen": "0.0.0.0:6006",
+			"listen": "0.0.0.0:9009",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
 		"stratum_nice_hash": {
 			"enabled": false,
-			"listen": "0.0.0.0:6069",
+			"listen": "0.0.0.0:9099",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
@@ -58,7 +58,7 @@
 		"enabled": false,
 		"purgeOnly": false,
 		"purgeInterval": "10m",
-		"listen": "0.0.0.0:6060",
+		"listen": "0.0.0.0:9091",
 		"statsCollectInterval": "5s",
 		"hashrateWindow": "30m",
 		"hashrateLargeWindow": "3h",
@@ -70,34 +70,34 @@
 	"upstreamCheckInterval": "5s",
 	"upstream": [
 		{
-			"name": "node02",
-			"url": "http://10.128.0.50:8545",
+			"name": "mumbai",
+			"url": "http://10.4.1.11:8545",
 			"timeout": "10s"
 		},
 		{
-			"name": "backup",
-			"url": "http://10.128.0.50:8545",
+			"name": "lowa",
+			"url": "http://10.3.1.11:8545",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
-		"endpoint": "10.128.0.3:6379",
+		"endpoint": "10.4.10.100:6379",
 		"poolSize": 10,
-		"database": 6,
-		"password": "796150b96df22e0097fb57239d6504107b11c430"
+		"database": 9,
+		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
 
 	"unlocker": {
 		"enabled": false,
-		"poolFee": 0,
-		"poolFeeAddress": "0x6aca7efaf669751604484be193200f26d6d2330b",
+		"poolFee": 0.5,
+		"poolFeeAddress": "0xbb75ee50115dfbba5d7b1fb1563c5dfd74dd1279",
 		"donate": false,
-		"depth": 120,
+		"depth": 60,
 		"immatureDepth": 20,
-		"keepTxFees": true,
+		"keepTxFees": false,
 		"interval": "15m",
-		"daemon": "http://10.128.0.50:8545",
+		"daemon": "http://127.0.0.1:8884",
 		"timeout": "10s"
 	},
 
@@ -105,9 +105,9 @@
 		"enabled": true,
 		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://10.128.0.50:8545",
+		"daemon": "http://127.0.0.1:8884",
 		"timeout": "10s",
-		"address": "0x8001ef52303219ddd966af8e9fa0819e2b3b508e",
+		"address": "0xe7e8eda746c3363b146fbe94b4d3082b5478ac3c",
 		"gas": "21000",
 		"gasPrice": "20000000000",
 		"autoGas": true,
@@ -126,7 +126,7 @@
 	},
 
 	"newrelicEnabled": false,
-	"newrelicName": "PROXY01_UBIQ_USCENTRAL",
+	"newrelicName": "PROXY01_ETC_MUMBAI",
 	"newrelicKey": "b30cd005408cbe2bcef6e081dc0a7ea2fe6c6a18",
 	"newrelicVerbose": false
 }
