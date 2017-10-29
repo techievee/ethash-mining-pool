@@ -93,11 +93,11 @@
 		"poolFee": 0.9,
 		"poolFeeAddress": "0x9dbe1caae874baae91022d170fba246100c73286",
 		"donate": false,
-		"depth": 60,
+		"depth": 120,
 		"immatureDepth": 20,
-		"keepTxFees": false,
+		"keepTxFees": true,
 		"interval": "15m",
-		"daemon": "http://127.0.0.1:8545",
+		"daemon": "http://127.0.0.1:8880",
 		"timeout": "10s"
 	},
 
@@ -105,7 +105,7 @@
 		"enabled": false,
 		"requirePeers": 5,
 		"interval": "120m",
-		"daemon": "http://127.0.0.1:8545",
+		"daemon": "http://127.0.0.1:8880",
 		"timeout": "10s",
 		"address": "0xff2a46e45df2b49f388f523b43153c38079237d9",
 		"gas": "21000",
@@ -114,9 +114,10 @@
 		"keepNwFees": true,
 		"nwTxGas": "21000",
 		"nwTxGasPrice": "20000000000",
-		"threshold": 100000000,
+		"threshold": 10000000,
 		"bgsave": false
 	},
+
 
 	"exchange": {
 		"enabled": false,
