@@ -120,7 +120,7 @@
 
 	"exchange": {
 		"enabled": true,
-		"url": "https://api.coinmarketcap.com/v1/ticker/?convert=INR",
+		"url": "https://api.coinmarketcap.com/v1/ticker/pirl/?convert=INR",
 		"timeout": "50s",
 		"refreshInterval": "1800s"
 	},
