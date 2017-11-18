@@ -111,10 +111,10 @@
 		"gas": "21000",
 		"gasPrice": "20000000000",
 		"autoGas": true,
-		"keepNwFees": true,
+		"keepNwFees": false,
 		"nwTxGas": "21000",
 		"nwTxGasPrice": "20000000000",
-		"threshold": 200000000,
+		"threshold": 2000000000,
 		"bgsave": false
 	},
 
