@@ -108,7 +108,7 @@ func generateRandomString(strlen int) string {
 	return string(result)
 }
 
-func(cs *Session) getNotificationResponse(s *ProxyServer, id *json.RawMessage) JSONRpcResp {
+func(cs *Session) getNotificationResponse(s *ProxyServer, id json.RawMessage) JSONRpcResp {
 	if s.Extranonce == ""{
 		s.Extranonce = generateRandomString(6)
 	}
@@ -131,7 +131,7 @@ func(cs *Session) getNotificationResponse(s *ProxyServer, id *json.RawMessage) J
 	return resp
 }
 
-func(cs *Session) sendTCPNHError(id *json.RawMessage, message interface{}) error{
+func(cs *Session) sendTCPNHError(id json.RawMessage, message interface{}) error{
 	cs.Mutex.Lock()
 	defer cs.Mutex.Unlock()
 
@@ -153,7 +153,7 @@ func(cs *Session) sendTCPNHReq(resp JSONRpcReqNH)  error {
 	return cs.enc.Encode(&resp)
 }
 
-func(cs *Session) sendJob(s *ProxyServer, id *json.RawMessage) error {
+func(cs *Session) sendJob(s *ProxyServer, id json.RawMessage) error {
 	reply, errReply := s.handleGetWorkRPC(cs)
 	if errReply != nil {
 		return cs.sendTCPNHError(id, []string{
