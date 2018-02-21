@@ -34,6 +34,8 @@ const byzantiumHardForkHeight = 5000000
 var homesteadReward = math.MustParseBig256("4000000000000000000")
 var byzantiumReward = math.MustParseBig256("4000000000000000000")
 
+var NewUncleReward = math.MustParseBig256("125000000000000000")
+
 // Donate 10% from pool fees to developers
 const donationFee = 10.0
 const donationAccount = "0xb06f10c6f9af15b9158ea34d7dbbcf7364e4e6f5"
@@ -552,11 +554,12 @@ func getRewardForUncle(height int64) *big.Int {
 }
 
 func getUncleReward(uHeight, height int64) *big.Int {
-	reward := getConstReward(height)
-	k := height - uHeight
-	reward.Mul(big.NewInt(8-k), reward)
-	reward.Div(reward, big.NewInt(8))
-	return reward
+	//reward := getConstReward(height)
+	//k := height - uHeight
+	//reward.Mul(big.NewInt(8-k), reward)
+	//reward.Div(reward, big.NewInt(8))
+    return new(big.Int).Set(NewUncleReward)
+
 }
 
 func (u *BlockUnlocker) getExtraRewardForTx(block *rpc.GetBlockReply) (*big.Int, error) {
