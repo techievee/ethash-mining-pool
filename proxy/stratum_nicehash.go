@@ -153,7 +153,7 @@ func(cs *Session) sendTCPNHReq(resp JSONRpcReqNH)  error {
 	return cs.enc.Encode(&resp)
 }
 
-func(cs *Session) sendJob(s *ProxyServer, id json.RawMessage) error {
+func(cs *Session) sendJob(s *ProxyServer, id *json.RawMessage) error {
 	reply, errReply := s.handleGetWorkRPC(cs)
 	if errReply != nil {
 		return cs.sendTCPNHError(id, []string{
