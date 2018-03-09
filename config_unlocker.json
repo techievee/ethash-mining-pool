@@ -71,12 +71,12 @@
 	"upstream": [
 		{
 			"name": "mumbai",
-			"url": "http://10.4.1.17:57955",
+			"url": "http://10.4.1.17:7565",
 			"timeout": "10s"
 		},
 		{
 			"name": "backup",
-			"url": "http://10.4.1.11:57955",
+			"url": "http://10.4.1.11:7565",
 			"timeout": "10s"
 		}
 	],
