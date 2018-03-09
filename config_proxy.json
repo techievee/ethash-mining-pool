@@ -27,7 +27,7 @@
 		},
 		"stratum_nice_hash": {
 			"enabled": false,
-			"listen": "0.0.0.0:40024",
+			"listen": "0.0.0.0:40022",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
