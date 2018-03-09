@@ -71,19 +71,19 @@
 	"upstream": [
 		{
 			"name": "mumbai",
-			"url": "http://10.4.1.11:7565",
+			"url": "http://10.4.1.17:57955",
 			"timeout": "10s"
 		},
 		{
-			"name": "lowa",
-			"url": "http://10.3.1.11:7565",
+			"name": "backup",
+			"url": "http://10.4.1.11:57955",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
 		"endpoint": "10.4.10.100:6379",
-		"poolSize": 10,
+		"poolSize": 300,
 		"database": 7,
 		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
@@ -100,7 +100,6 @@
 		"daemon": "http://127.0.0.1:8883",
 		"timeout": "10s"
 	},
-
 	"payouts": {
 		"enabled": true,
 		"requirePeers": 5,
@@ -110,13 +109,14 @@
 		"address": "0xfa7a014152bf7df660cfd423487d1ad5b14ee5d4",
 		"gas": "21000",
 		"gasPrice": "20000000000",
-		"autoGas": true,
+		"autoGas": false,
 		"keepNwFees": true,
 		"nwTxGas": "21000",
 		"nwTxGasPrice": "20000000000",
 		"threshold": 500000000,
 		"bgsave": false
 	},
+
 	"exchange": {
 		"enabled": false,
 		"url": "https://api.coinmarketcap.com/v1/ticker/?convert=INR",

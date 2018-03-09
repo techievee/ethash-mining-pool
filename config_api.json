@@ -59,7 +59,7 @@
 		"purgeOnly": false,
 		"purgeInterval": "10m",
 		"listen": "0.0.0.0:7070",
-		"statsCollectInterval": "5s",
+		"statsCollectInterval": "30s",
 		"hashrateWindow": "30m",
 		"hashrateLargeWindow": "3h",
 		"luckWindow": [64, 128, 256],
@@ -71,19 +71,19 @@
 	"upstream": [
 		{
 			"name": "mumbai",
-			"url": "http://10.4.1.11:7565",
+			"url": "http://10.4.1.17:57955",
 			"timeout": "10s"
 		},
 		{
-			"name": "lowa",
-			"url": "http://10.3.1.11:7565",
+			"name": "backup",
+			"url": "http://10.4.1.11:57955",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
 		"endpoint": "10.4.10.100:6379",
-		"poolSize": 10,
+		"poolSize": 300,
 		"database": 7,
 		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
@@ -120,7 +120,7 @@
 
 	"exchange": {
 		"enabled": true,
-		"url": "https://api.coinmarketcap.com/v1/ticker/?convert=INR",
+		"url": "https://api.coinmarketcap.com/v1/ticker/dubaicoin-dbix/?convert=INR",
 		"timeout": "50s",
 		"refreshInterval": "1800s"
 	},

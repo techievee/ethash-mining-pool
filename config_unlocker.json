@@ -7,7 +7,7 @@
 
 	"proxy": {
 		"enabled": false,
-		"listen": "0.0.0.0:7777",
+		"listen": "0.0.0.0:40007",
 		"limitHeadersSize": 1024,
 		"limitBodySize": 256,
 		"behindReverseProxy": false,
@@ -21,13 +21,13 @@
 
 		"stratum": {
 			"enabled": false,
-			"listen": "0.0.0.0:7007",
+			"listen": "0.0.0.0:40017",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
 		"stratum_nice_hash": {
 			"enabled": false,
-			"listen": "0.0.0.0:7079",
+			"listen": "0.0.0.0:40027",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
@@ -71,26 +71,26 @@
 	"upstream": [
 		{
 			"name": "mumbai",
-			"url": "http://10.4.1.11:7565",
+			"url": "http://10.4.1.17:57955",
 			"timeout": "10s"
 		},
 		{
-			"name": "lowa",
-			"url": "http://10.3.1.11:7565",
+			"name": "backup",
+			"url": "http://10.4.1.11:57955",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
 		"endpoint": "10.4.10.100:6379",
-		"poolSize": 10,
+		"poolSize": 300,
 		"database": 7,
 		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
 
 	"unlocker": {
 		"enabled": true,
-		"poolFee": 0.5,
+		"poolFee": 0.9,
 		"poolFeeAddress": "0xb06f10c6f9af15b9158ea34d7dbbcf7364e4e6f5",
 		"donate": false,
 		"depth": 32,
@@ -100,6 +100,7 @@
 		"daemon": "http://127.0.0.1:8883",
 		"timeout": "10s"
 	},
+
 
 	"payouts": {
 		"enabled": false,
