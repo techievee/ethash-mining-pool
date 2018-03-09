@@ -7,11 +7,11 @@
 
 	"proxy": {
 		"enabled": true,
-		"listen": "0.0.0.0:7777",
+		"listen": "0.0.0.0:40009",
 		"limitHeadersSize": 1024,
 		"limitBodySize": 256,
 		"behindReverseProxy": false,
-		"blockRefreshInterval": "120ms",
+		"blockRefreshInterval": "60ms",
 		"stateUpdateInterval": "3s",
 		"difficulty": 4000000000,
 		"hashrateExpiration": "3h",
@@ -21,13 +21,13 @@
 
 		"stratum": {
 			"enabled": true,
-			"listen": "0.0.0.0:7007",
+			"listen": "0.0.0.0:40019",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
 		"stratum_nice_hash": {
 			"enabled": false,
-			"listen": "0.0.0.0:7079",
+			"listen": "0.0.0.0:40029",
 			"timeout": "120s",
 			"maxConn": 8192
 		},
@@ -71,19 +71,19 @@
 	"upstream": [
 		{
 			"name": "mumbai",
-			"url": "http://10.4.1.12:7075",
+			"url": "http://10.4.1.17:7075",
 			"timeout": "10s"
 		},
 		{
-			"name": "lowa",
-			"url": "http://10.3.1.12:7075",
+			"name": "backup",
+			"url": "http://10.4.1.11:8886",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
 		"endpoint": "10.4.10.100:6379",
-		"poolSize": 10,
+		"poolSize": 300,
 		"database": 4,
 		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},

@@ -71,19 +71,19 @@
 	"upstream": [
 		{
 			"name": "mumbai",
-			"url": "http://10.4.1.12:7075",
+			"url": "http://10.4.1.17:7075",
 			"timeout": "10s"
 		},
 		{
-			"name": "lowa",
-			"url": "http://10.3.1.12:7075",
+			"name": "backup",
+			"url": "http://10.4.1.11:8886",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
 		"endpoint": "10.4.10.100:6379",
-		"poolSize": 10,
+		"poolSize": 300,
 		"database": 4,
 		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
@@ -101,6 +101,7 @@
 		"timeout": "10s"
 	},
 
+
 	"payouts": {
 		"enabled": true,
 		"requirePeers": 5,
@@ -110,8 +111,8 @@
 		"address": "0xde6f1b5db947d95a0688ca425ca3a5d9c09092c1",
 		"gas": "21000",
 		"gasPrice": "20000000000",
-		"autoGas": true,
-		"keepNwFees": true,
+		"autoGas": false,
+		"keepNwFees": false,
 		"nwTxGas": "21000",
 		"nwTxGasPrice": "20000000000",
 		"threshold": 500000000,
