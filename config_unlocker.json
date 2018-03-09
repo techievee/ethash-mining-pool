@@ -71,26 +71,26 @@
 	"upstream": [
 		{
 			"name": "mumbai",
-			"url": "http://10.4.1.13:6588",
+			"url": "http://10.4.1.16:6588",
 			"timeout": "10s"
 		},
 		{
-			"name": "lowa",
-			"url": "http://10.3.1.13:6588",
+			"name": "backup",
+			"url": "http://10.4.1.11:6588",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
 		"endpoint": "10.4.10.100:6379",
-		"poolSize": 10,
+		"poolSize": 300,
 		"database": 10,
 		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
 
 	"unlocker": {
 		"enabled": true,
-		"poolFee": 0.5,
+		"poolFee": 0.9,
 		"poolFeeAddress": "0x9dc0276890dbcc42c5bf98ca83c0c83b87b39951",
 		"donate": false,
 		"depth": 120,
