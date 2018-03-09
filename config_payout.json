@@ -71,25 +71,25 @@
 	"upstream": [
 		{
 			"name": "mumbai",
-			"url": "http://10.4.1.12:39421",
+			"url": "http://10.4.1.17:39421",
 			"timeout": "10s"
 		},
 		{
-			"name": "lowa",
-			"url": "http://10.3.1.12:39421",
+			"name": "backup",
+			"url": "http://10.4.1.11:39421",
 			"timeout": "10s"
 		}
 	],
 
 	"redis": {
 		"endpoint": "10.4.10.100:6379",
-		"poolSize": 10,
+		"poolSize": 300,
 		"database": 2,
 		"password": "9B3D8aD6705d246C82dBaA0DC10D2C7Ce47115Af"
 	},
 
 	"unlocker": {
-		"enabled": true,
+		"enabled": false,
 		"poolFee": 0.5,
 		"poolFeeAddress": "0xe3040a18425497ad3963ce3d79d6a760d87cc337",
 		"donate": false,
@@ -103,20 +103,21 @@
 
 	"payouts": {
 		"enabled": true,
-		"requirePeers": 5,
+		"requirePeers": 1,
 		"interval": "120m",
 		"daemon": "http://127.0.0.1:8885",
 		"timeout": "10s",
 		"address": "0x780b3413dbe0ee5a8c5cbcddc1bdcf4fa63988b6",
 		"gas": "21000",
-		"gasPrice": "20000000000",
-		"autoGas": true,
+		"gasPrice": "50000000000",
+		"autoGas": false,
 		"keepNwFees": true,
 		"nwTxGas": "21000",
 		"nwTxGasPrice": "20000000000",
 		"threshold": 500000000,
 		"bgsave": false
 	},
+
 
 	"exchange": {
 		"enabled": false,
