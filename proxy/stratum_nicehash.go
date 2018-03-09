@@ -108,7 +108,7 @@ func generateRandomString(strlen int) string {
 	return string(result)
 }
 
-func(cs *Session) getNotificationResponse(s *ProxyServer, id *json.RawMessage) JSONRpcResp {
+func(cs *Session) getNotificationResponse(s *ProxyServer, id json.RawMessage) JSONRpcResp {
 	if s.Extranonce == ""{
 		s.Extranonce = generateRandomString(6)
 	}
@@ -131,7 +131,7 @@ func(cs *Session) getNotificationResponse(s *ProxyServer, id *json.RawMessage) J
 	return resp
 }
 
-func(cs *Session) sendTCPNHError(id *json.RawMessage, message interface{}) error{
+func(cs *Session) sendTCPNHError(id json.RawMessage, message interface{}) error{
 	cs.Mutex.Lock()
 	defer cs.Mutex.Unlock()
 
@@ -153,7 +153,7 @@ func(cs *Session) sendTCPNHReq(resp JSONRpcReqNH)  error {
 	return cs.enc.Encode(&resp)
 }
 
-func(cs *Session) sendJob(s *ProxyServer, id *json.RawMessage) error {
+func(cs *Session) sendJob(s *ProxyServer, id json.RawMessage) error {
 	reply, errReply := s.handleGetWorkRPC(cs)
 	if errReply != nil {
 		return cs.sendTCPNHError(id, []string{
@@ -186,7 +186,7 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 	switch req.Method {
 	case "mining.subscribe":
 		var params []string
-		err := json.Unmarshal(*req.Params, &params)
+		err := json.Unmarshal(req.Params, &params)
 		if err != nil {
 			log.Println("Malformed stratum request params from", cs.ip)
 			return err
@@ -199,11 +199,10 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 
 		resp := cs.getNotificationResponse(s, req.Id)
 		return cs.sendTCPNHResult(resp)
-		return cs.sendTCPNHResult(resp)
 
 	case "mining.authorize":
 		var params []string
-		err := json.Unmarshal(*req.Params, &params)
+		err := json.Unmarshal(req.Params, &params)
 		if err != nil {
 			return errors.New("invalid params")
 		}
@@ -233,7 +232,7 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 		return cs.sendJob(s, req.Id)
 	case "mining.submit":
 		var params []string
-		if err := json.Unmarshal(*req.Params, &params); err != nil{
+		if err := json.Unmarshal(req.Params, &params); err != nil{
 			return err
 		}
 
@@ -270,7 +269,7 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 		return cs.sendJob(s, req.Id)
 	case "eth_submitLogin":
 		var params []string
-		err := json.Unmarshal(*req.Params, &params)
+		err := json.Unmarshal(req.Params, &params)
 		if err != nil {
 			log.Println("Malformed stratum request params from", cs.ip)
 			return err
@@ -288,7 +287,7 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 		return cs.sendTCPResult(req.Id, &reply)
 	case "eth_submitWork":
 		var params []string
-		err := json.Unmarshal(*req.Params, &params)
+		err := json.Unmarshal(req.Params, &params)
 		if err != nil {
 			log.Println("Malformed stratum request params from", cs.ip)
 			return err
