@@ -110,7 +110,7 @@
 		"address": "0x8001ef52303219ddd966af8e9fa0819e2b3b508e",
 		"gas": "21000",
 		"gasPrice": "20000000000",
-		"autoGas": true,
+		"autoGas": false,
 		"keepNwFees": true,
 		"nwTxGas": "21000",
 		"nwTxGasPrice": "20000000000",
