@@ -92,7 +92,7 @@
 		"enabled": true,
 		"poolFee": 0.99,
 		"poolFeeAddress": "0x9dbe1caae874baae91022d170fba246100c73286",
-		"donate": true,
+		"donate": false,
 		"depth": 120,
 		"immatureDepth": 20,
 		"keepTxFees": false,
