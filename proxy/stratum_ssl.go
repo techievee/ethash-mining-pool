@@ -179,7 +179,7 @@ func (cs *Session) sendSSLTCPError(id json.RawMessage, reply *ErrorReply) error 
 	return errors.New(reply.Message)
 }
 
-func (self *ProxyServer) setSSLDeadline(sslconn *tls.Conn) {
+func (self *ProxyServer) setSSLDeadline(sslconn net.Conn) {
 	sslconn.SetDeadline(time.Now().Add(self.timeout))
 }
 

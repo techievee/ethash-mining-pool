@@ -51,7 +51,7 @@ type Session struct {
 	// Stratum
 	sync.Mutex
 	conn  *net.TCPConn
-	sslconn  *tls.Conn
+	sslconn  net.Conn
 	login string
 	subscriptionID string
 	JobDeatils jobDetails
