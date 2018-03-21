@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"crypto/tls"
 
 	"github.com/techievee/open-ethereum-pool/policy"
 	"github.com/techievee/open-ethereum-pool/rpc"
