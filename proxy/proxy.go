@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"crypto/tls"
 
 	"github.com/techievee/open-ethereum-pool/policy"
 	"github.com/techievee/open-ethereum-pool/rpc"
@@ -50,10 +51,13 @@ type Session struct {
 	// Stratum
 	sync.Mutex
 	conn  *net.TCPConn
+	sslconn  *tls.Conn
 	login string
 	subscriptionID string
 	JobDeatils jobDetails
 }
+
+
 
 func NewProxy(cfg *Config, backend *storage.RedisClient) *ProxyServer {
 	if len(cfg.Name) == 0 {
@@ -74,6 +78,11 @@ func NewProxy(cfg *Config, backend *storage.RedisClient) *ProxyServer {
 	if cfg.Proxy.Stratum.Enabled {
 		proxy.sessions = make(map[*Session]struct{})
 		go proxy.ListenTCP()
+	}
+
+	if cfg.Proxy.StratumSSL.Enabled {
+		proxy.sessions = make(map[*Session]struct{})
+		go proxy.ListenSSLTCP()
 	}
 
 	if cfg.Proxy.StratumNiceHash.Enabled {
