@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	MaxReqSize = 1024
+	MaxSSLReqSize = 1024
 )
 
 func (s *ProxyServer) ListenSSLTCP() {
@@ -74,7 +74,7 @@ func (s *ProxyServer) ListenSSLTCP() {
 
 func (s *ProxyServer) handleSSLTCPClient(cs *Session) error {
 	cs.enc = json.NewEncoder(cs.sslconn)
-	connbuff := bufio.NewReaderSize(cs.sslconn, MaxReqSize)
+	connbuff := bufio.NewReaderSize(cs.sslconn, MaxSSLReqSize)
 	s.setSSLDeadline(cs.sslconn)
 
 	for {
