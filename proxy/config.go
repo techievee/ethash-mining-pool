@@ -51,6 +51,7 @@ type Proxy struct {
 	HealthCheck bool  `json:"healthCheck"`
 
 	Stratum Stratum `json:"stratum"`
+	StratumSSL StratumSSL `json:"stratum_ssl"`
 
 	StratumNiceHash StratumNiceHash `json:"stratum_nice_hash"`
 }
@@ -61,6 +62,16 @@ type Stratum struct {
 	Timeout string `json:"timeout"`
 	MaxConn int    `json:"maxConn"`
 }
+
+type StratumSSL struct {
+	Enabled bool   `json:"enabled"`
+	Listen  string `json:"listen"`
+	Timeout string `json:"timeout"`
+	MaxConn int    `json:"maxConn"`
+	CertFile string `json:"certfile"`
+	CertKey string `json:"certkey"`
+}
+
 
 type StratumNiceHash struct {
 	Enabled bool   `json:"enabled"`

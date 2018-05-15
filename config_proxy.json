@@ -25,6 +25,18 @@
 			"timeout": "120s",
 			"maxConn": 8192
 		},
+
+		"stratum_ssl": {
+			"enabled": true,
+			"listen": "0.0.0.0:5555",
+			"timeout": "120s",
+			"maxConn": 8192,
+			"certfile": "/home/daggerpool_com/ssl/etc02.miningpoolindia.org.pem",
+			"certkey": "/home/daggerpool_com/ssl/etc02.miningpoolindia.org.key"
+
+
+		},
+
 		"stratum_nice_hash": {
 			"enabled": false,
 			"listen": "0.0.0.0:40021",
