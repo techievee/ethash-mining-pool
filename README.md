@@ -1,12 +1,5 @@
-## Open Source Ethereum Mining Pool
+## Open Source Ethereum Mining Pool : Enhanced version of Sammy pool
 
-![Miner's stats page](https://15254b2dcaab7f5478ab-24461f391e20b7336331d5789078af53.ssl.cf1.rackcdn.com/ethereum.vanillaforums.com/editor/pe/cf77cki0pjpt.png)
-
-[![Join the chat at https://gitter.im/sammy007/open-ethereum-pool](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sammy007/open-ethereum-pool?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/sammy007/open-ethereum-pool.svg?branch=develop)](https://travis-ci.org/sammy007/open-ethereum-pool) [![Go Report Card](https://goreportcard.com/badge/github.com/techievee/open-ethereum-pool)](https://goreportcard.com/report/github.com/techievee/open-ethereum-pool)
-
-[List Of Open Ethereum Pools](https://github.com/techievee/open-ethereum-pool/wiki/List-Of-Open-Pools)
-
-### Features
 
 **This pool is being further developed to provide an easy to use pool for Ethereum miners. This software is functional however an optimised release of the pool is expected soon. Testing and bug submissions are welcome!**
 
@@ -16,26 +9,19 @@
 * Modern beautiful Ember.js frontend
 * Separate stats for workers: can highlight timed-out workers so miners can perform maintenance of rigs
 * JSON-API for stats
-* PPLNS block reward
-
-#### Proxies
-
-* [Ether-Proxy](https://github.com/techievee/ether-proxy) HTTP proxy with web interface
-* [Stratum Proxy](https://github.com/Atrides/eth-proxy) for Ethereum
+* Dynamic PPLNS block reward
 
 ### Building on Linux
 
 Dependencies:
 
-  * go >= 1.6
-  * geth or parity
+  * go >= 1.11
+  * geth or parity (Parity preferred)
   * redis-server >= 2.8.0
   * nodejs >= 4 LTS
   * nginx
 
 **I highly recommend to use Ubuntu 16.04 LTS.**
-
-First install  [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Installation-Instructions-for-Ubuntu).
 
 Clone & compile:
 
@@ -53,6 +39,13 @@ Install redis-server.
 You can use Ubuntu upstart - check for sample config in <code>upstart.conf</code>.
 
 ### Building Frontend
+
+There are 2 front end. 1 for managing different pool statistics, another for single coin frontend.
+
+You may choose your desired one
+
+Front end api : https://github.com/techievee/statistics_api
+TO show the statistics for all the coins : https://github.com/techievee/generalapi
 
 Install nodejs. I suggest using LTS version >= 4.x from https://github.com/nodesource/distributions or from your Linux distribution or simply install nodejs on Ubuntu Xenial 16.04.
 
@@ -306,16 +299,5 @@ I recommend this deployment strategy:
 * Don't run payouts and unlocker modules as part of mining node. Create separate configs for both, launch independently and make sure you have a single instance of each module running.
 * If `poolFeeAddress` is not specified all pool profit will remain on coinbase address. If it specified, make sure to periodically send some dust back required for payments.
 
-### Alternative Ethereum Implementations
-
-This pool is tested to work with [Ethcore's Parity](https://github.com/ethcore/parity). Mining and block unlocking works, but I am not sure about payouts and suggest to run *official* geth node for payments.
-
-### Credits
-
-Made by sammy007. Licensed under GPLv3.
-
-#### Contributors
-
-[Alex Leverington](https://github.com/subtly)
 
 
