@@ -26,15 +26,15 @@ Dependencies:
 Clone & compile:
 
     git config --global http.https://gopkg.in.followRedirects true
-    git clone https://github.com/techievee/open-ethereum-pool.git
-    cd open-ethereum-pool
+    git clone https://github.com/techievee/ethash-mining-pool.git
+    cd ethash-mining-pool
     make
 
 Install redis-server.
 
 ### Running Pool
 
-    ./build/bin/open-ethereum-pool config.json
+    ./build/bin/ethash-mining-pool config.json
 
 You can use Ubuntu upstart - check for sample config in <code>upstart.conf</code>.
 

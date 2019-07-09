@@ -13,10 +13,10 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/techievee/open-ethereum-pool/policy"
-	"github.com/techievee/open-ethereum-pool/rpc"
-	"github.com/techievee/open-ethereum-pool/storage"
-	"github.com/techievee/open-ethereum-pool/util"
+	"github.com/techievee/ethash-mining-pool/policy"
+	"github.com/techievee/ethash-mining-pool/rpc"
+	"github.com/techievee/ethash-mining-pool/storage"
+	"github.com/techievee/ethash-mining-pool/util"
 )
 
 type ProxyServer struct {
@@ -31,15 +31,15 @@ type ProxyServer struct {
 	failsCount         int64
 
 	// Stratum
-	sessionsMu         sync.RWMutex
-	sessions           map[*Session]struct{}
-	timeout            time.Duration
-	Extranonce         string
+	sessionsMu sync.RWMutex
+	sessions   map[*Session]struct{}
+	timeout    time.Duration
+	Extranonce string
 }
 
 type jobDetails struct {
-	JobID string
-	SeedHash string
+	JobID      string
+	SeedHash   string
 	HeaderHash string
 }
 
@@ -49,14 +49,12 @@ type Session struct {
 
 	// Stratum
 	sync.Mutex
-	conn  *net.TCPConn
-	sslconn  net.Conn
-	login string
+	conn           *net.TCPConn
+	sslconn        net.Conn
+	login          string
 	subscriptionID string
-	JobDeatils jobDetails
+	JobDeatils     jobDetails
 }
-
-
 
 func NewProxy(cfg *Config, backend *storage.RedisClient) *ProxyServer {
 	if len(cfg.Name) == 0 {
