@@ -10,9 +10,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
-	"github.com/techievee/open-ethereum-pool/rpc"
-	"github.com/techievee/open-ethereum-pool/storage"
-	"github.com/techievee/open-ethereum-pool/util"
+	"github.com/techievee/ethash-mining-pool/rpc"
+	"github.com/techievee/ethash-mining-pool/storage"
+	"github.com/techievee/ethash-mining-pool/util"
 )
 
 const txCheckInterval = 5 * time.Second
@@ -121,7 +121,7 @@ func (u *PayoutsProcessor) process() {
 		amountInShannon := big.NewInt(amount)
 
 		ptresh, _ := u.backend.GetThreshold(login)
-		if(ptresh <= 10) {
+		if ptresh <= 10 {
 			ptresh = u.config.Threshold
 		}
 
@@ -181,9 +181,9 @@ func (u *PayoutsProcessor) process() {
 		TxCharges := big.NewInt(0)
 		gasPrice := util.String2Big(u.config.GasPrice)
 
-		if u.config.AutoGas{
-			autogas,err := u.rpc.GetGasPrice()
-			if(err!=nil){
+		if u.config.AutoGas {
+			autogas, err := u.rpc.GetGasPrice()
+			if err != nil {
 				log.Printf("Unable to get the gasprice from the geth, Gasprice is set as Auto")
 				u.halt = true
 				u.lastFail = err
@@ -192,15 +192,13 @@ func (u *PayoutsProcessor) process() {
 			gasPrice := big.NewInt(autogas)
 			TxCharges.Mul(gasPrice, util.String2Big(u.config.Gas))
 
-		}else{
+		} else {
 			TxCharges.Mul(gasPrice, util.String2Big(u.config.Gas))
 		}
 
-
 		//Deduct the Calulated Transaction Charges
-		amountInWei.Sub(amountInWei,TxCharges)
-		gasPriceHex :=  hexutil.EncodeBig(gasPrice)
-
+		amountInWei.Sub(amountInWei, TxCharges)
+		gasPriceHex := hexutil.EncodeBig(gasPrice)
 
 		value := hexutil.EncodeBig(amountInWei)
 		txHash, err := u.rpc.SendTransaction(u.config.Address, login, u.config.GasHex(), gasPriceHex, value, u.config.AutoGas)

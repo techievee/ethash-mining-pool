@@ -1,20 +1,20 @@
 package proxy
 
 import (
-	"net"
-	"log"
-	"encoding/json"
 	"bufio"
-	"io"
+	"encoding/json"
 	"errors"
+	"io"
+	"log"
+	"net"
 	"time"
 
-	"github.com/techievee/open-ethereum-pool/util"
+	"github.com/techievee/ethash-mining-pool/util"
 	"math/rand"
 	"strings"
 )
 
-func (s *ProxyServer) ListenNiceHashTCP(){
+func (s *ProxyServer) ListenNiceHashTCP() {
 	timeout := util.MustParseDuration(s.config.Proxy.StratumNiceHash.Timeout)
 	s.timeout = timeout
 
@@ -108,8 +108,8 @@ func generateRandomString(strlen int) string {
 	return string(result)
 }
 
-func(cs *Session) getNotificationResponse(s *ProxyServer, id *json.RawMessage) JSONRpcResp {
-	if s.Extranonce == ""{
+func (cs *Session) getNotificationResponse(s *ProxyServer, id *json.RawMessage) JSONRpcResp {
+	if s.Extranonce == "" {
 		s.Extranonce = generateRandomString(6)
 	}
 
@@ -122,16 +122,16 @@ func(cs *Session) getNotificationResponse(s *ProxyServer, id *json.RawMessage) J
 	result[1] = s.Extranonce
 
 	resp := JSONRpcResp{
-		Id:id,
-		Version:"EthereumStratum/1.0.0",
-		Result:result,
-		Error: nil,
+		Id:      id,
+		Version: "EthereumStratum/1.0.0",
+		Result:  result,
+		Error:   nil,
 	}
 
 	return resp
 }
 
-func(cs *Session) sendTCPNHError(id *json.RawMessage, message interface{}) error{
+func (cs *Session) sendTCPNHError(id *json.RawMessage, message interface{}) error {
 	cs.Mutex.Lock()
 	defer cs.Mutex.Unlock()
 
@@ -139,21 +139,21 @@ func(cs *Session) sendTCPNHError(id *json.RawMessage, message interface{}) error
 	return cs.enc.Encode(&resp)
 }
 
-func(cs *Session) sendTCPNHResult(resp JSONRpcResp)  error {
+func (cs *Session) sendTCPNHResult(resp JSONRpcResp) error {
 	cs.Mutex.Lock()
 	defer cs.Mutex.Unlock()
 
 	return cs.enc.Encode(&resp)
 }
 
-func(cs *Session) sendTCPNHReq(resp JSONRpcReqNH)  error {
+func (cs *Session) sendTCPNHReq(resp JSONRpcReqNH) error {
 	cs.Mutex.Lock()
 	defer cs.Mutex.Unlock()
 
 	return cs.enc.Encode(&resp)
 }
 
-func(cs *Session) sendJob(s *ProxyServer, id *json.RawMessage) error {
+func (cs *Session) sendJob(s *ProxyServer, id *json.RawMessage) error {
 	reply, errReply := s.handleGetWorkRPC(cs)
 	if errReply != nil {
 		return cs.sendTCPNHError(id, []string{
@@ -163,13 +163,13 @@ func(cs *Session) sendJob(s *ProxyServer, id *json.RawMessage) error {
 	}
 
 	cs.JobDeatils = jobDetails{
-		JobID: generateRandomString(8),
-		SeedHash: reply[1],
+		JobID:      generateRandomString(8),
+		SeedHash:   reply[1],
 		HeaderHash: reply[0],
 	}
 
 	resp := JSONRpcReqNH{
-		Method:"mining.notify",
+		Method: "mining.notify",
 		Params: []interface{}{
 			cs.JobDeatils.JobID,
 			cs.JobDeatils.SeedHash,
@@ -192,7 +192,7 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 			return err
 		}
 
-		if params[1] != "EthereumStratum/1.0.0"{
+		if params[1] != "EthereumStratum/1.0.0" {
 			log.Println("Unsupported stratum version from ", cs.ip)
 			return cs.sendTCPNHError(req.Id, "unsupported ethereum version")
 		}
@@ -208,7 +208,7 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 		}
 		splitData := strings.Split(params[0], ".")
 		params[0] = splitData[0]
-		reply , errReply := s.handleLoginRPC(cs, params, req.Worker)
+		reply, errReply := s.handleLoginRPC(cs, params, req.Worker)
 		if errReply != nil {
 			return cs.sendTCPNHError(req.Id, []string{
 				string(errReply.Code),
@@ -216,15 +216,15 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 			})
 		}
 
-		resp := JSONRpcResp{Id:req.Id, Result:reply, Error:nil}
-		if err := cs.sendTCPNHResult(resp); err != nil{
+		resp := JSONRpcResp{Id: req.Id, Result: reply, Error: nil}
+		if err := cs.sendTCPNHResult(resp); err != nil {
 			return err
 		}
 
 		paramsDiff := []int64{
 			4,
 		}
-		respReq := JSONRpcReqNH{Method:"mining.set_difficulty", Params:paramsDiff}
+		respReq := JSONRpcReqNH{Method: "mining.set_difficulty", Params: paramsDiff}
 		if err := cs.sendTCPNHReq(respReq); err != nil {
 			return err
 		}
@@ -232,7 +232,7 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 		return cs.sendJob(s, req.Id)
 	case "mining.submit":
 		var params []string
-		if err := json.Unmarshal(*req.Params, &params); err != nil{
+		if err := json.Unmarshal(*req.Params, &params); err != nil {
 			return err
 		}
 
@@ -258,11 +258,11 @@ func (cs *Session) handleNHTCPMessage(s *ProxyServer, req *StratumReq) error {
 			})
 		}
 		resp := JSONRpcResp{
-			Id: req.Id,
+			Id:     req.Id,
 			Result: reply,
 		}
 
-		if err := cs.sendTCPNHResult(resp); err != nil{
+		if err := cs.sendTCPNHResult(resp); err != nil {
 			return err
 		}
 
@@ -330,13 +330,13 @@ func (s *ProxyServer) broadcastNewJobsNH() {
 
 		go func(cs *Session) {
 			cs.JobDeatils = jobDetails{
-				JobID: generateRandomString(8),
-				SeedHash: t.Seed,
+				JobID:      generateRandomString(8),
+				SeedHash:   t.Seed,
 				HeaderHash: t.Header,
 			}
 
 			resp := JSONRpcReqNH{
-				Method:"mining.notify",
+				Method: "mining.notify",
 				Params: []interface{}{
 					cs.JobDeatils.JobID,
 					cs.JobDeatils.SeedHash,
@@ -357,4 +357,3 @@ func (s *ProxyServer) broadcastNewJobsNH() {
 	}
 	log.Printf("Jobs broadcast finished %s", time.Since(start))
 }
-
