@@ -1,4 +1,4 @@
-## DUBAI COIN POOL FOR GO <1.11
+## MUSIC COIN POOL FOR GO <1.11
 
 
 **Please refer the Readme from master branch for detailed description**
