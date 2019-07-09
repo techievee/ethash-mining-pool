@@ -2,15 +2,15 @@ package proxy
 
 import (
 	"bufio"
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"io"
 	"log"
 	"net"
 	"time"
-	"crypto/tls"
 
-	"github.com/techievee/open-ethereum-pool/util"
+	"github.com/techievee/ethash-mining-pool/util"
 )
 
 const (
@@ -32,7 +32,7 @@ func (s *ProxyServer) ListenSSLTCP() {
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
-	server, err := tls.Listen("tcp", addr.String(),tlsCfg )
+	server, err := tls.Listen("tcp", addr.String(), tlsCfg)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}

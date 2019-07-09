@@ -1,12 +1,11 @@
 package proxy
 
 import (
-	"github.com/techievee/open-ethereum-pool/api"
-	"github.com/techievee/open-ethereum-pool/payouts"
-	"github.com/techievee/open-ethereum-pool/policy"
-	"github.com/techievee/open-ethereum-pool/storage"
-	"github.com/techievee/open-ethereum-pool/exchange"
-
+	"github.com/techievee/ethash-mining-pool/api"
+	"github.com/techievee/ethash-mining-pool/exchange"
+	"github.com/techievee/ethash-mining-pool/payouts"
+	"github.com/techievee/ethash-mining-pool/policy"
+	"github.com/techievee/ethash-mining-pool/storage"
 )
 
 type Config struct {
@@ -18,15 +17,15 @@ type Config struct {
 
 	Threads int `json:"threads"`
 
-	Coin  string         `json:"coin"`
-    Pplns int64          `json:"pplns"`
-	CoinName  string         `json:"coin-name"`
-	Redis storage.Config `json:"redis"`
+	Coin     string         `json:"coin"`
+	Pplns    int64          `json:"pplns"`
+	CoinName string         `json:"coin-name"`
+	Redis    storage.Config `json:"redis"`
 
 	BlockUnlocker payouts.UnlockerConfig `json:"unlocker"`
 	Payouts       payouts.PayoutsConfig  `json:"payouts"`
 
-	Exchange  exchange.ExchangeConfig `json:"exchange"`
+	Exchange exchange.ExchangeConfig `json:"exchange"`
 
 	NewrelicName    string `json:"newrelicName"`
 	NewrelicKey     string `json:"newrelicKey"`
@@ -50,7 +49,7 @@ type Proxy struct {
 	MaxFails    int64 `json:"maxFails"`
 	HealthCheck bool  `json:"healthCheck"`
 
-	Stratum Stratum `json:"stratum"`
+	Stratum    Stratum    `json:"stratum"`
 	StratumSSL StratumSSL `json:"stratum_ssl"`
 
 	StratumNiceHash StratumNiceHash `json:"stratum_nice_hash"`
@@ -64,14 +63,13 @@ type Stratum struct {
 }
 
 type StratumSSL struct {
-	Enabled bool   `json:"enabled"`
-	Listen  string `json:"listen"`
-	Timeout string `json:"timeout"`
-	MaxConn int    `json:"maxConn"`
+	Enabled  bool   `json:"enabled"`
+	Listen   string `json:"listen"`
+	Timeout  string `json:"timeout"`
+	MaxConn  int    `json:"maxConn"`
 	CertFile string `json:"certfile"`
-	CertKey string `json:"certkey"`
+	CertKey  string `json:"certkey"`
 }
-
 
 type StratumNiceHash struct {
 	Enabled bool   `json:"enabled"`
@@ -85,4 +83,3 @@ type Upstream struct {
 	Url     string `json:"url"`
 	Timeout string `json:"timeout"`
 }
-
