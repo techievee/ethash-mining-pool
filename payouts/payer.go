@@ -10,9 +10,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
-	"github.com/techievee/open-ethereum-pool/rpc"
-	"github.com/techievee/open-ethereum-pool/storage"
-	"github.com/techievee/open-ethereum-pool/util"
+	"github.com/techievee/ethash-mining-pool/rpc"
+	"github.com/techievee/ethash-mining-pool/storage"
+	"github.com/techievee/ethash-mining-pool/util"
 )
 
 const txCheckInterval = 5 * time.Second
@@ -27,9 +27,9 @@ type PayoutsConfig struct {
 	Gas          string `json:"gas"`
 	GasPrice     string `json:"gasPrice"`
 	AutoGas      bool   `json:"autoGas"`
-	KeepNwFees	 bool `json:"keepNwFees"`
-	TxGas     string `json:"nwTxGas"`
-	TxGasPrice     string `json:"nwTxGasPrice"`
+	KeepNwFees   bool   `json:"keepNwFees"`
+	TxGas        string `json:"nwTxGas"`
+	TxGasPrice   string `json:"nwTxGasPrice"`
 	// In Shannon
 	Threshold int64 `json:"threshold"`
 	BgSave    bool  `json:"bgsave"`
@@ -184,12 +184,12 @@ func (u *PayoutsProcessor) process() {
 
 		TxCharges := big.NewInt(0)
 
-		if u.config.KeepNwFees{
+		if u.config.KeepNwFees {
 
 			TxCharges.Mul(util.String2Big(u.config.TxGasPrice), util.String2Big(u.config.TxGas))
 
 			//Deduct the Calulated Transaction Charges
-			amountInWei.Sub(amountInWei,TxCharges)
+			amountInWei.Sub(amountInWei, TxCharges)
 
 		}
 
