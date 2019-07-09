@@ -14,7 +14,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/techievee/open-ethereum-pool/util"
+	"github.com/techievee/ethash-mining-pool/util"
 )
 
 type RPCClient struct {
@@ -228,7 +228,6 @@ func (r *RPCClient) SendTransaction(from, to, gas, gasPrice, value string, autoG
 		params["gas"] = gas
 		params["gasPrice"] = gasPrice
 	}
-
 
 	rpcResp, err := r.doPost(r.Url, "ele_sendTransaction", []interface{}{params})
 	var reply string
