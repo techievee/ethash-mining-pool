@@ -11,11 +11,11 @@ import (
 
 	"github.com/yvasiyarov/gorelic"
 
-	"github.com/techievee/open-ethereum-pool/api"
-	"github.com/techievee/open-ethereum-pool/payouts"
-	"github.com/techievee/open-ethereum-pool/proxy"
-	"github.com/techievee/open-ethereum-pool/storage"
-	"github.com/techievee/open-ethereum-pool/exchange"
+	"github.com/techievee/ethash-mining-pool/api"
+	"github.com/techievee/ethash-mining-pool/exchange"
+	"github.com/techievee/ethash-mining-pool/payouts"
+	"github.com/techievee/ethash-mining-pool/proxy"
+	"github.com/techievee/ethash-mining-pool/storage"
 )
 
 var cfg proxy.Config
@@ -41,13 +41,10 @@ func startPayoutsProcessor() {
 	u.Start()
 }
 
-
 func startExchangeProcessor() {
 	u := exchange.StartExchangeProcessor(&cfg.Exchange, backend)
 	u.Start()
 }
-
-
 
 func startNewrelic() {
 	if cfg.NewrelicEnabled {
@@ -93,7 +90,7 @@ func main() {
 	pong, err := backend.Check()
 	if err != nil {
 		log.Printf("Can't establish connection to backend: %v", err)
-                //os.Exit(0)
+		//os.Exit(0)
 	} else {
 		log.Printf("Backend check reply: %v", pong)
 	}

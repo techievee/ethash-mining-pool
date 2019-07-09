@@ -9,9 +9,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/techievee/open-ethereum-pool/storage"
-	"github.com/techievee/open-ethereum-pool/util"
-
+	"github.com/techievee/ethash-mining-pool/storage"
+	"github.com/techievee/ethash-mining-pool/util"
 )
 
 type Config struct {
@@ -306,14 +305,13 @@ func (s *PolicyServer) doBan(ip string) {
 	if err != nil {
 		return fmt.Errorf("error adding entry %s: %v (%s)", entry, err, out)
 	}
-*/
+	*/
 
 	args := strings.Fields(cmd)
 	head := args[0]
 	args = args[1:]
 
 	log.Printf("Banned %v with timeout %v on ipset %s", ip, timeout, set)
-
 
 	cmdo := exec.Command(head, args...)
 	output, err := cmdo.CombinedOutput()
