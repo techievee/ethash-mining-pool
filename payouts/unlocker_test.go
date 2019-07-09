@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/techievee/open-ethereum-pool/rpc"
-	"github.com/techievee/open-ethereum-pool/storage"
+	"github.com/techievee/ethash-mining-pool/rpc"
+	"github.com/techievee/ethash-mining-pool/storage"
 )
 
 func TestMain(m *testing.M) {
@@ -19,7 +19,7 @@ func TestCalculateRewards(t *testing.T) {
 	expectedRewards := map[string]int64{"0x0": 4877996431, "0x1": 97559929, "0x2": 24389982, "0x3": 48780, "0x4": 4878}
 	totalShares := int64(1025011)
 
-	rewards , percent := calculateRewardsForShares(shares, totalShares, blockReward)
+	rewards, percent := calculateRewardsForShares(shares, totalShares, blockReward)
 	expectedTotalAmount := int64(8000000000)
 
 	totalAmount := int64(0)
