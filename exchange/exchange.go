@@ -1,34 +1,29 @@
 package exchange
 
 import (
-
-
-	"sync"
 	"encoding/json"
-	"time"
-	"net/http"
 	"log"
+	"net/http"
+	"sync"
+	"time"
 
-	"github.com/techievee/open-ethereum-pool/util"
-	"github.com/techievee/open-ethereum-pool/storage"
+	"github.com/techievee/ethash-mining-pool/storage"
+	"github.com/techievee/ethash-mining-pool/util"
 	"io/ioutil"
-
 )
-
 
 type ExchangeProcessor struct {
 	ExchangeConfig *ExchangeConfig
-	backend  *storage.RedisClient
-	rpc      *RestClient
-	halt     bool
-
+	backend        *storage.RedisClient
+	rpc            *RestClient
+	halt           bool
 }
 
 type ExchangeConfig struct {
-	Enabled      bool   `json:"enabled"`
-	Name    string `json:"name"`
-	Url     string `json:"url"`
-	Timeout string `json:"timeout"`
+	Enabled         bool   `json:"enabled"`
+	Name            string `json:"name"`
+	Url             string `json:"url"`
+	Timeout         string `json:"timeout"`
 	RefreshInterval string `json:"refreshInterval"`
 }
 
@@ -65,13 +60,13 @@ func (r *RestClient) GetData() (ExchangeReply, error) {
 	return data, err
 }
 
-func StartExchangeProcessor(cfg *ExchangeConfig, backend *storage.RedisClient)*ExchangeProcessor{
+func StartExchangeProcessor(cfg *ExchangeConfig, backend *storage.RedisClient) *ExchangeProcessor {
 	u := &ExchangeProcessor{ExchangeConfig: cfg, backend: backend}
 	u.rpc = NewRestClient("ExchangeProcessor", cfg.Url, cfg.Timeout)
 	return u
 }
 
-func (u *ExchangeProcessor) Start(){
+func (u *ExchangeProcessor) Start() {
 
 	refreshIntv := util.MustParseDuration(u.ExchangeConfig.RefreshInterval)
 	refreshTimer := time.NewTimer(refreshIntv)
@@ -79,7 +74,6 @@ func (u *ExchangeProcessor) Start(){
 
 	u.fetchData()
 	refreshTimer.Reset(refreshIntv)
-
 
 	go func() {
 		for {
@@ -129,7 +123,6 @@ func (r *RestClient) doPost(url string, method string) ([]byte, error) {
 	}
 	defer resp.Body.Close()
 
-
 	if resp.StatusCode == 200 { // OK
 		bodyBytes, err2 := ioutil.ReadAll(resp.Body)
 
@@ -138,4 +131,3 @@ func (r *RestClient) doPost(url string, method string) ([]byte, error) {
 
 	return nil, err
 }
-
