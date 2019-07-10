@@ -2,6 +2,9 @@
 Highly Efficient mining pool designed for Ethash based coins
 [![Build Status](https://travis-ci.org/techievee/ethash-mining-pool.svg?branch=V2.0_Eth)](https://travis-ci.org/techievee/ethash-mining-pool) 
 
+
+![alt text](https://raw.githubusercontent.com/techievee/ethash-mining-pool/master/images/FrontEnd.png)
+
 ### Features
 
 **This pool is reegineered from sammy007 open-ethereum-pool for efficiency and for better payment algorithm. This software is functional and tested and implemented in big Mining farms. Testing and bug submissions are still welcome!
@@ -40,6 +43,10 @@ Highly Efficient mining pool designed for Ethash based coins
 *	V2.0_Soil – Soil Coin pool for go version <=1.10
 *	V2.0_Mc – Music Coin pool for go version <=1.10
 *	V2.0_Nuko – Nuko coin - * Not implemented
+
+### Architecture
+
+![Architecture](https://raw.githubusercontent.com/techievee/ethash-mining-pool/master/images/Architecture.PNG)
 
 
 ### Building on Linux
@@ -359,6 +366,12 @@ Configuration is actually simple, just read it twice and think twice before chan
 	"newrelicVerbose": false
 }
 
+
+```
+
+### Sample VM Configurations
+
+![Configuration](https://raw.githubusercontent.com/techievee/ethash-mining-pool/master/images/Configurations.PNG)
 
 
 
