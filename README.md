@@ -135,7 +135,6 @@ Then run this commands:
     ./build.sh
     cd ../
     cp misc/nginx-default.conf /etc/nginx/sites-available/default
-    service nginx restart
     systemctl enable nginx.service && systemctl stop nginx.service && systemctl start nginx.service
     screen -S pool ./build/bin/ethash-mining-pool config_api.json
     
