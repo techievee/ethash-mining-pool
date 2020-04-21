@@ -5,72 +5,6 @@ Front End component for the Ethash mining pool.
 This is an ember application, which can be hosted on any simple webserver.
 The application static pages can be placed in any Content delivery network for faster access
 
-  ### Features
-
-**This pool is reegineered from sammy007 open-ethereum-pool for efficiency and for better payment algorithm. This software is functional and tested and implemented in big Mining farms. Testing and bug submissions are still welcome!
-
-*	Support for HTTP, SSL, Stratum, Stratum+SSL mining
-*	Detailed block stats with luck percentage and full reward
-*	Failover node instances: high availability built in (Any number of full nodes can be added to the configurations)
-*	Modern beautiful Ember.js frontend for Individual coin statistics vs consolidated coin statistics
-*	Separate stats for workers: can highlight timed-out workers so miners can perform maintenance of rigs
-*	JSON-API for statistics, (Looking for contributor to build app for the pool)
-*	Dynamic PPLNS block reward (*New)
-
-## Prerequisites
-
-You will need the following things properly installed on your computer.
-
-* [Git](http://git-scm.com/)
-* [Node.js](http://nodejs.org/) (with NPM)
-* [Bower](http://bower.io/)
-* [Ember CLI](http://www.ember-cli.com/)
-* [PhantomJS](http://phantomjs.org/)
-
-### Branches 
-**Please clone the project using the branches as  per the coin
-
-* v1.0_Eth – Ethereum 
-*	v1.0_Etc – Ethereum Classic
-*	v1.0_Exp – Expanse 
-*	v1.0_Ubiq – Ubiq 
-*	v1.0_Pirl – Pirl 
-*	v1.0_Dbix – Dubai coin 
-*	v1.0_Soil – Soil Coin 
-*	v1.0_Mc – Music Coin 
-
-
-## Installation 
-
-* `git clone -b <branch> https://github.com/techievee/statistics_api.git` this repository
-* change into the new directory
-* `npm install`
-* `bower install`
-* `sudo chmod +x build.sh`
-* `./build.sh`
-
-Copy the build files to your webserver or to CDN.
-
-## Running / Development
-
-* `ember server`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
-### Running Tests
-
-* `ember test`
-* `ember test --server`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
-
-
 
 ### Configuration Documentation- Applies to all brnanches
 
@@ -191,11 +125,3 @@ module.exports = function (environment) {
 
 
 ```
-## Further Reading / Useful Links
-
-* [ember.js](http://emberjs.com/)
-* [ember-cli](http://www.ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
-
