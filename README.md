@@ -28,7 +28,7 @@ Highly Efficient mining pool designed for ETC coin
 *	SSL Support built-in
 *	Very attractive frontend with more detailed statistics
 
-### Whatch setup guide video on YOUTUBE channel
+### Whatch setup guide video on YouTube channel
 
 https://www.youtube.com/watch?v=NOjPFZk4sp0
 
