@@ -6,7 +6,7 @@ Highly Efficient mining pool designed for ETC coin
 
 ### Features
 
-**This pool is reegineered from sammy007 open-ethereum-pool for efficiency and for better payment algorithm. This software is functional and tested and implemented in big Mining farms. Testing and bug submissions are still welcome!
+**This pool is reegineered from sammy007 open-ethereum-pool for efficiency and for better payment algorithm. This software is functional and tested and implemented in big Mining farms!
 
 *	Support for HTTP, SSL, Stratum, Stratum+SSL mining
 *	Detailed block stats with luck percentage and full reward
@@ -27,6 +27,10 @@ Highly Efficient mining pool designed for ETC coin
 *	Nicehash support *Not tested
 *	SSL Support built-in
 *	Very attractive frontend with more detailed statistics
+
+### Whatch setup guide video on YOUTUBE channel
+
+https://www.youtube.com/watch?v=NOjPFZk4sp0
 
 
 ### Building on Linux
