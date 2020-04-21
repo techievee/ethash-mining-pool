@@ -79,53 +79,53 @@ Start blockchain sync
 
 In new console window run this commands:
 
-sudo su
-cd /pool
-add-apt-repository ppa:chris-lea/redis-server
-apt update
-apt install redis-server
-systemctl enable redis-server.service && systemctl stop redis-server.service && systemctl start redis-server.service
+    sudo su
+    cd /pool
+    add-apt-repository ppa:chris-lea/redis-server
+    apt update
+    apt install redis-server
+    systemctl enable redis-server.service && systemctl stop redis-server.service && systemctl start redis-server.service
 
-add-apt-repository ppa:longsleep/golang-backports
-apt update
-apt install golang-go
-curl -sL https://deb.nodesource.com/setup_13.x | bash -
-curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+    add-apt-repository ppa:longsleep/golang-backports
+    apt update
+    apt install golang-go
+    curl -sL https://deb.nodesource.com/setup_13.x | bash -
+    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
-apt update
-apt install nodejs yarn
+    apt update
+    apt install nodejs yarn
 
 
 ### Building Frontend
 
-cd www/
-nano config/environment.js
+    cd www/
+    nano config/environment.js
 
-change 192.168.0.200 to your IP or DNS
+Change 192.168.0.200 to your IP or DNS
 
-sudo npm install -g ember-cli@2.9.1
-sudo npm install -g bower
-sudo npm install fsevents@latest -f --save-optional
-sudo npm install intl-format-cache@4.2.22
-sudo npm install format-number
-sudo npm install ember-cli-accounting
-sudo npm install core-js@3.6.4
-sudo npm install jquery@3.4.0
-sudo npm install @babel/core@^7.0.0-beta.42
-sudo npm install babel-plugin-debug-macros@0.2.0
-sudo npm install ember-intl@4.3.0
-sudo npm install minimatch@3.0.2
-sudo npm install ember-cli-babel@7.18.0
-sudo npm install ember-resolver@7.0.0
-sudo npm install
-sudo npm audit fix
-sudo npm audit fix --force
-bower install --allow-root
-wget https://files.gitter.im/sammy007/open-ethereum-pool/IBJl/intl-format-cache.rar
-unrar x intl-format-cache.rar node_modules/intl-format-cache/ -Y
-chmod +x build.sh
-./build.sh
+    sudo npm install -g ember-cli@2.9.1
+    sudo npm install -g bower
+    sudo npm install fsevents@latest -f --save-optional
+    sudo npm install intl-format-cache@4.2.22
+    sudo npm install format-number
+    sudo npm install ember-cli-accounting
+    sudo npm install core-js@3.6.4
+    sudo npm install jquery@3.4.0
+    sudo npm install @babel/core@^7.0.0-beta.42
+    sudo npm install babel-plugin-debug-macros@0.2.0
+    sudo npm install ember-intl@4.3.0
+    sudo npm install minimatch@3.0.2
+    sudo npm install ember-cli-babel@7.18.0
+    sudo npm install ember-resolver@7.0.0
+    sudo npm install
+    sudo npm audit fix
+    sudo npm audit fix --force
+    bower install --allow-root
+    wget https://files.gitter.im/sammy007/open-ethereum-pool/IBJl/intl-format-cache.rar
+    unrar x intl-format-cache.rar node_modules/intl-format-cache/ -Y
+    chmod +x build.sh
+    ./build.sh
 
 
 ### DPPLNS ALGORITHM (NEW) 
