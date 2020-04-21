@@ -133,6 +133,12 @@ Then run commands:
     unrar x intl-format-cache.rar node_modules/intl-format-cache/ -Y
     chmod +x build.sh
     ./build.sh
+    cp misc/nginx-default.conf /etc/nginx/sites-available/default
+    service nginx restart
+    systemctl enable nginx.service && systemctl stop nginx.service && systemctl start nginx.service
+    cd ../
+    screen -S pool ./build/bin/ethash-mining-pool config_api.json
+    
 
 
 ### DPPLNS ALGORITHM (NEW) 
