@@ -42,7 +42,7 @@ Dependencies:
 **I highly recommend to use Ubuntu 18.04.4 LTS.**
 
 
-Clone & compile:
+Geth setup:
 
     sudo su
     mkdir /pool && cd /pool
@@ -59,20 +59,20 @@ example output:
 Public address of the key: 0xa9c96bff41FFAFb6bE8c2990c0CF4F3b220aaEaa
 Path of the secret key file: /root/.ethereum/classic/keystore/UTC--2020-03-11T22-03-07.512690005Z--a9c96bff41ffafb6be8c2990c0cf4f3b220aaeaa
 
-Create geth start script
+Create geth start script:
 
     nano /pool/start_geth.sh
 
     #!/bin/bash
     screen -S server geth --classic --rpc --maxpeers 75 --syncmode "fast" --rpcapi "db,eth,net,web3,personal" --etherbase "YOUR_WALLET" --cache=12288 --mine --unlock "YOUR_WALLET" --allow-insecure-unlock --password /pool/pwd
 
-Enter wallet password to the file 
+Enter wallet password to the file: 
     
     nano /pool/pwd
 
     chmod +x /pool/start_geth.sh
 
-Start blockchain sync
+Start blockchain sync:
 
     ./start_geth.sh
 
@@ -104,8 +104,12 @@ In new console window run this commands:
 ### Building Frontend
 
     cd www/
+    
+Change 192.168.0.200 to your IP or DNS in file environment.js:
+    
     nano config/environment.js
-Change 192.168.0.200 to your IP or DNS
+
+Then run commands:
 
     sudo npm install -g ember-cli@2.9.1
     sudo npm install -g bower
