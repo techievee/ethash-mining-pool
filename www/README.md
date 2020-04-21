@@ -1,4 +1,4 @@
-# Front-End Statistics for the Ethash Mining Pool
+# Front-End Statistics for the ETC Mining Pool
 
 Front End component for the Ethash mining pool.
 
