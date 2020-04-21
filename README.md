@@ -109,7 +109,7 @@ Change 192.168.0.200 to your IP or DNS in file environment.js:
     
     nano config/environment.js
 
-Then run commands:
+Then run this commands:
 
     sudo npm install -g ember-cli@2.9.1
     sudo npm install -g bower
