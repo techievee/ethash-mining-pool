@@ -59,8 +59,8 @@ Create geth start script
 
     nano /pool/start_geth.sh
 
-#!/bin/bash
-screen -S server geth --classic --rpc --maxpeers 75 --syncmode "fast" --rpcapi "db,eth,net,web3,personal" --etherbase "YOUR_WALLET" --cache=12288 --mine --unlock "YOUR_WALLET" --allow-insecure-unlock --password /pool/pwd
+    #!/bin/bash
+    screen -S server geth --classic --rpc --maxpeers 75 --syncmode "fast" --rpcapi "db,eth,net,web3,personal" --etherbase "YOUR_WALLET" --cache=12288 --mine --unlock "YOUR_WALLET" --allow-insecure-unlock --password /pool/pwd
 
 Enter wallet password to the file 
     
