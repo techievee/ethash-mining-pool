@@ -8,7 +8,7 @@ The application static pages can be placed in any Content delivery network for f
 
 ### Configuration Documentation- Applies to all brnanches
 
-Configuration is actually simple, just read it twice and think twice before changing defaults.
+Configuration is actually simple, just read it twice and think twice before changing defaults. You need only replace 192.168.0.200 to your IP or DNS
 
 ```javascript
 /* jshint node: true */
@@ -28,26 +28,23 @@ module.exports = function (environment) {
 
         APP: {
             // API host and port
-            ApiUrl: '//eth.daggerpool.com/',
+            ApiUrl: '//192.168.0.200/',
 
             // HTTP mining endpoint            
-            HttpHost: 'http://eth-us01.daggerpool.com',
+            HttpHost: '192.168.0.200',
             HttpPort: 40001,
 
             // Stratum mining endpoint
-            StratumHost: 'eth-us01.daggerpool.com',
+            StratumHost: '192.168.0.200',
             StratumPort: 40011,
 
-            StratumHost1: 'eth-uk01.daggerpool.com',
-            StratumPort1: 40011,
-
-            NicehashHost: 'eth-nh.daggerpool.com',
+            NicehashHost: '192.168.0.200',
             NicehashPost: 40021,
 
             // Fee and payout details
             PoolFee: '0.99%',
             PayoutThreshold: '0.01',
-            ShareDifficulty: '4000000000',
+            ShareDifficulty: '2000000000',
 
             //Current and Localization
             Currency: 'USD',
@@ -56,7 +53,7 @@ module.exports = function (environment) {
             PaymentText: 'every 2 hours',
             SupportMail: 'helpdesk@daggerpool.com',
             SupportHelpdesk: 'http://helpdesk.daggerpool.com',
-            WebsiteName: 'eth.daggerpool.com',
+            WebsiteName: '192.168.0.200',
 
             //Coin Bases Settings
             ChainAddress : 'https://etherscan.io/address/',
