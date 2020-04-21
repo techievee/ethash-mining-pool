@@ -33,13 +33,13 @@ Highly Efficient mining pool designed for ETC coin
 
 Dependencies:
 
-apt install software-properties-common unzip nginx tor pcscd pcsc-tools git curl htop mc unrar screen
+    apt install software-properties-common unzip nginx tor pcscd pcsc-tools git curl htop mc unrar screen
 
 **I highly recommend to use Ubuntu 18.04.4 LTS.**
 
-First install  [go-ethereum](https://github.com/ethereum/go-ethereum/wiki/Installation-Instructions-for-Ubuntu).
 
 Clone & compile:
+
     sudo su
     mkdir /pool && cd /pool
     wget https://github.com/multi-geth/multi-geth/releases/download/v1.9.7/multi-geth-linux.zip
@@ -47,8 +47,8 @@ Clone & compile:
     ln -s /pool/geth /usr/bin/geth
     chmod ugo+x /usr/bin/geth
 
-geth --classic account new
-geth --classic account list
+    geth --classic account new
+    geth --classic account list
 
 example output:
 
@@ -57,30 +57,30 @@ Path of the secret key file: /root/.ethereum/classic/keystore/UTC--2020-03-11T22
 
 Create geth start script
 
-nano /pool/start_geth.sh
+    nano /pool/start_geth.sh
 
 #!/bin/bash
 screen -S server geth --classic --rpc --maxpeers 75 --syncmode "fast" --rpcapi "db,eth,net,web3,personal" --etherbase "YOUR_WALLET" --cache=12288 --mine --unlock "YOUR_WALLET" --allow-insecure-unlock --password /pool/pwd
 
 Enter wallet password to the file 
-nano /pool/pwd
+    
+    nano /pool/pwd
 
-chmod +x /pool/start_geth.sh
+    chmod +x /pool/start_geth.sh
 
 Start blockchain sync
 
-./start_geth.sh
-
-    git config --global http.https://gopkg.in.followRedirects true
-    git clone https://github.com/notminerproduction/open-ethereum-pool.git
-    cd open-ethereum-pool
-    chmod +x ./build/env.sh
-    make
+    ./start_geth.sh
 
 In new console window run this commands:
 
     sudo su
     cd /pool
+    git config --global http.https://gopkg.in.followRedirects true
+    git clone https://github.com/notminerproduction/open-ethereum-pool.git
+    cd open-ethereum-pool
+    chmod +x ./build/env.sh
+    make
     add-apt-repository ppa:chris-lea/redis-server
     apt update
     apt install redis-server
@@ -101,7 +101,6 @@ In new console window run this commands:
 
     cd www/
     nano config/environment.js
-
 Change 192.168.0.200 to your IP or DNS
 
     sudo npm install -g ember-cli@2.9.1
