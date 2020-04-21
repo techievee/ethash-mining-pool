@@ -1,0 +1,241 @@
+<div id="page-wrapper">
+    <div class="row align-middle" style="padding-top:50px;">
+        <div class="col-lg-4">
+            <span  class="text-blue"style="font-family: 'Fredericka the Great'; font-size: 30px;margin-top:50px;" >MINERS STATISTICS</span>
+        </div>
+        <div class="col-lg-8 pull-left"  >
+            <span class="text-green" style="font-family: 'Merriweather Sans';font-size: 25px;margin-top:50px;"><i class="fa fa-address-book-o"></i> <a class="text-green" href="{{config.ChainAddress}}{{model.login}}" target="_blank">{{model.login}}</a>                                       
+            </span>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>  
+
+    <!-- /.row -->
+    <div class="row">
+
+        <div class="col-lg-3 col-md-6"> 
+            <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner ">
+                    <h3><span class="text-white">
+                         {{format-hashrate model.currentHashrate}} </span> </h3>                     
+                    <p>   {{format-hashrate model.hashrate}}  </p>              
+
+
+                </div>
+                <div class="icon"> <i class="fa fa-dashboard"></i> </div>
+
+                <div class="panel-footer text-center">
+                    <span class="text-blue">HASHRATE 1 Hour/ 30 Minute Avg</span>
+                    <span class="pull-right"></span>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-lg-3 col-md-6"> 
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner ">
+                    <h3><span class="text-white">
+                            {{format-number model.workersOnline}}
+                        </span> </h3>
+                    <p> ACTIVE WORKERS   </p>
+
+                </div>
+                <div class="icon"> <i class="fa fa-server"></i> </div>
+
+                <div class="panel-footer text-center">
+                    <span class="text-green">ACTIVE WORKERS</span>
+                    <span class="pull-right"></span>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6"> 
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner ">
+                    <h3><span class="text-white" style="font-size: 30px;" >
+                            {{format-balance model.stats.balance}}
+                        </span> </h3>
+                    <p> 
+                        <i class="fa fa-clock-o"></i> Immature : <span>{{format-balance model.stats.immature}}</span>
+                    </p>
+
+                </div>
+                <div class="icon"> <i class="fa fa-hourglass-half" ></i> </div>
+
+                <div class="panel-footer text-center" style="margin:0px;padding:0px;">
+                    <div class="progress" style="margin:0px;height:40px;"><span class="text-center text-blue bold" style="margin-top:10px;">
+                        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
+                             aria-valuenow="9" aria-valuemin="0" aria-valuemax="100" style="width:{{ paymentPercent }}%">    
+                            
+                        </div></span>
+                         
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6"> 
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner ">
+                    <h3><span class="text-white" style="font-size: 30px;">
+                            {{format-balance model.stats.paid}}
+                        </span> </h3>
+                    <p>  ≅ 
+                        
+                        {{#if (eq config.Currency 'USD') }}
+                        {{ format-ethusd model.stats.paid model.exchangedata.price_usd }}
+                        {{else}}
+                        {{ format-ethinr model.stats.paid model.exchangedata.price_inr }}
+                        {{/if}}
+                    </p>
+
+                </div>
+                <div class="icon"> <i class="fa fa-credit-card"></i> </div>
+
+                <div class="panel-footer text-center">
+                    <span class="text-red">TOTAL PAYMENTS</span>
+                    <span class="pull-right"></span>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+
+        <div class="col-lg-4">  
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle fa-fw"></i> Miner Information Panel
+                </div>
+                <!-- /.panel-heading -->
+
+                <div class="list-group">
+
+                    <li class="list-group-item">
+                        <i class="fa fa-hourglass-1 fa-fw"></i> Immature Balance
+                        <span class="pull-right text-muted small align-middle"><span class=""><em>{{format-balance model.stats.immature}}</em></span>
+                        </span>
+                        <br><small>Preliminary balance awaiting blocks to mature.</small>
+
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fa fa-hourglass-2 fa-fw"></i> Pending Balance
+                        <span class="pull-right text-muted small align-middle"><span class=""><em>{{format-balance model.stats.balance}}</em></span>
+                        </span>
+                        {{#if model.stats.payoutthreshold}}                        
+                        <br/> <small>Payout threshold: {{format-balance model.stats.payoutthreshold}}{{config.CoinShortName}}</small>
+                        {{else}}
+                        <br/> <small>Payout threshold: {{config.PayoutThreshold}} {{config.CoinShortName}}</small>
+                        {{/if}}
+
+                    </li>
+                    {{#if model.stats.pending}}
+                    <li href="#" class="list-group-item">
+                        <i class="fa fa-thumbs-up fa-fw"></i> Current Payment:
+                        <span class="pull-right text-muted small"><em>{{format-balance model.stats.pending}}</em>
+                        </span>
+                    </li>
+                    {{/if}}
+
+                    <li href="#" class="list-group-item">
+                        <i class="fa fa-spinner fa-fw"></i> Your contribution in Last 'N'
+                        <span class="pull-right text-muted small"><em>{{format-number roundPercent style='percent' maximumFractionDigits='6'}}</em>
+                        </span>
+                    </li>
+                    <li href="#" class="list-group-item">
+                        <i class="fa fa-thermometer fa-fw"></i> My Shares in the last 'N'
+                        <span class="pull-right text-muted small"><em>{{format-number model.roundShares}}</em>
+                        </span>
+                    </li>
+                    
+                    <li href="#" class="list-group-item">
+                        <i class="fa fa-cubes fa-fw"></i> Blocks Found
+                        <span class="pull-right text-muted small"><em>{{format-number model.stats.blocksFound fallback='0'}}</em>
+                        </span>
+                    </li>
+                    <li href="#" class="list-group-item">
+                        <i class="fa fa-share-square-o fa-fw"></i> Last share submitted
+                        <span class="pull-right text-muted small"><em>{{format-relative (seconds-to-ms (string-to-int model.stats.lastShare))}}</em>
+                        </span>
+                    </li>
+                    <li href="#" class="list-group-item">
+                        <i class="fa fa-money fa-fw"></i> Total Payments
+                        <span class="pull-right text-muted small"><em>{{format-number model.paymentsTotal}}</em>
+                        </span>
+                    </li>                  
+                    <li href="#" class="list-group-item">
+                        <i class="fa fa-clock-o fa-fw"></i> Epoch Switch
+                        <span class="pull-right text-muted small"><em>{{format-relative applicationController.nextEpoch units="hour"}}</em>
+                        </span>
+                    </li>
+
+                </div>
+                <!-- /.list-group -->                    
+
+                <!-- /.panel-body -->
+            </div>
+
+            <div class="chat-panel panel panel-success hidden-md hidden-sm">
+                <div class="panel-heading">
+                    <i class="fa fa-twitter fa-fw"></i> UPDATES
+                    <div class="btn-group pull-right">
+
+                    </div>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body hidden-sm ">
+                    {{#twitter-feed}}
+                    <a class="twitter-timeline" href="{{config.TwitterURL}}{{config.TwitterHash}}">Tweets by {{config.TwitterHash}}</a>
+                    {{/twitter-feed}}
+                </div>
+                <!-- /.panel-body -->
+
+                <!-- /.panel-footer -->
+            </div>
+            <!-- /.panel .chat-panel -->
+        </div>
+        <!-- /.col-lg-4 -->
+
+        <div class="col-lg-8">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <i class="fa fa-database fa-fw"></i> MINERS DEATAILED STATISTICS STATUS                    
+                </div>
+                <div class="panel-body">
+
+                    <ul class="nav nav-tabs">
+                        {{#active-li currentWhen='account.index' role='presentation'}}
+                        {{#link-to 'account.index'}}Workers <span class="badge alert-danger">{{model.workersOffline}}</span>{{/link-to}}
+                        {{/active-li}}
+                        {{#active-li currentWhen='account.rewards' role='presentation'}}
+                        {{#link-to 'account.rewards'}}Rewards{{/link-to}}
+                        {{/active-li}}
+                        {{#active-li currentWhen='account.payouts' role='presentation'}}
+                        {{#link-to 'account.payouts'}}Payouts{{/link-to}}
+                        {{/active-li}}
+                        
+
+                    </ul>
+
+                    {{outlet}}
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-8 -->
+
+
+    </div>
+    <!-- /.row -->
+</div>

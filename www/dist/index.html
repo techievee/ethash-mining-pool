@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dagger Pool- Ethereum Classic</title>
+    <meta name="description" content="High profitability Ethereum Classic mining pool"/>
+    <meta name="keywords" content="etc mining, ethereum classic, mining, pool, cryptocurrency, profitable"/>
+    <script src="https://cdn.polyfill.io/v1/polyfill.min.js?features=Intl.~locale.en"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/3.3.7+1/css/sb-admin-2.css" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css?family=Arvo|Lobster|Cabin+Sketch|Fredericka+the+Great|Audiowide|Exo|Merriweather+Sans|Orbitron|Righteous|Anonymous+Pro" rel="stylesheet">
+   
+    
+<meta name="open-ethereum-pool/config/environment" content="%7B%22modulePrefix%22%3A%22open-ethereum-pool%22%2C%22environment%22%3A%22production%22%2C%22rootURL%22%3A%22%2F%22%2C%22locationType%22%3A%22hash%22%2C%22EmberENV%22%3A%7B%22FEATURES%22%3A%7B%7D%7D%2C%22APP%22%3A%7B%22ApiUrl%22%3A%22%2F%2F192.168.0.200%2F%22%2C%22HttpHost%22%3A%22192.168.0.200%22%2C%22HttpPort%22%3A40002%2C%22StratumHost%22%3A%22192.168.0.200%22%2C%22StratumPort%22%3A9009%2C%22StratumHost1%22%3A%22192.168.0.200%22%2C%22StratumPort1%22%3A8008%2C%22NicehashHost%22%3A%22%22%2C%22NicehashPost%22%3A40004%2C%22PoolFee%22%3A%220.5%25%22%2C%22PayoutThreshold%22%3A%220.5%22%2C%22ShareDifficulty%22%3A%224000000000%22%2C%22Currency%22%3A%22USD%22%2C%22CoinName%22%3A%22Ethereum%20Classic%22%2C%22CoinShortName%22%3A%22ETC%22%2C%22PaymentText%22%3A%22every%20hour%22%2C%22SupportMail%22%3A%22%22%2C%22SupportHelpdesk%22%3A%22%22%2C%22WebsiteName%22%3A%22192.168.0.200%22%2C%22ChainAddress%22%3A%22https%3A%2F%2Fetcblockexplorer.com%2Faddr%2F%22%2C%22TransactionAddress%22%3A%22https%3A%2F%2Fminergate.com%2Fblockchain%2Fetc%2Ftransaction%2F%22%2C%22UncleAddress%22%3A%22https%3A%2F%2Fminergate.com%2Fblockchain%2Fetc%2Fblock%2F%22%2C%22BlockAddress%22%3A%22https%3A%2F%2Fminergate.com%2Fblockchain%2Fetc%2Fblock%2F%22%2C%22TwitterURL%22%3A%22%22%2C%22TwitterHash%22%3A%22%22%2C%22BlockTime%22%3A14%2C%22name%22%3A%22open-ethereum-pool%22%2C%22version%22%3A%220.0.0%2Bf0c1a315%22%7D%2C%22baseURL%22%3A%22%2Fember-cli-twitter-feed%2F%22%2C%22contentSecurityPolicy%22%3A%7B%22script-src%22%3A%5B%22'self'%22%2C%22https%3A%2F%2Fsyndication.twitter.com%22%2C%22https%3A%2F%2Fcdn.syndication.twimg.com%22%2C%22'sha256-XnNQECY9o-nIv2Qgcd1A39YarwxTm10rhdzegH_JBxY%3D'%22%5D%2C%22style-src%22%3A%5B%22'self'%22%2C%22http%3A%2F%2Fplatform.twitter.com%22%2C%22'sha256-zCvYlDs6LsUp0EqrJFjIGUiM_AG2fGlkNrzJ2YiBTG0%3D'%22%5D%2C%22img-src%22%3A%5B%22'self'%22%2C%22data%3A%22%2C%22https%3A%2F%2Fpbs.twimg.com%22%2C%22https%3A%2F%2Fsyndication.twitter.com%22%2C%22http%3A%2F%2Fplatform.twitter.com%22%5D%7D%2C%22exportApplicationGlobal%22%3Afalse%7D" />
+    <link rel="stylesheet" href="/assets/vendor-82fdd13954ee0afe274ec85972c6a2f3.css">
+    <link rel="stylesheet" href="/assets/open-ethereum-pool-a0dc2d45bdf99c27ba1b1789d50a5b66.css">
+    
+  </head>
+  <body>
+    
+
+    <script src="/assets/vendor-98f81b564fc0cba2fd31127a6a12e286.js"></script>
+    <script src="/assets/open-ethereum-pool-a642ff219a387abe65cf99e9e65ad51e.js"></script>
+
+
+
+    <footer class="navbar navbar-fixed-bottom bg-gradientblue hidden-xs">
+
+                <div class="row">
+
+
+                    <div class="col-lg-12">
+                        <div class="panel text-center" style="background-color: transparent; margin-bottom:0px">
+                            <div class="panel" style="background-color: transparent;margin-bottom:0px">
+                                <div class="row">
+                                    <div class="col-lg-12 text-center">
+                                        <a href="https://ethereumclassic.github.io/" target="_blank" style="color: #00FF00;"><i class="fa fa-building"></i>&nbsp;Project Website |</a> &nbsp;&nbsp;
+                                        <a href="https://www.bitfinex.com" target="_blank" style="color: #00FF00;"><i class="fa fa-refresh"></i>&nbsp;Exchanges |</a> &nbsp;&nbsp;
+                                        <a href="https://github.com/ethereumproject/mist/releases" target="_blank" style="color: #00FF00;"><i class="fa fa-money"></i>&nbsp;Wallet |</a> &nbsp;&nbsp;
+                                        <a href="http://etcstats.net/" target="_blank" style="color: #00FF00;"><i class="fa fa-snowflake-o"></i>&nbsp;Network Status |</a> &nbsp;&nbsp;
+                                        <a href="http://helpdesk.daggerpool.com" target="_blank" style="color: #00FF00;"><i class="fa fa-support"></i>&nbsp;Support/Helpdesk |</a> &nbsp;&nbsp;
+                                        <a href="https://gastracker.io/" target="_blank" style="color: #00FF00;"><i class="fa fa-wpexplorer"></i>&nbsp;Chain Explorer </a> &nbsp;&nbsp;
+                                           
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+         <div class="row">
+                     <div class="col-lg-6">
+                        <p class="pull-left" style="font-size: 12px;color: yellow; "><i class="fa fa-money"></i>&nbsp;For any Donation, Please use 0xbb75ee50115dfbba5d7b1fb1563c5dfd74dd1279&nbsp;</p>
+                    </div>
+
+                     <div class="col-lg-6">
+                        <p class="pull-right" style="font-size: 12px;color: yellow; "><i class="fa fa-money"></i>&nbsp;Pool Address:0xe7e8eda746c3363b146fbe94b4d3082b5478ac3c &nbsp;</p>
+                    </div>
+
+
+         </div>
+
+            </footer>
+  </body>
+  <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</html>
