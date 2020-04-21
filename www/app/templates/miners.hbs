@@ -1,0 +1,108 @@
+<div id="page-wrapper">
+    <div class="row align-middle" style="padding-top:50px;">
+        <div class="col-lg-5">
+            <span  class="text-blue"style="font-family: 'Fredericka the Great'; font-size: 30px;margin-top:50px; " >MINER STATISTICS</span>
+        </div>
+        <div class="col-lg-7" style="margin-bottom: 20px;" >
+            <span  style="font-family: Arvo; margin-top:50px; border-bottom: none;">
+                <strong>Anonymous mining    </strong>                                   
+            </span>
+            <br/>
+            <span  style="font-family: Arvo; margin-top:50px; border-bottom: none;">
+                <strong>Stratum and TCP Support </strong>
+            </span>
+            <br/>
+            <span  style="font-family: Arvo; margin-top:50px; border-bottom: none;">
+                <strong>Efficient Mining pool  </strong>                  
+            </span>
+            <br/>
+            <span  style="font-family: Arvo; margin-top:50px; border-bottom: none;">
+                <strong>All the statistics are available to all miners</strong> <span class="label label-success">OPEN POOL</span>                 
+            </span>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>  
+
+    <div class="row">
+
+
+        <div class="col-lg-6"> 
+            <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner ">
+                    <h3><span class="text-white">
+                            {{format-hashrate model.hashrate}}
+                        </span> </h3>
+                    <p>  HASHES PER SECOND </p>
+
+                </div>
+                <div class="icon"> <i class="fa fa-dashboard"></i> </div>
+
+                <div class="panel-footer text-center">
+                    <span>POOL HASHRATE</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-6"> 
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner ">
+                    <h3><span class="text-white">
+                           {{model.minersTotal}}
+                        </span> </h3>
+                    <p>  MINERS   </p>
+
+                </div>
+                <div class="icon"> <i class="fa fa-users"></i> </div>
+                <div class="panel-footer text-middle">
+                    <span>Active Miners</span>
+                    <span class="pull-right"></span>                        
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="row" style="max-height: 600px; overflow-y: scroll;">
+        <div class="col-lg-12">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <i class="fa fa-users fa-fw"></i> DETAILED MINER STATISTICS                    
+                </div>
+                <div class="panel-body">
+                    {{#if model.miners}}
+                    <h4>Miners</h4>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Login</th>
+                                    <th>Hashrate</th>
+                                    <th>Last Beat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each model.miners as |m|}}
+                                <tr class="{{if m.offline "warning"}}">
+                                    <td>{{#link-to 'account' m.login class='hash'}}{{m.login}}{{/link-to}}</td>
+                                    <td>{{format-hashrate m.hr}}</td>
+                                    <td>{{format-date-locale m.lastBeat}}</td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                    {{else}}
+                    <h3>No miners</h3>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

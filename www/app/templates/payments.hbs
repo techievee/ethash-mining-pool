@@ -1,0 +1,85 @@
+<div id="page-wrapper">
+    <div class="row align-middle" style="padding-top:50px;">
+        <div class="col-lg-5">
+            <span  class="text-blue"style="font-family: 'Fredericka the Great'; font-size: 30px;margin-top:50px; " >PAYMENT STATISTICS</span>
+        </div>
+        <div class="col-lg-7" style="margin-bottom: 20px;" >
+            <span  style="font-family: Arvo; margin-top:50px; border-bottom: none;">
+                <strong>Pool pays using the Highly Profitable Dynamic PPLNS Reward system    </strong>                                   
+            </span>
+            <br/>
+            <span  style="font-family: Arvo; margin-top:50px; border-bottom: none;">
+                <strong>Current Fool Fee is </strong> <span class="label label-success">{{config.PoolFee}}</span> only                    
+            </span>
+            <br/>
+            <span  style="font-family: Arvo; margin-top:50px; border-bottom: none;">
+                <strong>Payouts are currently credited to miners account</strong> <span class="label label-success">{{config.PaymentText}}</span>
+            </span>
+            <br/>
+            <span  style="font-family: Arvo; margin-top:50px; border-bottom: none;">
+                <strong>Total Payment Send :</strong> <span class="label label-success">{{model.paymentsTotal}}</span> 
+            </span>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>  
+        
+    <div class="row" style="max-height: 600px; overflow-y: scroll;">
+        <div class="col-lg-12">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <i class="fa fa-credit-card-alt fa-fw"></i> DETAILED PAYMENT STATISTICS                    
+                </div>
+                <div class="panel-body">
+                    {{#if model.payments}}
+                    <h4>Latest Payouts</h4>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Amount</th>
+                                    <th>Address</th>
+                                    <th>Tx ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each model.payments as |tx|}}
+                                <tr>
+                                    <td>{{format-date-locale tx.timestamp}}</td>
+                                    <td><strong>{{format-number tx.formatAmount}}</strong><br/><em><small>≅ 
+                                                 {{#if (eq config.Currency 'USD') }}
+                                                {{ format-ethusd tx.amount model.exchangedata.price_usd }}
+                                                {{else}}
+                                                {{ format-ethinr tx.amount model.exchangedata.price_inr }}
+                                                {{/if}}                                               
+                                            
+                                            </small></em></td>
+                                    <td>
+                                        <a href="{{config.ChainAddress}}{{tx.address}}" class="hash" rel="nofollow" target="_blank">{{tx.address}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{config.TransactionAddress}}{{tx.tx}}" class="hash" rel="nofollow" target="_blank">{{format-tx tx.tx}}</a>
+                                    </td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                    {{else}}
+                    <h3>No payouts yet</h3>
+                    {{/if}}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+</div>
