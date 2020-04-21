@@ -8,7 +8,8 @@ The application static pages can be placed in any Content delivery network for f
 
 ### Configuration Documentation- Applies to all brnanches
 
-Configuration is actually simple, just read it twice and think twice before changing defaults. You need only replace 192.168.0.200 to your IP or DNS
+Configuration is actually simple, just read it twice and think twice before changing defaults. 
+You need only replace 192.168.0.200 to your IP or DNS
 
 ```javascript
 /* jshint node: true */
