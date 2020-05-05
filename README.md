@@ -84,15 +84,15 @@ In new console window run this commands:
     git clone https://github.com/notminerproduction/open-ethereum-pool.git
     cd open-ethereum-pool
     chmod +x ./build/env.sh
+    add-apt-repository ppa:longsleep/golang-backports
+    apt update
+    apt install golang-go
     make
     add-apt-repository ppa:chris-lea/redis-server
     apt update
     apt install redis-server
     systemctl enable redis-server.service && systemctl stop redis-server.service && systemctl start redis-server.service
 
-    add-apt-repository ppa:longsleep/golang-backports
-    apt update
-    apt install golang-go
     curl -sL https://deb.nodesource.com/setup_13.x | bash -
     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
