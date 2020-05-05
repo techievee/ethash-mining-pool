@@ -225,6 +225,7 @@ Configuration is actually simple, just read it twice and think twice before chan
                 "blockRefreshInterval": "120ms",
                 "stateUpdateInterval": "3s",
                 "difficulty": 4000000000,
+		"DifficultyNiceHash": 4,
                 "hashrateExpiration": "3h",
 
                 "healthCheck": true,
