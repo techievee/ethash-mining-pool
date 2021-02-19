@@ -1,0 +1,52 @@
+  {{#if model.payments}}
+  <h4>Your Latest Payouts</h4>
+  <div class="table-responsive">
+    <table class="table table-condensed table-striped">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Tx ID</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each model.payments as |tx|}}
+          <tr>
+            <td>{{format-date-locale tx.timestamp}}</td>
+            <td>
+              <a href="{{config.TransactionAddress}}{{tx.tx}}" class="hash" rel="nofollow" target="_blank">{{tx.tx}}</a>
+            </td>
+            <td>
+                {{#twbs-popover popoverTrigger="hover" as |popover|}}
+                    {{#popover.trigger}}
+                      <span class="label label-success">{{format-balance tx.amount}}</span>
+                    {{/popover.trigger}}
+                    {{#popover.title}}
+                     TX Charges
+                    {{/popover.title}}
+                    {{#popover.content}}
+                        
+                            {{format-txcharges tx.txcost}}
+                      
+                    {{/popover.content}}
+                  {{/twbs-popover}}                
+                
+               <br/><em><small>≅ 
+                        
+                        {{#if (eq config.Currency 'USD') }}
+                        {{ format-ethusd tx.amount model.exchangedata.price_usd }}
+                        {{else}}
+                        {{ format-ethinr tx.amount model.exchangedata.price_inr }}
+                        {{/if}}
+
+                    
+                    </small></em></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  {{else}}
+  <h3>No payouts yet</h3>
+  {{/if}}
+

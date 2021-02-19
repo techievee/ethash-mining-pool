@@ -1,0 +1,179 @@
+<div id="page-wrapper">
+    <div class="row align-middle" style="padding-top:50px;">
+        <div class="col-lg-5">
+            <span  class="text-blue"style="font-family: 'Fredericka the Great'; font-size: 30px;margin-top:50px; " >TERMS AND CONDITIONS</span>
+        </div>       
+          <div class="col-lg-7" style="margin-bottom: 20px;" >
+            <span  style="font-family: Lobster; margin-top:50px; border-bottom: none;">The following Terms and Condition apply to any use of the mining pool services ("Services") offered over the websites ("{{config.WebsiteName}}") mentioned above concerning the mining of the cryptocurrencies "{{config.CoinName}}". By accessing and using the Services, you confirm that you have read these Terms and Condition and accept and agree to be bound by its provisions. Any factual participation in the Services will constitute such acceptance. If you do not agree to abide by these Terms and Condition you are not allowed to use the Services.
+                <br/>In order to use the Services, a mining software working with the operating system on your computer is necessary. Download links are available directly on the Websites. .
+            </span>
+        </div>
+    </div>  
+<br/><br/>
+   
+    <div class="row" style="max-height: 900px; overflow-y: scroll;">
+        <div class="col-lg-12">
+               <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#term"><i class="fa fa-bullseye fa-fw"></i> Liability</a> 
+                        </h4>
+                    </div>
+                    <div id="term" class="panel-collapse">
+                         <ul class="list-group">
+                             <li class="list-group-item">
+                                 The pool is continually implementing security standards complying with the latest state-of-the-art technology. All operated servers are distributed-denial-of-service (DDOS) protected to ensure an incessant availability of the Services and a payout process without unwanted interruptions. The Services are also designed to pay out rewards as soon as possible in order to keep the pool balance low. 
+                                 
+                             </li>
+                             
+                             {{#if (eq config.Currency 'INR') }} 
+                             <li class="list-group-item">
+                                 Having the name india in the domain name, it doesnt state that the pool belongs to india, the customization of various values are done for the INR value . All the other country citizen can also participate in the pool. 
+                                 
+                             </li>
+                             {{/if}}
+                              <li class="list-group-item">
+                                   Despite such protective mechanisms, the pool cannot fully guarantee that the Websites will never be subject to hacker attacks or similar problems. Therefore, the pool shall not be obliged to compensate any losses due to stolen pool balance or temporary unavailability of the Services. The pool explicitly reserves the right to shut down services from time to time for maintenance reasons.
+                             </li>
+                             <li class="list-group-item">                                 
+                             Furthermore, the pool shall not be liable for any damages of your hardware (computer and its components) or software (operating system, programs, stored data etc.) occurring while using the Services. The intensity of the mining tasks is highly demanding; hardware components may – exceptionally – be destroyed completely. As the hardware setup of each Worker is individually compiled, you must assess (and bear) the risk associated with such high electrical load by yourself. 
+                             </li>
+                             <li class="list-group-item">
+                                 Attacks on the system may also cause data loss. As far as sensitive data is collected ), the pool  shall not be held responsible for any loss that cannot be reduced to security issues or other culpability by the pool . 
+                             </li>
+                             
+                             <li class="list-group-item">
+                                {{config.CoinName}} are highly experimental crypto software. Damages or loss of cryptocurrency units arising from software errors therefore remain possible. As the pool  has no influence on the underlying software, he shall not in any case be exposed to claims relating to such errors. 
+                             </li>
+                           
+                             
+                         </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="row" style="max-height: 900px; overflow-y: scroll;">
+        <div class="col-lg-12">
+               <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#term1"><i class="fa fa-credit-card-alt fa-fw"></i> Terms of Payment </a> 
+                        </h4>
+                    </div>
+                    <div id="term1" class="panel-collapse collapse">
+                         <ul class="list-group">
+                              
+                             <li class="list-group-item">
+                               
+As mining is an intensive task for the hardware of your computer (CPU, GPU), the process can cause high costs for electricity. The pool shall not be responsible for any such costs. The Services are conducted at the sole discretion of the user in type, extent and frequency. All expenses arising are to be borne by the Worker.  
+                             </li>
+                             
+                               
+                             <li class="list-group-item">
+                                
+Pool pays using the  Dynamic Pay-Per-Last-N-Shares ("PPLNS") payout scheme. This reward system is round based, whereby one round has an arbitrary number (N) of shares, N value are decided at the beginning of each round based on the Network difficulty, N = (2* Network Difficulty)/(Share Difficulty). When a block has been found by the pool, the block reward is distributed according to the number of the shares present in the last N Shares. Payout takes place immediately after the minimum payout has been reached. However, the payout threshold is customizable by sending mail to the pool helpdesk. 
+                             </li>
+                             
+                               
+                             <li class="list-group-item">
+                               
+                            The pool fee is waived off as a introductory offer
+
+                             </li>
+ 
+                            <li class="list-group-item">
+                               
+                            Transaction fees of the block are retained by the pool till the pool fee is fixed 
+ 
+                             </li>
+                             
+                             <li class="list-group-item">
+                          
+                            Gas charges for the transaction will be deducted during the Payout, the gas charges are calculated automatically during the payout time with the scope of standard 21000 gas limit
+ 
+                             </li>
+                             
+                              <li class="list-group-item">
+                               
+                            Mining into the contract account is not allowed, if found the miner will be banned and the extra transaction charges incured for the payout will be retained from the immature balance
+ 
+                             </li>
+                             
+                             
+                            
+                          
+                         </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="row" style="max-height: 900px; overflow-y: scroll;">
+        <div class="col-lg-12">
+               <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#term2"><i class="fa fa-user-secret fa-fw"></i> Privacy Policy</a> 
+                        </h4>
+                    </div>
+                    <div id="term2" class="panel-collapse collapse" >
+                         <ul class="list-group">
+                                 
+                             <li class="list-group-item">
+                                The Websites are designed as anonymous mining pools. The collection of personal data is strictly limited. 
+                             </li>
+                             
+                               
+                             <li class="list-group-item">
+                                By accessing the Websites, the external IP address of your computer and http specific information (request, referrer and user agent) will be logged for statistical purposes. By using the Services (mining on the pools), the external IP address of your computer will be logged for verification purposes as well as to allow you to change specific settings (indication of email  address, modification of minimum payout amount). Such data may potentially link to personally identifiable information. 
+                             </li>
+                             
+                               
+                             <li class="list-group-item">
+                               Indicating your email or mobile number address is no requirement to use the Services. However, you may leave such address in order to get notified if, for example, the Services are temporarily unavailable or the mining pools are experiencing technical problems. Such data will not be shared with third parties as outlined below or used for any other purpose apart from providing relevant information concerning the Services or these Terms.  
+                             </li>
+                             
+                               
+                             <li class="list-group-item">
+                                The pool uses services of Twitter Inc., 1355 Market St, Suite 900, San Francisco, CA 94103, USA ("Twitter") on the Websites in order to provide important information by embedding his official Twitter account "miningpoolindia". The timeline is integrated as list template and allows the Workers to directly share or like tweets on Twitter. By accessing the Websites, your browser will instantly communicate with the servers of Twitter in the USA. Thereby, certain data will be transferred and stored. If you are not logged in to Twitter or do not have a Twitter account, the information solely refers to your IP address and the fact that the Websites have been visited. If you are logged in to Twitter, this information can be associated with your account and thus your person. If you do not want Twitter to allocate such collected data to your account, you must log out of your profile before visiting the Websites. When using the liking/sharing function information will be transmitted as well and furthermore visible on Twitter. For advice or information regarding the purpose and scope of data collection, further processing and use of data by Twitter as well as your specific rights and adjustable settings for privacy protection you may visit https://twitter.com/privacy?lang=en to review the privacy policy of Twitter. However, as an alternative, you can force your browser not to load the Twitter timeline by installing add-ons, for example, the script blocker "NoScript" available under http://noscript.net/. 
+                             </li>
+                             
+                               
+                             <li class="list-group-item">
+                                None of the information transmitted will be shared with third parties. However, you need to download and install third party software on your computer in order to use the Services and mine cryptocurrency. The pool has no influence on any data collected by these third parties. Hence, it is recommended to review available terms and conditions and privacy policies of such third parties carefully as well. 
+                             </li>
+                             
+                             
+                               <li class="list-group-item">
+                                So called botnets are strictly prohibited from participating in the mining pools. The term refers to computers used for mining, although their actual owners are unaware of it. Your computer may fall victim to a botnet due to insufficient security measures. It is hence recommended to 
+pay utmost attention to adequate protection. poolSP generally reserves the right to exclude Workers from using the Service without prior notice. 
+                             </li>
+                             
+                              <li class="list-group-item">
+                                So called botnets are strictly prohibited from participating in the mining pools. The term refers to computers used for mining, although their actual owners are unaware of it. Your computer may fall victim to a botnet due to insufficient security measures. It is hence recommended to 
+pay utmost attention to adequate protection. poolSP generally reserves the right to exclude Workers from using the Service without prior notice. 
+                             </li>
+                             
+                               
+<li class="list-group-item">
+The pool may change these Terms and Condition if necessary. Your continued use of the Services will signify your acceptance to any adjustment of these terms. The fact that the text respectively content has been changed will be visibly announced on the Websites. You should read these Terms and Condition again on a regular basis. 
+  </li>
+                          
+                         </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,22 @@
+<div style="height:650px;max-height:650px; overflow-y: scroll;">  
+
+    <h4>SETTINGS</h4>
+
+    <div class="col-md-12 disable">
+        <form action="" method="post">
+            <div class="checkbox"><label>
+                    <input id="monitor" type="checkbox" name="monitor">Send a mail if one of my workers goes offline (beta feature)</label>
+            </div>
+            <div class="form-group"><label for="email">Email address (to prevent spam the first 3 characters are not shown):</label>
+                 {{input value=model.email class="form-control"}}
+            </div>
+            <div class="form-group"><label for="threshold">Payment threshold in Ether (Min: 0.05 Ether, Max: 10 Ether, if set to less than 1 Ether a fixed tx fee of 0.001 Ether will be deducted from the paid amount).</label>
+                 {{input value=model.threshold class="form-control"}}
+            </div>
+            <div class="form-group"><label for="ip">To save, validate your account by completing the IP given below (the IP corresponds to the public IP address of one of your workers):</label>
+                {{input value=model.threshold class="form-control"}}
+            </div>
+            <button class="btn btn-default">Save</button></form>
+    </div>
+
+</div>

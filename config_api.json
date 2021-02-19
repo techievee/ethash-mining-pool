@@ -1,0 +1,133 @@
+{
+        "threads": 2,
+        "coin": "etc-pplns",
+        "name": "main",
+        "pplns": 15000,
+        "coin-name":"ETC",
+
+        "proxy": {
+                "enabled": true,
+                "listen": "0.0.0.0:40002",
+                "limitHeadersSize": 1024,
+                "limitBodySize": 256,
+                "behindReverseProxy": false,
+                "blockRefreshInterval": "120ms",
+                "stateUpdateInterval": "3s",
+                "difficulty": 4000000000,
+                "DifficultyNiceHash": 4,
+                "hashrateExpiration": "3h",
+
+                "healthCheck": true,
+                "maxFails": 100,
+
+                "stratum": {
+                        "enabled": true,
+                        "listen": "0.0.0.0:9009",
+                        "timeout": "120s",
+                        "maxConn": 8192
+                },
+                "stratum_nice_hash": {
+                        "enabled": true,
+                        "listen": "0.0.0.0:40004",
+                        "timeout": "120s",
+                        "maxConn": 8192
+                },
+
+                "policy": {
+                        "workers": 8,
+                        "resetInterval": "60m",
+                        "refreshInterval": "1m",
+
+                        "banning": {
+                                "enabled": true,
+                                "ipset": "blacklist",
+                                "timeout": 300,
+                                "invalidPercent": 30,
+                                "checkThreshold": 30,
+                                "malformedLimit": 50
+                        },
+                        "limits": {
+                                "enabled": true,
+                                "limit": 30,
+                                "grace": "5m",
+                                "limitJump": 10
+                        }
+                }
+        },
+
+        "api": {
+                "enabled": true,
+                "purgeOnly": false,
+                "purgeInterval": "10m",
+                "listen": "0.0.0.0:9091",
+                "statsCollectInterval": "5s",
+                "hashrateWindow": "30m",
+                "hashrateLargeWindow": "3h",
+                "luckWindow": [64, 128, 256],
+                "payments": 30,
+                "blocks": 50
+        },
+
+        "upstreamCheckInterval": "5s",
+        "upstream": [
+                {
+                        "name": "main",
+                        "url": "http://127.0.0.1:8545",
+                        "timeout": "10s"
+                },
+                {
+                        "name": "backup",
+                        "url": "http://127.0.0.2:8545",
+                        "timeout": "10s"
+                }
+        ],
+
+        "redis": {
+                "endpoint": "127.0.0.1:6379",
+                "poolSize": 300,
+                "database": 0,
+                "password": ""
+        },
+
+        "unlocker": {
+                "enabled": true,
+                "poolFee": 0.5,
+                "poolFeeAddress": "0xc8efe17161b98a5fd860e7e6e51d53083265d966",
+                "donate": false,
+                "depth": 120,
+                "immatureDepth": 20,
+                "keepTxFees": false,
+                "interval": "15m",
+                "daemon": "http://127.0.0.1:8545",
+                "timeout": "10s"
+        },
+
+        "payouts": {
+                "enabled": true,
+                "requirePeers": 5,
+                "interval": "120m",
+                "daemon": "http://127.0.0.1:8545",
+                "timeout": "10s",
+                "address": "0xc8efe17161b98a5fd860e7e6e51d53083265d966",
+                "gas": "21000",
+                "gasPrice": "20000000000",
+                "autoGas": true,
+                "keepNwFees": true,
+                "nwTxGas": "21000",
+                "nwTxGasPrice": "20000000000",
+                "threshold": 100000000,
+                "bgsave": false
+        },
+
+        "exchange": {
+                "enabled": false,
+                "url": "https://api.coinmarketcap.com/v1/ticker/ethereum-classic/?convert=USD",
+                "timeout": "50s",
+                "refreshInterval": "1800s"
+        },
+
+        "newrelicEnabled": false,
+        "newrelicName": "",
+        "newrelicKey": "",
+        "newrelicVerbose": false
+}

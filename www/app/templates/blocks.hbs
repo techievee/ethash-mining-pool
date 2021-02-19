@@ -1,0 +1,140 @@
+<div id="page-wrapper">
+    <div class="row align-middle" style="padding-top:50px;">
+
+        <div class="col-lg-4">
+            <span  class="text-blue"style="font-family: 'Fredericka the Great'; font-size: 30px;margin-top:50px;" >BLOCKS STATISTICS</span>
+        </div>
+        <div class="col-lg-8" style="margin-bottom: 20px;" >
+            <span  style="font-family: Arvo; margin-top:50px; border-bottom: none;">
+                <strong>Pool always pay full block reward including uncle rewards.    </strong>                                   
+            </span>
+            <br/>
+            <span  style="font-family: Arvo; margin-top:50px; border-bottom: none;">
+                <strong>Block maturity requires <u>up to</u> </strong> <span class="label label-success">120</span> <strong>blocks. Usually it's less indeed.</strong>                                  
+            </span>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>  
+
+    <!-- /.row -->
+    <div class="row">
+
+        <div class="col-lg-4"> 
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner ">
+                    <h3><span class="text-white">
+                            {{format-number model.candidatesTotal}}</span> </h3> 
+                    <p>BLOCKS</p>                    
+
+                </div>
+                <div class="icon"> <i class="fa fa-star-o"></i> </div>
+
+                <div class="panel-footer text-center">
+                    <span class="text-red">NEW BLOCKS</span>
+                    <span class="pull-right"></span>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-lg-4"> 
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner ">
+                    <h3><span class="text-white">
+                            {{format-number model.immatureTotal}}
+                        </span> </h3>
+                    <p>BLOCKS</p>   
+
+
+                </div>
+                <div class="icon"> <i class="fa fa-star-half-full"></i> </div>
+
+                <div class="panel-footer text-center">
+                    <span class="text-yellow">IMMATURE BLOCKS</span>
+                    <span class="pull-right"></span>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-4"> 
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner ">
+                    <h3><span class="text-white" style="font-size: 30px;" >
+                            {{format-number model.maturedTotal}}
+                        </span> </h3>   
+                    <p>BLOCKS</p>   
+                </div>
+                <div class="icon"> <i class="fa fa-star"></i> </div>
+
+                <div class="panel-footer text-center">
+                    <span class="text-green">MATURE BLOCKS</span>
+                    <span class="pull-right"></span>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+
+    {{#if model.luck}}
+    <div class="row">
+
+        <div class="col-lg-12">    
+            <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" href="#collapse1"><i class="fa fa-magic fa-fw"></i> POOL LUCK STATISTICS</a> 
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse">
+                        <div class="panel-body">{{partial "luck"}}</div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {{/if}}
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <i class="fa fa-cube fa-fw"></i> DETAILED BLOCK STATISTICS                    
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">   
+                        {{#active-li currentWhen='blocks.index' role='presentation'}}
+                        {{#link-to 'blocks.index'}}All{{/link-to}}
+                        {{/active-li}}
+                        {{#active-li currentWhen='blocks.mature' role='presentation'}}
+                        {{#link-to 'blocks.mature'}}Mature <span class="badge alert-success">{{format-number model.maturedTotal}}</span>{{/link-to}}
+                        {{/active-li}}
+                        {{#active-li currentWhen='blocks.immature' role='presentation'}}
+                        {{#link-to 'blocks.immature'}}Immature <span class="badge alert-warning">{{format-number model.immatureTotal}}</span>{{/link-to}}
+                        {{/active-li}}
+                        {{#active-li currentWhen='blocks.pending' role='presentation'}}
+                        {{#link-to 'blocks.pending'}}New Blocks <span class="badge alert-danger">{{format-number model.candidatesTotal}}</span>{{/link-to}}
+                        {{/active-li}}
+                    </ul>
+                    {{outlet}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

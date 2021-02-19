@@ -1,0 +1,622 @@
+<div id="page-wrapper">
+    <div class="row" style="padding-top:50px;">
+        <div class="col-lg-4">
+            <span  class="text-blue"style="font-family: 'Fredericka the Great'; font-size: 35px;margin-top:50px;" >POOL STATISTICS</span>
+        </div>
+        <div class="col-lg-8" style="margin-bottom: 20px;" >
+            <span  style="font-family: Lobster; margin-top:50px; border-bottom: none;">Welcome to high performance {{config.CoinName}} mining pool. This pool provides higher profit in comparison to other popular pools for Miners who are not hopping the pool by employing Dynamic realtime PPLNS payments mode. Payouts are processed {{config.PaymentText}}.
+            </span>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+
+        <div class="col-lg-3 col-md-6">
+            <!-- small box -->
+            <div class="small-box bg-blue">
+                <div class="inner ">
+                    <h3><span class="text-white">
+                            {{format-hashrate stats.model.hashrate}}
+                        </span> </h3>
+                    <p> POOL HASHRATE   </p>
+
+                </div>
+                <div class="icon"> <i class="fa fa-dashboard"></i> </div>
+                {{#link-to 'miners'}}
+                    <div class="panel-footer">
+                        <span class="pull-left">View All Miners</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                {{/link-to}}
+            </div>
+        </div>
+
+
+        <div class="col-lg-3 col-md-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner ">
+                    <h3><span class="text-white">
+                            {{format-number stats.model.minersTotal}}
+                        </span> </h3>
+                    <p> ACTIVE MINERS   </p>
+
+                </div>
+                <div class="icon"> <i class="fa fa-users"></i> </div>
+                {{#link-to 'miners'}}
+                    <div class="panel-footer">
+                        <span class="pull-left">View All Active Miners</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                {{/link-to}}
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner ">
+                    <h3><span class="text-white">
+                            {{format-number model.maturedTotal }}
+                        </span> </h3>
+                    <p> {{#if stats.model.stats.lastBlockFound}}
+                        <i class="fa fa-clock-o"></i> Last Block : <span>{{format-relative (seconds-to-ms stats.model.stats.lastBlockFound)}}</span>
+                        {{else}}
+                        NO NEW BLOCKS
+                        {{/if}}    </p>
+
+                </div>
+                <div class="icon"> <i class="fa fa-cubes"></i> </div>
+                {{#link-to 'blocks'}}
+                    <div class="panel-footer">
+                        <span class="pull-left">View Pool Blocks</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                {{/link-to}}
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner ">
+                    <h3><span class="text-white">
+                            {{#if (eq config.Currency 'USD') }}
+                            {{format-number  stats.model.exchangedata.price_usd style='currency' currency='USD'}}
+                            {{else}}
+                            {{format-number  stats.model.exchangedata.price_inr style='currency' currency='INR'}}                            
+                            {{/if}}
+                           
+                            
+                        </span> </h3>
+                    <p> {{format-date-locale stats.model.exchangedata.last_updated }} </p>
+
+                </div>
+                <div class="icon">  
+                            {{#if (eq config.Currency 'USD') }}
+                            <i class="fa fa-usd"></i> 
+                            {{else}}
+                            <i class="fa fa-inr"></i>                         
+                            {{/if}}
+                            </div>  
+               {{#link-to 'exchange'}} 
+                    <div class="panel-footer">
+                        <span class="pull-left">View Exchange Data</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                 {{/link-to}}
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+
+        <div class="col-lg-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <i class="fa fa-info-circle fa-fw"></i> Information Panel
+                </div>
+                <!-- /.panel-heading -->
+
+                <div class="list-group">
+                    <a  class="list-group-item">
+                        <i class="fa fa-trophy fa-fw"></i> Rewards System
+                        <span class="pull-right text-muted small"><span class="label label-success"><em>Dynamic PPL'N'S</em></span>
+                            <a href="http://give-me-coins.com/support/faq/what-is-pplns/" target="_blank"><i class="fa fa-question fa-fw"></i></a>
+                        </span>
+                    </a>
+                     <a  class="list-group-item">
+                        <i class="fa fa-thermometer-full fa-fw"></i> 'N' Value for the current round
+                        <span class="pull-right text-muted small"><span class="label label-success"><em>{{format-number stats.model.stats.lastNValue}}</em></span>                           
+                        </span>
+                    </a>
+                     <a class="list-group-item">
+                        <i class="fa fa-thermometer-empty fa-fw"></i> 'N' shares buffered
+                        <span class="pull-right text-muted small"><span class="label label-success"><em>{{format-number stats.model.stats.nShares}}</em></span>                           
+                        </span>
+                    </a>
+                    
+<!--                     <a class="list-group-item">
+                        <div class="progress" style="margin:0px;height:20px;">
+                            <span class="text-center text-aqua bold" style="margin-top:10px;">
+                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuemax="1585" style="width:60%">    
+                            
+                        </div></span>
+                         
+                    </div>
+                    </a>-->
+                    
+                    
+                    <a class="list-group-item">
+                        <i class="fa fa-money fa-fw"></i> Pool Fee
+                        <span class="pull-right text-muted small"><em>{{config.PoolFee}}</em>
+                        </span>
+                    </a>
+                     <a class="list-group-item">
+                        <i class="fa fa-sitemap fa-fw"></i> Share Difficulty
+                        <span class="pull-right text-muted small"><span class="label label-success"><em>{{format-hashrate config.ShareDifficulty}}</em></span>
+                        </span>
+                    </a>
+                    <a class="list-group-item">
+                        <i class="fa fa-unlock-alt fa-fw"></i> Network Difficulty
+                        <span class="pull-right text-muted small"><em>{{with-metric-prefix stats.difficulty}}</em>
+                        </span>
+                    </a>
+                    <a class="list-group-item">
+                        <i class="fa fa-dashboard fa-fw"></i> Network Hashrate
+                        <span class="pull-right text-muted small"><em>{{format-hashrate stats.hashrate}}</em>
+                        </span>
+                    </a>
+                    <a class="list-group-item">
+                        <i class="fa fa-sort-amount-asc fa-fw"></i> Blockchain Height
+                        <span class="pull-right text-muted small"><em>{{format-number stats.height}}</em>
+                        </span>
+                    </a>
+                    <a  class="list-group-item">
+                        <i class="fa fa-clock-o fa-fw"></i> Current Round Variance
+                        <span class="pull-right text-muted small"><em>{{format-number stats.roundVariance style='percent'}}</em>
+                        </span>
+                    </a>
+                    <a class="list-group-item">
+                        <i class="fa fa-ticket fa-fw"></i> Payment Threshold
+                        <span class="pull-right text-muted small"><em>{{config.PayoutThreshold}} {{config.CoinShortName}} </em>
+                        </span>
+                    </a>
+                    <a  class="list-group-item">
+                        <i class="fa fa-money fa-fw"></i> Payout
+                        <span class="pull-right text-muted small"><em>{{config.PaymentText}}</em>
+                        </span>
+                    </a>
+                    <a class="list-group-item">
+                        <i class="fa fa-credit-card-alt fa-fw"></i> {{config.CoinShortName}}-{{config.Currency}}
+                        <span class="pull-right text-muted small text-blue">≅ <em>
+                            {{#if (eq config.Currency 'USD') }}
+                            {{format-number  stats.model.exchangedata.price_usd style='currency' currency='USD'}}
+                            {{else}}
+                            {{format-number  stats.model.exchangedata.price_inr style='currency' currency='INR'}}                            
+                            {{/if}}</em>
+                        </span><br/><span class="text-muted small text-blue"><em>{{format-date-locale stats.model.exchangedata.last_updated }}</em></span>
+                    </a>
+                </div>
+                <!-- /.list-group -->
+
+                <!-- /.panel-body -->
+            </div>
+
+            <div class="chat-panel panel panel-success">
+                <div class="panel-heading">
+                    <i class="fa fa-twitter fa-fw"></i> UPDATES
+                    <div class="btn-group pull-right">
+
+                    </div>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    {{#twitter-feed}}
+                    <a class="twitter-timeline" href="{{config.TwitterURL}}{{config.TwitterHash}}">Tweets by {{config.TwitterHash}}</a>
+                    {{/twitter-feed}}
+                </div>
+                <!-- /.panel-body -->
+
+                <!-- /.panel-footer -->
+            </div>
+            <!-- /.panel .chat-panel -->
+        </div>
+        <!-- /.col-lg-4 -->
+
+        <div class="col-lg-8">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <i class="fa fa-user fa-fw"></i> MINER STATUS
+                </div>
+                <div class="panel-body">
+                    <div class="input-group">
+                        {{input value=cachedLogin class="form-control" placeholder="Enter Your Address"}}
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" {{action 'lookup' cachedLogin}}>
+                                    <span style="display: inline;"><i class="fa fa-search"></i> SEARCH</span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-8 -->
+
+        <div class="col-lg-8">
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <i class="fa fa-question-circle-o fa-fw"></i> SETUP GUIDE
+                </div>
+                <div class="panel-body">
+
+                    <ul class="nav nav-tabs" id="myTab">
+                        
+                        <li class="active"><a data-target="#general" data-toggle="tab"><i class="fa fa-info fa-fw"></i> INFORMATION</a></li>
+                        <li ><a data-target="#rent" data-toggle="tab"><i class="fa fa-credit-card-alt fa-fw"></i> RENTING</a></li>
+                        <li><a data-target="#claymore" data-toggle="tab"><i class="fa fa-download fa-fw"></i>CLAYMORE</a></li>
+                        <li><a data-target="#stratumproxy" data-toggle="tab"><i class="fa fa-download fa-fw"></i>STRATUM PROXY</a></li>
+                        <li><a data-target="#genoils" data-toggle="tab"><i class="fa fa-download fa-fw"></i>CPP VERSION</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+
+                         <div class="tab-pane " id="rent">
+                            <div class="col-lg-12">
+                                <div class="panel">
+                                    <div class="panel-body">
+                                      <div class="panel panel-success"  >
+                                        <div class="panel-heading"> <i class="fa fa-credit-card-alt fa-fw"></i> MINING RENTAL RIG<a href="https://www.miningrigrentals.com?ref=41914" target="_blank"><i class="fa fa-link fa-fw"></i></a></div>
+                                        <div class="panel-body" style="padding-top:0px;padding-bottom:0px">
+
+                                          <div class="bs-callout bs-callout-info" id="callout-labels-inline-block">
+                                              <h2><i class="fa fa-bolt fa-fw"></i>Whether you're new to mining and want to try mining out before you buy mining rig</h2><br/>
+                                              <h4><i class="fa fa-ticket fa-fw"></i>Pool fully supports miningrigrentals</h4>
+                                          <ul class="list-group">
+                                            <li class="list-group-item">
+                                              <a href="https://www.miningrigrentals.com/register?ref=41914" target="_blank" rel="nofollow">
+                                            <i class="fa fa-sign-in fa-fw"></i>
+                                            <strong>Register using this link to get new account</strong>
+                                            <small class="text-gray pull-right"> <i class="fa fa-user fa-fw"></i></small>
+                                          </a>
+                                            </li>
+                                            <li class="list-group-item">
+                                               <i class="fa fa-plus fa-fw"></i>
+                                            <strong>Add the Pool using the following setting</strong>
+                                            </li>
+                                              <li class="list-group-item">
+                                                <span style="font-family: 'Anonymous Pro';">                                                 
+                                                  Address = stratum+tcp://{{config.StratumHost}}:{{config.StratumPort}}<br/>
+                                                  User = "<kbd>{{config.CoinName}} Address</kbd>"<br/>
+                                                  Pass = x<br/>                                                   
+                                                  Algorithm = Hasimotos<br/>
+                                                </span>
+                                        </li>
+
+                                          </ul>
+                                        </div>
+
+
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane active" id="general" style="height:600px; overflow-y: scroll;">
+                          <div class="col-lg-12">
+                            <div class="panel">
+                              <div class="panel-body"  style="padding-top:0px;padding-bottom:0px">
+ <h3 class="text-green"><i class="fa fa-ravelry fa-fw"></i>FEATURE</h3>
+                                <div class="panel-body bs-callout bs-callout-success">
+                                  <div class="" id="callout-labels-inline-block" >
+                                    <ul class="list-group">
+                                      <li class="list-group-item">
+                                        <i class="fa fa-user-secret fa-fw"></i> Anonymous mining, No Registration required
+                                      </li>
+                                      <li class="list-group-item">
+                                        <i class="fa fa-share-square-o fa-fw"></i> Dynamic PPLNS payout scheme, 'N' Value is fixed at the beginning of each round as 2*Block chain Difficulty
+                                      </li>
+                                      <li class="list-group-item">
+                                        <i class="fa fa-credit-card fa-fw"></i> Interface customized for {{config.Currency}} Values of corresponding {{config.CoinName}} Values
+                                      </li>
+                                      <li class="list-group-item">
+                                        <i class="fa fa-credit-card fa-fw"></i> We pay all {{config.CoinName}} rewards (Blocks, Uncles)
+                                      </li>
+                                         <li class="list-group-item">
+                                        <i class="fa fa-sitemap fa-fw"></i> Share Difficulty : {{config.ShareDifficulty}}, Efficient for miners
+                                      </li>
+                                      
+                                      <li class="list-group-item">
+                                        <i class="fa fa-download fa-fw"></i> Payout are processed {{config.PaymentText}}
+                                      </li>
+                                      <li class="list-group-item">
+                                        <i class="fa fa-sun-o fa-fw"></i>Customizable minimum payment threshold, To customize, please send us email of your {{config.CoinShortName}}Address, IP Address, Email and Payout threshold to {{config.SupportMail}}
+                                      </li>                                     
+                                      <li class="list-group-item">
+                                        <i class="fa fa-sitemap fa-fw"></i> Full stratum support (supports all type of miners)
+                                      </li>
+                                      <li class="list-group-item">
+                                        <i class="fa fa-fast-forward fa-fw"></i> Efficient mining engine, low uncle rates
+                                      </li>
+                                      <li class="list-group-item">
+                                        <i class="fa fa-bar-chart fa-fw"></i> Detailed global and per-worker statistics
+                                      </li>
+                                      <li class="list-group-item">
+                                        <i class="fa fa-envelope fa-fw"></i> Professional Helpdesk  <a target="_blank" href="{{config.SupportHelpdesk}}">  Helpdesk  </a>
+                                      </li>
+
+                                    </ul>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-lg-12">
+                            <div class="panel">
+                              <div class="panel-body" style="padding-top:0px;padding-bottom:0px">
+ <h3 class="text-orange"><i class="fa fa-calendar fa-fw"></i>FUTURE SCOPE</h3>
+                                <div class="panel-body bs-callout bs-callout-warning">
+                                  <div class="" id="callout-labels-inline-block">
+                                    <ul class="list-group">
+                                      <li class="list-group-item">
+                                        <i class="fa fa-mobile fa-fw"></i> Email notification system and SMS Notification
+                                      </li>
+                                      <li class="list-group-item">
+                                        <i class="fa fa-android fa-fw"></i> Third party Android Monitoring App, iOS Monitoring App, and Telegram Bot
+                                      </li>
+                                      <li class="list-group-item">
+                                        <i class="fa fa-compass fa-fw"></i> Multiple Servers at various Regions
+                                      </li>                                     
+                                      <li class="list-group-item">
+                                        <i class="fa fa-language fa-fw"></i>  Various Language options
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+
+
+                        </div>
+                        <div class="tab-pane" id="claymore">
+                            <div class="col-lg-12">
+                                <div class="panel">
+                                    <div class="panel-body">
+                                      <div class="panel panel-success">
+                                        <div class="panel-heading"> <i class="fa fa-download fa-fw"></i> Claymore's Dual GPU Miner.<a href="https://bitcointalk.org/index.php?topic=1433925.0" target="_blank"><i class="fa fa-link fa-fw"></i></a></div>
+                                        <div class="panel-body">
+
+                                          <div class="bs-callout bs-callout-info" id="callout-labels-inline-block">
+                                          <h4><i class="fa fa-cloud-download fa-fw"></i>Download  <span class="badge">Latest version is v10.0</span></h4>
+                                          <ul class="list-group">
+                                            <li class="list-group-item">
+                                              <a href="https://github.com/techievee/Claymore-Dual-Miner/releases/download/10.0/Claymore.s.Dual.GPU.Miner.v10.0-Windows.zip" target="_blank" rel="nofollow">
+                                                <i class="fa fa-windows fa-fw"></i>
+                                                <strong>Claymore's. Dual Miner.v10.0.zip</strong><em> Use Internet Explorer for download </em>
+                                                <small class="text-gray pull-right">13.1 MB</small>
+                                              </a>
+                                            </li>
+                                            <li class="list-group-item">
+                                              <a href="https://github.com/techievee/Claymore-Dual-Miner/releases/download/10.0/Claymore.s.Dual.GPU.Miner.v10.0.-.LINUX.tar.gz" rel="nofollow">
+                                                <i class="fa fa-linux fa-fw"></i>
+                                                <strong>Claymore's Dual Miner.v10.0-.LINUX.tar.gz</strong>
+                                                <small class="text-gray pull-right">1.66 MB</small>
+                                              </a>
+                                            </li>
+
+                                          </ul>
+                                        </div>
+
+
+                                          <div class="bs-callout bs-callout-info" id="callout-labels-inline-block">
+                                            <h4><i class="fa fa-cogs fa-fw"></i>Configuration File</h4>Put the following commands into a file <kbd>start.bat</kbd> and double click to start your miner
+                                            <ul class="list-group">
+                                              <li class="list-group-item">
+                                                <span style="font-family: 'Anonymous Pro';">
+                                                  setx GPU_FORCE_64BIT_PTR 0<br/>
+                                                  setx GPU_MAX_HEAP_SIZE 100<br/>
+                                                  setx GPU_USE_SYNC_OBJECTS 1<br/>
+                                                  setx GPU_MAX_ALLOC_PERCENT 100<br/>
+                                                  setx GPU_SINGLE_ALLOC_PERCENT 100<br/>
+                                                  <h4>EthDcrMiner64.exe -epool {{config.StratumHost}}:{{config.StratumPort}} -ewal <kbd>{{config.CoinName}}Address</kbd> -eworker <kbd>WORKERNAME</kbd>   -allcoins 1 </h4>
+                                                </span>
+                                              </li>
+
+                                            </ul>
+                                          </div>
+
+
+                                          <div class="bs-callout bs-callout-info" id="callout-labels-inline-block">
+                                            Put the following commands into a file <kbd>epools.txt</kbd> to automatically switch to backup server, The server may be added later depending upon the load
+                                            <h4><i class="fa fa-database fa-fw"></i>Backup Servers</h4>
+                                            <ul class="list-group">
+                                              <li class="list-group-item">
+                                                Backup 1 : {{config.StratumHost1}}:{{config.StratumPort1}}
+                                              </li>
+                                              <li class="list-group-item">
+                                                Backup 2 :{{config.StratumHost2}}:{{config.StratumPort2}}
+                                              </li>
+
+                                            </ul>
+                                          </div>
+
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="stratumproxy">
+                          <div class="col-lg-12">
+                            <div class="panel">
+                              <div class="panel-body">
+                                <div class="panel panel-success">
+                                  <div class="panel-heading"> <i class="fa fa-download fa-fw"></i> Stratum mode using Stratum Proxy <a href="https://bitcointalk.org/index.php?topic=1200891" target="_blank"><i class="fa fa-link fa-fw"></i></a></div>
+                                  <div class="panel-body">
+
+                                    <div class="bs-callout bs-callout-info" id="callout-labels-inline-block">
+                                      <h4><i class="fa fa-cloud-download fa-fw"></i>Download  <span class="badge">Latest version is v0.05</span></h4>
+                                      <ul class="list-group">
+                                        <li class="list-group-item">
+                                          <a href="https://github.com/Atrides/eth-proxy/releases/download/0.0.5/eth-proxy-win.zip" target="_blank" rel="nofollow">
+                                            <i class="fa fa-windows fa-fw"></i>
+                                            <strong>Stratum Proxy.v0.0.5.zip</strong>
+                                            <small class="text-gray pull-right">5.18 MB</small>
+                                          </a>
+                                        </li>
+                                        <li class="list-group-item">
+                                          <a href="https://github.com/Atrides/eth-proxy/releases/download/0.0.5/eth-proxy.zip" rel="nofollow">
+                                            <i class="fa fa-linux fa-fw"></i>
+                                            <strong>Linux Stratum Proxy.v0.0.5.zip</strong>
+                                            <small class="text-gray pull-right">43.7 KB</small>
+                                          </a>
+                                        </li>
+
+                                      </ul>
+                                    </div>
+
+
+                                    <div class="bs-callout bs-callout-info" id="callout-labels-inline-block">
+                                      <h4><i class="fa fa-cogs fa-fw"></i>Configuration File</h4>Put the following commands into a file <kbd>start.bat</kbd> and double click to start your miner <br/>
+                                      <ul class="list-group">
+                                        <li class="list-group-item">
+                                                <span style="font-family: 'Anonymous Pro';">
+                                                  <h4>ethminer.exe --farm-recheck 200 -G -F http://{{config.HttpHost}}:{{config.HttpPort}}/<kbd>WORKERNAME</kbd></h4>
+                                                </span>
+                                        </li>
+
+                                      </ul>
+                                      Put the following commands into a file <kbd>eth-proxy.conf</kbd> to add wallet and other configuration<br/>
+                                      <ul class="list-group">
+                                        <li class="list-group-item">
+                                                <span style="font-family: 'Anonymous Pro';">
+                                                  COIN = "{{config.CoinName}}" <br/>
+                                                  HOST = "0.0.0.0"<br/>
+                                                  PORT = {{config.StratumPort}}<br/>
+                                                  WALLET = "<kbd>ADDRESS</kbd>"<br/>
+                                                  ENABLE_WORKER_ID = False<br/>
+                                                  MONITORING = False<br/>
+                                                  MONITORING_EMAIL = ""<br/>
+                                                  # Main pool
+                                                  POOL_HOST = "{{config.StratumHost}}"<br/>
+                                                  POOL_PORT = {{config.StratumPort}}<br/>
+                                                  POOL_FAILOVER_ENABLE = True<br/>
+                                                  POOL_HOST_FAILOVER1 = "{{config.StratumHost1}}"<br/>
+                                                  POOL_PORT_FAILOVER1 = {{config.StratumPort1}}<br/>
+                                                  POOL_HOST_FAILOVER2 = "{{config.StratumHost2}}"<br/>
+                                                  POOL_PORT_FAILOVER2 = {{config.StratumPort2}}<br/>
+                                                  LOG_TO_FILE = True<br/>
+                                                  DEBUG = False<br/>
+                                                </span>
+                                        </li>
+
+                                      </ul>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="tab-pane" id="genoils">
+                          <div class="col-lg-12">
+                            <div class="panel">
+                              <div class="panel-body">
+                                <div class="panel panel-success">
+                                  <div class="panel-heading"> <i class="fa fa-download fa-fw"></i> CPP ETHEREUM CLIENT.<a href="https://github.com/ethereum/webthree-umbrella/releases" target="_blank"><i class="fa fa-link fa-fw"></i></a> </div>
+                                  <div class="panel-body">
+
+                                   <div class="bs-callout bs-callout-info" id="callout-labels-inline-block">
+                                      <h4><i class="fa fa-cloud-download fa-fw"></i>Download  <span class="badge">v1.29 ("The Village Idiot")</span></h4>
+                                      <ul class="list-group">
+                                        <li class="list-group-item">
+                                          <a href="https://github.com/ethereum/webthree-umbrella/releases/download/v1.2.9/cpp-ethereum-windows-v1.2.9.zip" target="_blank" rel="nofollow">
+                                            <i class="fa fa-windows fa-fw"></i>
+                                            <strong>cpp-ethereum-miner v 1.2.9</strong>
+                                            <small class="text-gray pull-right">32.1 MB</small>
+                                          </a>
+                                        </li>
+                                          
+                                        <li class="list-group-item">
+                                          <a href="https://github.com/ethereum/webthree-umbrella/releases/download/v1.2.9/cpp-ethereum-osx-yosemite-v1.2.9.zip" rel="nofollow">
+                                            <i class="fa fa-apple fa-fw"></i>
+                                            <strong>OS X Yosemite Source 1 ZIP</strong>
+                                            <small class="text-gray pull-right">12.6 MB</small>
+                                          </a>
+                                        </li>
+                                          
+                                          
+                                           <li class="list-group-item">
+                                          <a href="https://github.com/ethereum/webthree-umbrella/releases/download/v1.2.9/cpp-ethereum-osx-yosemite-v1.2.9.dmg" rel="nofollow">
+                                            <i class="fa fa-apple fa-fw"></i>
+                                            <strong>OS X Yosemite Source 2 DMG</strong>
+                                            <small class="text-gray pull-right">81 MB</small>
+                                          </a>
+                                        </li>
+                                          
+                                          <li class="list-group-item">
+                                          <a href="https://github.com/ethereum/webthree-umbrella/releases/download/v1.2.9/cpp-ethereum-osx-elcapitan-v1.2.9.zip" rel="nofollow">
+                                            <i class="fa fa-apple fa-fw"></i>
+                                            <strong>OS X El Capitan Source 1 ZIP</strong>
+                                            <small class="text-gray pull-right">11.6 MB</small>
+                                          </a>
+                                        </li>
+                                          
+                                          <li class="list-group-item">
+                                          <a href="https://github.com/ethereum/webthree-umbrella/releases/download/v1.2.9/cpp-ethereum-osx-elcapitan-v1.2.9.dmg" rel="nofollow">
+                                            <i class="fa fa-apple fa-fw"></i>
+                                            <strong>OS X El Capitan Source 2 DMG</strong>
+                                            <small class="text-gray pull-right">78 MB</small>
+                                          </a>
+                                        </li>
+
+                                      </ul>
+                                    </div>
+
+
+                                    <div class="bs-callout bs-callout-info" id="callout-labels-inline-block">
+                                      <h4><i class="fa fa-cogs fa-fw"></i>Configuration</h4>
+                                      <ul class="list-group">
+                                        <li class="list-group-item">
+                                                <span style="font-family: 'Anonymous Pro';">
+                                                  ethminer.exe http://{{config.HttpHost}}:{{config.HttpPort}}/<kbd>ADDRESS</kbd>/<kbd>WORKERNAME</kbd>
+                                                </span>
+                                        </li>
+
+                                      </ul>
+                                    </div>
+
+                               
+
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-8 -->
+
+    </div>
+    <!-- /.row -->
+</div>
